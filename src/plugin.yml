@@ -1,0 +1,6 @@
+name: jtWar
+version: 0.1
+author: jamietech
+website: http://dev.nekotech.tk
+main: tk.nekotech.war.War
+load: startup
