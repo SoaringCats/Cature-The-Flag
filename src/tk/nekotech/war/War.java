@@ -194,9 +194,10 @@ public class War extends JavaPlugin implements Listener {
 			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
 			player.setDisplayName(ChatColor.BLUE + player.getName() + ChatColor.WHITE);
 			if ((player.getName().length() == 14) || (player.getName().length() == 15)) {
-				
+				// cut the name down
+			} else {
+				player.setPlayerListName(ChatColor.BLUE + player.getName() + ChatColor.WHITE);
 			}
-			//player.setPlayerListName(ChatColor.BLUE + player.getName() + ChatColor.WHITE);
 			assignClass(player);
 		} else if (team == 1) {
 			red.add(player.getName());
@@ -208,7 +209,11 @@ public class War extends JavaPlugin implements Listener {
 			float pitch = getConfig().getInt("red-spawn-pitch");
 			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
 			player.setDisplayName(ChatColor.RED + player.getName() + ChatColor.WHITE);
-			//player.setPlayerListName(ChatColor.RED + player.getName() + ChatColor.WHITE);
+			if ((player.getName().length() == 14) || (player.getName().length() == 15)) {
+				// cut the name down
+			} else {
+				player.setPlayerListName(ChatColor.RED + player.getName() + ChatColor.WHITE);
+			}
 			assignClass(player);
 		} else {
 			player.kickPlayer(ChatColor.RED + "Uncaught error, try rejoining. If problem persists contact admin.");
@@ -230,6 +235,7 @@ public class War extends JavaPlugin implements Listener {
 					player.sendMessage(ChatColor.GOLD + "You are now a heavy!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().getItemInHand().addEnchantment(Enchantment.DAMAGE_ALL, 2);
+					player.setNoDamageTicks(10);
 					armorUp(player);
 			    }
 			}, 10L);
@@ -242,6 +248,7 @@ public class War extends JavaPlugin implements Listener {
 					player.sendMessage(ChatColor.GOLD + "You are now a scout!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().getItemInHand().addEnchantment(Enchantment.KNOCKBACK, 2);
+					player.setNoDamageTicks(10);
 					armorUp(player);
 			    }
 			}, 10L);
@@ -256,6 +263,7 @@ public class War extends JavaPlugin implements Listener {
 					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
 					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_INFINITE, 1);
 					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_DAMAGE, 2);
+					player.setNoDamageTicks(10);
 					armorUp(player);
 			    }
 			}, 10L);
@@ -269,6 +277,7 @@ public class War extends JavaPlugin implements Listener {
 					player.sendMessage(ChatColor.GOLD + "You are now a pyro!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					// "Enchantment" granted with 2s fire bursts against all entities via SpawnManger
+					player.setNoDamageTicks(10);
 					armorUp(player);
 			    }
 			}, 10L);
@@ -276,11 +285,15 @@ public class War extends JavaPlugin implements Listener {
 		
 	}
 	
-	public void armorUp(Player player) {
-		player.getInventory().getItem(5).setType(Material.DIAMOND_HELMET);
-		player.getInventory().getItem(6).setType(Material.DIAMOND_CHESTPLATE);
-		player.getInventory().getItem(7).setType(Material.DIAMOND_LEGGINGS);
-		player.getInventory().getItem(8).setType(Material.DIAMOND_BOOTS);
+	public void armorUp(final Player player) {
+		getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
+		    public void run() {
+		    	player.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET, 1));
+				player.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+				player.getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+				player.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+		    }
+		}, 10L);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
@@ -340,7 +353,7 @@ public class War extends JavaPlugin implements Listener {
 	public void dontPlaceThat(BlockPlaceEvent e) {
 		if (blocks) {
 			if (!e.getBlockPlaced().getType().equals(Material.TNT)) {
-				e.getBlock().breakNaturally();
+				e.setCancelled(true);
 				e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
 				e.getPlayer().sendMessage(ChatColor.RED + "To do this you don't need to place blocks!");
 			}
