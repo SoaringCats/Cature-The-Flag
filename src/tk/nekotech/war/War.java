@@ -176,6 +176,8 @@ public class War extends JavaPlugin implements Listener {
 	}
 	
 	public void assignPlayer(Player player, int team) {
+		if (blu.contains(player.getName())) blu.remove(player.getName());
+		if (red.contains(player.getName())) red.remove(player.getName());
 		if (team == 0) {
 			blu.add(player.getName());
 			getServer().broadcastMessage(ChatColor.BLUE + player.getName() + " was auto assigned to team blu. Blu - " + blu.size() + " Red - " + red.size());
@@ -212,10 +214,7 @@ public class War extends JavaPlugin implements Listener {
 				e.getPlayer().setGameMode(GameMode.CREATIVE);
 			}
 		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void motd(PlayerJoinEvent e) {
+		
 		e.setJoinMessage(null);
 		for (Player p : this.getServer().getOnlinePlayers()) {
 			if (p.hasPermission("jtwar.admin")) {
@@ -237,8 +236,9 @@ public class War extends JavaPlugin implements Listener {
 		e.getPlayer().sendMessage(ChatColor.RED + "For more information say /war");
 		on++;
 		online.add(e.getPlayer().getName());
+		getServer().broadcastMessage(on + " now online!");
 	}
-	
+		
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void omgTagging(PlayerQuitEvent e) {
 		on--;

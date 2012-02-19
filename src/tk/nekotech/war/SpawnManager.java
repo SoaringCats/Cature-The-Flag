@@ -14,6 +14,7 @@ import org.bukkit.event.entity.CreeperPowerEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -66,19 +67,20 @@ public class SpawnManager implements Listener {
 			 Player p = (Player) e.getEntity();
 			 war.scores.put(p.getName(), p.getExp());
 			 war.dead++;
-			 if (war.dead == war.on) {
+			 if (war.dead == war.getServer().getOnlinePlayers().length) {
 				 for (Player player : war.getServer().getOnlinePlayers()) {
-					 if (war.blu.size() == war.red.size()) {
-							Random rand = new Random();
-							int decider = rand.nextInt(1);
-							war.assignPlayer(p, decider);
-						} else if (war.blu.size() < war.red.size()) {
-							war.assignPlayer(p, 0);
-						} else if (war.red.size() < war.blu.size()) {
-							war.assignPlayer(p, 1);
-						}
+					if (war.blu.size() == war.red.size()) {
+						Random rand = new Random();
+						int decider = rand.nextInt(1);
+						war.assignPlayer(player, decider);
+					} else if (war.blu.size() < war.red.size()) {
+						war.assignPlayer(player, 0);
+					} else if (war.red.size() < war.blu.size()) {
+						war.assignPlayer(player, 1);
+					}
 				 }
 			 }
+			 war.getServer().broadcastMessage(war.dead + " dead. " + war.getServer().getOnlinePlayers().length + " online.");
 			 war.dead = 0;
 			 war.scores.clear();
 		 }
@@ -86,12 +88,42 @@ public class SpawnManager implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void omgRespawnDolt(PlayerRespawnEvent e) {
-		double x = war.getConfig().getDouble("spec-spawn-x");
-		double y = war.getConfig().getDouble("spec-spawn-y");
-		double z = war.getConfig().getDouble("spec-spawn-z");
-		float yaw = war.getConfig().getInt("spec-spawn-yaw");
-		float pitch = war.getConfig().getInt("spec-spawn-pitch");
-		e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
+		if (war.dead != war.getServer().getOnlinePlayers().length) {
+			double x = war.getConfig().getDouble("spec-spawn-x");
+			double y = war.getConfig().getDouble("spec-spawn-y");
+			double z = war.getConfig().getDouble("spec-spawn-z");
+			float yaw = war.getConfig().getInt("spec-spawn-yaw");
+			float pitch = war.getConfig().getInt("spec-spawn-pitch");
+			e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
+		} else {
+			if (war.teamName(e.getPlayer()) == 0) {
+				double x = war.getConfig().getDouble("blu-spawn-x");
+				double y = war.getConfig().getDouble("blu-spawn-y");
+				double z = war.getConfig().getDouble("blu-spawn-z");
+				float yaw = war.getConfig().getInt("blu-spawn-yaw");
+				float pitch = war.getConfig().getInt("blu-spawn-pitch");
+				e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
+			} else {
+				double x = war.getConfig().getDouble("red-spawn-x");
+				double y = war.getConfig().getDouble("red-spawn-y");
+				double z = war.getConfig().getDouble("red-spawn-z");
+				float yaw = war.getConfig().getInt("red-spawn-yaw");
+				float pitch = war.getConfig().getInt("red-spawn-pitch");
+				e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
+			}
+		}
+	}
+	
+	@EventHandler
+	public void spawnRight(PlayerJoinEvent e) {
+		if (war.getConfig().getBoolean("has-started")) {
+			double x = war.getConfig().getDouble("spec-spawn-x");
+			double y = war.getConfig().getDouble("spec-spawn-y");
+			double z = war.getConfig().getDouble("spec-spawn-z");
+			float yaw = war.getConfig().getInt("spec-spawn-yaw");
+			float pitch = war.getConfig().getInt("spec-spawn-pitch");
+			e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
