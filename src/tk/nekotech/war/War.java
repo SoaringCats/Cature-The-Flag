@@ -339,9 +339,11 @@ public class War extends JavaPlugin implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void dontPlaceThat(BlockPlaceEvent e) {
 		if (blocks) {
-			e.setCancelled(true);
-			e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
-			e.getPlayer().sendMessage(ChatColor.RED + "To do this you don't need to place blocks!");
+			if (!e.getBlockPlaced().getType().equals(Material.TNT)) {
+				e.getBlock().breakNaturally();
+				e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
+				e.getPlayer().sendMessage(ChatColor.RED + "To do this you don't need to place blocks!");
+			}
 		}
 	}
 
