@@ -4,3 +4,25 @@ author: jamietech
 website: http://dev.nekotech.tk
 main: tk.nekotech.war.War
 load: startup
+commands:
+  war:
+    description: "Information about the plugin"
+    usage: /<command>
+  join:
+    description: "Auto-assign to a team"
+    usage: /<command>
+  blu:
+    description: "Sets blu spawn point"
+    usage: /<command>
+  red:
+    description: "Sets red spawn point"
+    usage: /<command>
+  ready:
+    description: "Toggles server ready mode"
+    usage: /<command>
+  spectate:
+    description: "Sets spectator spawn point"
+    usage: /<command>
+  reset:
+    description: "Resets most config options"
+    usage: /<command>

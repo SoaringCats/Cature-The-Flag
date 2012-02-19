@@ -1,7 +1,16 @@
 package tk.nekotech.war;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,20 +18,50 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class War extends JavaPlugin implements Listener {
+	public ArrayList<String> online = new ArrayList<String>();
+	public ArrayList<String> blu = new ArrayList<String>();
+	public ArrayList<String> red = new ArrayList<String>();
+	@SuppressWarnings("rawtypes")
+	public Map scores = new HashMap();
+	public int on = 0;
+	public int max = 0;
+	public int dead = 0;
+	public boolean blocks = false;
 	
 	public void onEnable() {
 		getLogger().info("Enabled!");
+		getCommand("war").setExecutor(new Commands(this));
+		getCommand("join").setExecutor(new Commands(this));
+		getCommand("blu").setExecutor(new Commands(this));
+		getCommand("red").setExecutor(new Commands(this));
+		getCommand("ready").setExecutor(new Commands(this));
+		getCommand("spectate").setExecutor(new Commands(this));
+		getCommand("reset").setExecutor(new Commands(this));
 		if (!getConfig().getBoolean("has_started")) {
 			getLogger().warning("This is the first logged startup event (did you clear your config?");
 			getLogger().warning("Please make sure you set the coordinates for the new spawn areas.");
-			getLogger().warning("You will be teleported instantly to 0,2,0 and will fall to the ground on join.");
 		}
+		getLogger().info("Please do not modify the config as it changes often during gameplay.");
 		getServer().getPluginManager().registerEvents(this, this);
+		getServer().getPluginManager().registerEvents(new SpawnManager(this), this);
+		max = getServer().getMaxPlayers();
 		
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+			public void run() {
+				int worlds = 0;
+				for (World w : getServer().getWorlds()) {
+					w.setStorm(false);
+					w.setTime(14000);
+					worlds++;
+				}
+				getLogger().info("Changed time to night in " + worlds + " worlds!");
+			}
+		}, 40L, 4800L);
 	}
 	
 	public void onDisable() {
@@ -31,6 +70,135 @@ public class War extends JavaPlugin implements Listener {
 	
 	public ChunkGenerator getDefaultWorldGenerator(String worldname, String uid) {
 		return new Gen(this);
+	}
+	
+	public boolean onTeam(Player player) {
+		if (blu.contains(player.getName())) {
+			return true;
+		} else if (red.contains(player.getName())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isAllowed(CreatureType lmao) {
+		if (lmao.equals(CreatureType.SPIDER)) return true;
+		if (lmao.equals(CreatureType.CAVE_SPIDER)) return true;
+		if (lmao.equals(CreatureType.SKELETON)) return true;
+		if (lmao.equals(CreatureType.CREEPER)) return true;
+		if (lmao.equals(CreatureType.PIG_ZOMBIE)) return true;
+		if (lmao.equals(CreatureType.ZOMBIE)) return true;
+		return false;
+	}
+	
+	public CreatureType randoMob() {
+		Random rand = new Random();
+		int lmao = rand.nextInt(8);
+		if (lmao == 0) return CreatureType.SPIDER;
+		if (lmao == 1) return CreatureType.CAVE_SPIDER;
+		if (lmao == 2) return CreatureType.SKELETON;
+		if (lmao == 3) return CreatureType.CREEPER;
+		if (lmao == 4) return CreatureType.PIG_ZOMBIE;
+		if (lmao == 5) return CreatureType.ZOMBIE;
+		if (lmao == 6) return CreatureType.ZOMBIE;
+		if (lmao == 7) return CreatureType.ZOMBIE;
+		if (lmao == 8) return CreatureType.CAVE_SPIDER;
+		return null;
+	}
+	
+	public void killMob(Entity entity) {
+		if (entity != null) {
+			entity.getWorld().strikeLightningEffect(entity.getLocation());
+			entity.remove();
+		}
+	}
+		
+	public void teamSpawn(Player player) {
+		if (teamName(player) == 0) {
+			double x = getConfig().getDouble("blu-spawn-x");
+			double y = getConfig().getDouble("blu-spawn-y");
+			double z = getConfig().getDouble("blu-spawn-z");
+			float yaw = getConfig().getInt("blu-spawn-yaw");
+			float pitch = getConfig().getInt("blu-spawn-pitch");
+			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+		}
+		if (teamName(player) == 1) {
+			double x = getConfig().getDouble("red-spawn-x");
+			double y = getConfig().getDouble("red-spawn-y");
+			double z = getConfig().getDouble("red-spawn-z");
+			float yaw = getConfig().getInt("red-spawn-yaw");
+			float pitch = getConfig().getInt("red-spawn-pitch");
+			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+		}
+	}
+	
+	public int teamName(Player player) {
+		if (blu.contains(player.getName())) {
+			return 0;
+		} else if (red.contains(player.getName())) {
+			return 1;
+		} else {
+			return 9;
+		}
+	}
+	
+	public void allLog(String message, String admin, String log) {
+		for (Player p : this.getServer().getOnlinePlayers()) {
+			if (p.hasPermission("jtwar.admin")) {
+				p.sendMessage(admin);
+			} else {
+				p.sendMessage(message);
+			}
+		}
+		getLogger().info(ChatColor.stripColor(log));
+	}
+	
+	public void teamMessage(int team, String message) {
+		if (team == 0) {
+			for (Player p : getServer().getOnlinePlayers()) {
+				if (blu.contains(p.getName())) {
+					p.sendMessage(message);
+				}
+			}
+			getLogger().info("[BLU] " + message);
+		} else if (team == 1) {
+			for (Player p : getServer().getOnlinePlayers()) {
+				if (red.contains(p.getName())) {
+					p.sendMessage(message);
+				}
+			}
+			getLogger().info("[RED] " + message);
+		} else {
+			getLogger().severe("Unknown team caught in teamMessage! Attempted message:");
+			getLogger().severe(message);
+		}
+	}
+	
+	public void assignPlayer(Player player, int team) {
+		if (team == 0) {
+			blu.add(player.getName());
+			getServer().broadcastMessage(ChatColor.BLUE + player.getName() + " was auto assigned to team blu. Blu - " + blu.size() + " Red - " + red.size());
+			double x = getConfig().getDouble("blu-spawn-x");
+			double y = getConfig().getDouble("blu-spawn-y");
+			double z = getConfig().getDouble("blu-spawn-z");
+			float yaw = getConfig().getInt("blu-spawn-yaw");
+			float pitch = getConfig().getInt("blu-spawn-pitch");
+			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+		} else if (team == 1) {
+			red.add(player.getName());
+			getServer().broadcastMessage(ChatColor.RED + player.getName() + " was auto assigned to team red. Blu - " + blu.size() + " Red - " + red.size());
+			double x = getConfig().getDouble("red-spawn-x");
+			double y = getConfig().getDouble("red-spawn-y");
+			double z = getConfig().getDouble("red-spawn-z");
+			float yaw = getConfig().getInt("red-spawn-yaw");
+			float pitch = getConfig().getInt("red-spawn-pitch");
+			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+		} else {
+			player.kickPlayer(ChatColor.RED + "Uncaught error, try rejoining. If problem persists contact admin.");
+			getLogger().severe("Kicked " + player.getName() + " due to error in random generator!");
+			getLogger().severe("If this problem persists contact jamietech on GitHub!");
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
@@ -67,11 +235,21 @@ public class War extends JavaPlugin implements Listener {
 		}
 		e.getPlayer().sendMessage(ChatColor.RED + "Welcome to the war! To join type /join");
 		e.getPlayer().sendMessage(ChatColor.RED + "For more information say /war");
+		on++;
+		online.add(e.getPlayer().getName());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void omgTagging(PlayerQuitEvent e) {
+		on--;
+		online.remove(e.getPlayer().getName());
+		if (red.contains(e.getPlayer().getName())) red.remove(e.getPlayer().getName());
+		if (blu.contains(e.getPlayer().getName())) blu.remove(e.getPlayer().getName());
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void dontTouchThat(BlockBreakEvent e) {
-		if (!e.getPlayer().hasPermission("jtwar.admin")) {
+		if (blocks) {
 			e.setCancelled(true);
 			e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
 			e.getPlayer().sendMessage(ChatColor.RED + "To do this you don't need to break blocks!");
@@ -80,7 +258,7 @@ public class War extends JavaPlugin implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void dontPlaceThat(BlockPlaceEvent e) {
-		if (!e.getPlayer().hasPermission("jtwar.admin")) {
+		if (blocks) {
 			e.setCancelled(true);
 			e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
 			e.getPlayer().sendMessage(ChatColor.RED + "To do this you don't need to place blocks!");

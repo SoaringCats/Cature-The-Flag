@@ -11,6 +11,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
 public class Gen extends ChunkGenerator {
+	@SuppressWarnings("unused")
 	private War war;
 	
 	public Gen(War war) {
