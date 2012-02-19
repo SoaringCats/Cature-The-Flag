@@ -88,7 +88,7 @@ public class SpawnManager implements Listener {
 		} else {
 			if (war.blu.size() == war.red.size()) {
 				Random rand = new Random();
-				int decider = rand.nextInt(1);
+				int decider = rand.nextInt(2);
 				war.assignPlayer(e.getPlayer(), decider);
 			} else if (war.blu.size() < war.red.size()) {
 				war.assignPlayer(e.getPlayer(), 0);

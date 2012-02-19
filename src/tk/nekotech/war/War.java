@@ -243,7 +243,8 @@ public class War extends JavaPlugin implements Listener {
 					player.sendMessage(ChatColor.GOLD + "You are now a sniper!");
 					player.getInventory().addItem(new ItemStack(Material.BOW, 1));
 					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
-					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_INFINITE, 1);
+					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_INFINITE, 0);
+					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_DAMAGE, 1);
 					armorUp(player);
 			    }
 			}, 10L);

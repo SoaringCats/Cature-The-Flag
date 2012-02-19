@@ -31,7 +31,7 @@ public class Commands implements CommandExecutor {
 			if (!war.onTeam(p)) {
 				if (war.blu.size() == war.red.size()) {
 					Random rand = new Random();
-					int decider = rand.nextInt(1);
+					int decider = rand.nextInt(2);
 					war.assignPlayer(p, decider);
 				} else if (war.blu.size() < war.red.size()) {
 					war.assignPlayer(p, 0);
