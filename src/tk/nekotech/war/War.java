@@ -101,7 +101,7 @@ public class War extends JavaPlugin implements Listener {
 	
 	public CreatureType randoMob() {
 		Random rand = new Random();
-		int lmao = rand.nextInt(8);
+		int lmao = rand.nextInt(9);
 		if (lmao == 0) return CreatureType.SPIDER;
 		if (lmao == 1) return CreatureType.CAVE_SPIDER;
 		if (lmao == 2) return CreatureType.SKELETON;

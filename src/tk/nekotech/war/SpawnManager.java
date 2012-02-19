@@ -33,7 +33,7 @@ public class SpawnManager implements Listener {
 		} else {
 			if (!war.isAllowed(e.getCreatureType())) {
 				e.getEntity().getWorld().spawnCreature(e.getEntity().getLocation(), war.randoMob());
-				war.killMob(e.getEntity());	
+				e.setCancelled(true);
 			}
 		}
 	}
