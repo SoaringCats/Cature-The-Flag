@@ -2,6 +2,7 @@ package tk.nekotech.war;
 
 import java.util.Random;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -71,45 +73,36 @@ public class SpawnManager implements Listener {
 		 }
 		 
 		 if (e.getEntity() instanceof Player) {
-			 war.dead++;
-			 if (war.dead == war.getServer().getOnlinePlayers().length) war.dead = 0;
+			 Player player = (Player) e.getEntity();
+			 war.clearTeams(player);
 		 }
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void omgRespawnDolt(PlayerRespawnEvent e) {
-		if (war.dead != war.getServer().getOnlinePlayers().length) {
-			double x = war.getConfig().getDouble("spec-spawn-x");
-			double y = war.getConfig().getDouble("spec-spawn-y");
-			double z = war.getConfig().getDouble("spec-spawn-z");
-			float yaw = war.getConfig().getInt("spec-spawn-yaw");
-			float pitch = war.getConfig().getInt("spec-spawn-pitch");
+		if (war.blu.size() == war.red.size()) {
+			Random rand = new Random();
+			int decider = rand.nextInt(2);
+			war.assignPlayer(e.getPlayer(), decider);
+		} else if (war.blu.size() < war.red.size()) {
+			war.assignPlayer(e.getPlayer(), 0);
+		} else if (war.red.size() < war.blu.size()) {
+			war.assignPlayer(e.getPlayer(), 1);
+		}
+		if (war.teamName(e.getPlayer()) == 0) {
+			double x = war.getConfig().getDouble("blu-spawn-x");
+			double y = war.getConfig().getDouble("blu-spawn-y");
+			double z = war.getConfig().getDouble("blu-spawn-z");
+			float yaw = war.getConfig().getInt("blu-spawn-yaw");
+			float pitch = war.getConfig().getInt("blu-spawn-pitch");
 			e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
 		} else {
-			if (war.blu.size() == war.red.size()) {
-				Random rand = new Random();
-				int decider = rand.nextInt(2);
-				war.assignPlayer(e.getPlayer(), decider);
-			} else if (war.blu.size() < war.red.size()) {
-				war.assignPlayer(e.getPlayer(), 0);
-			} else if (war.red.size() < war.blu.size()) {
-				war.assignPlayer(e.getPlayer(), 1);
-			}
-			if (war.teamName(e.getPlayer()) == 0) {
-				double x = war.getConfig().getDouble("blu-spawn-x");
-				double y = war.getConfig().getDouble("blu-spawn-y");
-				double z = war.getConfig().getDouble("blu-spawn-z");
-				float yaw = war.getConfig().getInt("blu-spawn-yaw");
-				float pitch = war.getConfig().getInt("blu-spawn-pitch");
-				e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
-			} else {
-				double x = war.getConfig().getDouble("red-spawn-x");
-				double y = war.getConfig().getDouble("red-spawn-y");
-				double z = war.getConfig().getDouble("red-spawn-z");
-				float yaw = war.getConfig().getInt("red-spawn-yaw");
-				float pitch = war.getConfig().getInt("red-spawn-pitch");
-				e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
-			}
+			double x = war.getConfig().getDouble("red-spawn-x");
+			double y = war.getConfig().getDouble("red-spawn-y");
+			double z = war.getConfig().getDouble("red-spawn-z");
+			float yaw = war.getConfig().getInt("red-spawn-yaw");
+			float pitch = war.getConfig().getInt("red-spawn-pitch");
+			e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
 		}
 	}
 	
@@ -141,10 +134,26 @@ public class SpawnManager implements Listener {
 			EntityDamageByEntityEvent subEvent = (EntityDamageByEntityEvent) e;
 			if (subEvent.getDamager() instanceof Player) {
 				Player hi = (Player) subEvent.getDamager();
-				if (war.pyro.contains(hi.getName())) {
+				Player defender = (Player) e.getEntity();
+				
+				if ((war.blu.contains(hi.getName())) && (war.blu.contains(defender.getName()))) {
+					e.setCancelled(true);
+					hi.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + defender.getName() + "!");
+				} else if ((war.red.contains(hi.getName())) && (war.red.contains(defender.getName()))) {
+					e.setCancelled(true);
+					hi.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + defender.getName() + "!");
+				} else if (war.pyro.contains(hi.getName())) {
 					e.getEntity().setFireTicks(40);
 				}
 			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void lolTeamChat(PlayerChatEvent e) {
+		if (e.getMessage().startsWith(".")) {
+			war.teamMessage(war.teamName(e.getPlayer()), "(TEAM) <" + e.getPlayer().getDisplayName() + "> " + e.getMessage());
+			e.setCancelled(true);
 		}
 	}
 	

@@ -171,6 +171,13 @@ public class War extends JavaPlugin implements Listener {
 		}
 	}
 	
+	public void clearTeams(Player player) {
+		if (blu.contains(player.getName())) blu.remove(player.getName());
+		if (red.contains(player.getName())) red.remove(player.getName());
+		if (pyro.contains(player.getName())) pyro.remove(player.getName());
+		player.setDisplayName(player.getName());
+	}
+	
 	public void assignPlayer(Player player, int team) {
 		if (blu.contains(player.getName())) blu.remove(player.getName());
 		if (red.contains(player.getName())) red.remove(player.getName());
@@ -186,7 +193,10 @@ public class War extends JavaPlugin implements Listener {
 			float pitch = getConfig().getInt("blu-spawn-pitch");
 			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
 			player.setDisplayName(ChatColor.BLUE + player.getName() + ChatColor.WHITE);
-			player.setPlayerListName(ChatColor.BLUE + player.getName() + ChatColor.WHITE);
+			if ((player.getName().length() == 14) || (player.getName().length() == 15)) {
+				
+			}
+			//player.setPlayerListName(ChatColor.BLUE + player.getName() + ChatColor.WHITE);
 			assignClass(player);
 		} else if (team == 1) {
 			red.add(player.getName());
@@ -198,7 +208,7 @@ public class War extends JavaPlugin implements Listener {
 			float pitch = getConfig().getInt("red-spawn-pitch");
 			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
 			player.setDisplayName(ChatColor.RED + player.getName() + ChatColor.WHITE);
-			player.setPlayerListName(ChatColor.RED + player.getName() + ChatColor.WHITE);
+			//player.setPlayerListName(ChatColor.RED + player.getName() + ChatColor.WHITE);
 			assignClass(player);
 		} else {
 			player.kickPlayer(ChatColor.RED + "Uncaught error, try rejoining. If problem persists contact admin.");
@@ -215,8 +225,8 @@ public class War extends JavaPlugin implements Listener {
 			// Heavy!
 			getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
 			    public void run() {
-			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(2, 999999999, 1)); // Slowness
-					((CraftPlayer) player).getHandle().addEffect(new MobEffect(11, 999999999, 0)); // Resistance
+			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(2, 999999999, 2)); // Slowness
+					((CraftPlayer) player).getHandle().addEffect(new MobEffect(11, 999999999, 1)); // Resistance
 					player.sendMessage(ChatColor.GOLD + "You are now a heavy!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().getItemInHand().addEnchantment(Enchantment.DAMAGE_ALL, 2);
@@ -228,7 +238,7 @@ public class War extends JavaPlugin implements Listener {
 			// Scout!
 			getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
 			    public void run() {
-			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(1, 999999999, 0)); // Speed
+			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(1, 999999999, 1)); // Speed
 					player.sendMessage(ChatColor.GOLD + "You are now a scout!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().getItemInHand().addEnchantment(Enchantment.KNOCKBACK, 2);
@@ -244,8 +254,8 @@ public class War extends JavaPlugin implements Listener {
 					player.sendMessage(ChatColor.GOLD + "You are now a sniper!");
 					player.getInventory().addItem(new ItemStack(Material.BOW, 1));
 					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
-					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_INFINITE, 0);
-					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_DAMAGE, 1);
+					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_INFINITE, 1);
+					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_DAMAGE, 2);
 					armorUp(player);
 			    }
 			}, 10L);
@@ -267,10 +277,10 @@ public class War extends JavaPlugin implements Listener {
 	}
 	
 	public void armorUp(Player player) {
-		player.getInventory().getHelmet().setType(Material.DIAMOND_HELMET);
-		player.getInventory().getChestplate().setType(Material.DIAMOND_CHESTPLATE);
-		player.getInventory().getLeggings().setType(Material.DIAMOND_LEGGINGS);
-		player.getInventory().getBoots().setType(Material.DIAMOND_BOOTS);
+		player.getInventory().getItem(5).setType(Material.DIAMOND_HELMET);
+		player.getInventory().getItem(6).setType(Material.DIAMOND_CHESTPLATE);
+		player.getInventory().getItem(7).setType(Material.DIAMOND_LEGGINGS);
+		player.getInventory().getItem(8).setType(Material.DIAMOND_BOOTS);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)

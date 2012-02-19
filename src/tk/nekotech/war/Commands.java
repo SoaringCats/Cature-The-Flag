@@ -21,7 +21,7 @@ public class Commands implements CommandExecutor {
 		ChatColor a = ChatColor.AQUA;
 		if (label.equals("war")) {
 			sender.sendMessage(a + "Welcome to the war, " + sender.getName() + "!");
-			sender.sendMessage(a + "To win this game you have to be the last man standing.");
+			sender.sendMessage(a + "Repeatedly smack things with your sword!");
 			sender.sendMessage(a + "To join the game say /join and you will be teleported out of spectate.");
 		}
 		if (label.equals("join")) {
