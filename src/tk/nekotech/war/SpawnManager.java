@@ -204,16 +204,20 @@ public class SpawnManager implements Listener {
 			EntityDamageByEntityEvent subEvent = (EntityDamageByEntityEvent) e;
 			if (subEvent.getDamager() instanceof Player) {
 				Player hi = (Player) subEvent.getDamager();
-				Player defender = (Player) e.getEntity();
-				
-				if ((war.blu.contains(hi.getName())) && (war.blu.contains(defender.getName()))) {
-					e.setCancelled(true);
-					hi.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + defender.getName() + "!");
-				} else if ((war.red.contains(hi.getName())) && (war.red.contains(defender.getName()))) {
-					e.setCancelled(true);
-					hi.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + defender.getName() + "!");
-				} else if (war.pyro.contains(hi.getName())) {
+				if (war.pyro.contains(hi.getName())) {
 					e.getEntity().setFireTicks(40);
+				}				
+				if (e.getEntity() instanceof Player) {
+					Player defender = (Player) e.getEntity();
+					if ((war.blu.contains(hi.getName())) && (war.blu.contains(defender.getName()))) {
+						e.setCancelled(true);
+						e.getEntity().setFireTicks(0);
+						hi.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + defender.getName() + "!");
+					} else if ((war.red.contains(hi.getName())) && (war.red.contains(defender.getName()))) {
+						e.setCancelled(true);
+						hi.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + defender.getName() + "!");
+						e.getEntity().setFireTicks(0);
+					}
 				}
 			}
 		}
