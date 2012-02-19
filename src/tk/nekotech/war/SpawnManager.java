@@ -2,7 +2,6 @@ package tk.nekotech.war;
 
 import java.util.Random;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,6 +10,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreeperPowerEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -37,13 +38,19 @@ public class SpawnManager implements Listener {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void omgEntityDeath(EntityDeathEvent e) {
+		
 		 if (e.getEntity().getLastDamageCause().getCause() == DamageCause.ENTITY_ATTACK) {
 			 e.setDroppedExp(10);
 			 e.getDrops().clear();
 			 e.getDrops().add(new ItemStack(Material.APPLE, 1));
+		 }
+		 
+		 if (e.getEntity().getLastDamageCause().getCause() == DamageCause.PROJECTILE) {
+			 e.setDroppedExp(10);
+			 e.getDrops().clear();
+			 e.getDrops().add(new ItemStack(Material.MELON, 3));
 		 }
 		 
 		 if (e.getEntity().getLastDamageCause().getCause() == DamageCause.SUICIDE) {
@@ -64,25 +71,8 @@ public class SpawnManager implements Listener {
 		 }
 		 
 		 if (e.getEntity() instanceof Player) {
-			 Player p = (Player) e.getEntity();
-			 war.scores.put(p.getName(), p.getExp());
 			 war.dead++;
-			 if (war.dead == war.getServer().getOnlinePlayers().length) {
-				 for (Player player : war.getServer().getOnlinePlayers()) {
-					if (war.blu.size() == war.red.size()) {
-						Random rand = new Random();
-						int decider = rand.nextInt(1);
-						war.assignPlayer(player, decider);
-					} else if (war.blu.size() < war.red.size()) {
-						war.assignPlayer(player, 0);
-					} else if (war.red.size() < war.blu.size()) {
-						war.assignPlayer(player, 1);
-					}
-				 }
-			 }
-			 war.getServer().broadcastMessage(war.dead + " dead. " + war.getServer().getOnlinePlayers().length + " online.");
-			 war.dead = 0;
-			 war.scores.clear();
+			 if (war.dead == war.getServer().getOnlinePlayers().length) war.dead = 0;
 		 }
 	}
 	
@@ -96,6 +86,15 @@ public class SpawnManager implements Listener {
 			float pitch = war.getConfig().getInt("spec-spawn-pitch");
 			e.setRespawnLocation(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
 		} else {
+			if (war.blu.size() == war.red.size()) {
+				Random rand = new Random();
+				int decider = rand.nextInt(1);
+				war.assignPlayer(e.getPlayer(), decider);
+			} else if (war.blu.size() < war.red.size()) {
+				war.assignPlayer(e.getPlayer(), 0);
+			} else if (war.red.size() < war.blu.size()) {
+				war.assignPlayer(e.getPlayer(), 1);
+			}
 			if (war.teamName(e.getPlayer()) == 0) {
 				double x = war.getConfig().getDouble("blu-spawn-x");
 				double y = war.getConfig().getDouble("blu-spawn-y");
@@ -134,6 +133,19 @@ public class SpawnManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void omgNO(EntityExplodeEvent e) {
 		e.setCancelled(true);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void pyroBurning(EntityDamageEvent e) {
+		if (e instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent subEvent = (EntityDamageByEntityEvent) e;
+			if (subEvent.getDamager() instanceof Player) {
+				Player hi = (Player) subEvent.getDamager();
+				if (war.pyro.contains(hi.getName())) {
+					e.getEntity().setFireTicks(40);
+				}
+			}
+		}
 	}
 	
 }

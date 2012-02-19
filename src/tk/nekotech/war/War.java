@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import net.minecraft.server.MobEffect;
+
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -20,10 +25,12 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class War extends JavaPlugin implements Listener {
 	public ArrayList<String> online = new ArrayList<String>();
+	public ArrayList<String> pyro = new ArrayList<String>();
 	public ArrayList<String> blu = new ArrayList<String>();
 	public ArrayList<String> red = new ArrayList<String>();
 	@SuppressWarnings("rawtypes")
@@ -143,17 +150,6 @@ public class War extends JavaPlugin implements Listener {
 		}
 	}
 	
-	public void allLog(String message, String admin, String log) {
-		for (Player p : this.getServer().getOnlinePlayers()) {
-			if (p.hasPermission("jtwar.admin")) {
-				p.sendMessage(admin);
-			} else {
-				p.sendMessage(message);
-			}
-		}
-		getLogger().info(ChatColor.stripColor(log));
-	}
-	
 	public void teamMessage(int team, String message) {
 		if (team == 0) {
 			for (Player p : getServer().getOnlinePlayers()) {
@@ -178,6 +174,7 @@ public class War extends JavaPlugin implements Listener {
 	public void assignPlayer(Player player, int team) {
 		if (blu.contains(player.getName())) blu.remove(player.getName());
 		if (red.contains(player.getName())) red.remove(player.getName());
+		if (pyro.contains(player.getName())) pyro.remove(player.getName());
 		if (team == 0) {
 			blu.add(player.getName());
 			getServer().broadcastMessage(ChatColor.BLUE + player.getName() + " was auto assigned to team blu. Blu - " + blu.size() + " Red - " + red.size());
@@ -187,6 +184,9 @@ public class War extends JavaPlugin implements Listener {
 			float yaw = getConfig().getInt("blu-spawn-yaw");
 			float pitch = getConfig().getInt("blu-spawn-pitch");
 			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+			player.setDisplayName(ChatColor.BLUE + player.getName() + ChatColor.WHITE);
+			player.setPlayerListName(ChatColor.BLUE + player.getName() + ChatColor.WHITE);
+			assignClass(player);
 		} else if (team == 1) {
 			red.add(player.getName());
 			getServer().broadcastMessage(ChatColor.RED + player.getName() + " was auto assigned to team red. Blu - " + blu.size() + " Red - " + red.size());
@@ -196,11 +196,79 @@ public class War extends JavaPlugin implements Listener {
 			float yaw = getConfig().getInt("red-spawn-yaw");
 			float pitch = getConfig().getInt("red-spawn-pitch");
 			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+			player.setDisplayName(ChatColor.RED + player.getName() + ChatColor.WHITE);
+			player.setPlayerListName(ChatColor.RED + player.getName() + ChatColor.WHITE);
+			assignClass(player);
 		} else {
 			player.kickPlayer(ChatColor.RED + "Uncaught error, try rejoining. If problem persists contact admin.");
 			getLogger().severe("Kicked " + player.getName() + " due to error in random generator!");
 			getLogger().severe("If this problem persists contact jamietech on GitHub!");
 		}
+	}
+	
+	public void assignClass(final Player player) {
+		Random rand = new Random();
+		int lols = rand.nextInt(4);
+		player.getInventory().clear();
+		if (lols == 0) {
+			// Heavy!
+			getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
+			    public void run() {
+			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(2, 999999999, 1)); // Slowness
+					((CraftPlayer) player).getHandle().addEffect(new MobEffect(11, 999999999, 0)); // Resistance
+					player.sendMessage(ChatColor.GOLD + "You are now a heavy!");
+					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+					player.getInventory().getItemInHand().addEnchantment(Enchantment.DAMAGE_ALL, 2);
+					armorUp(player);
+			    }
+			}, 10L);
+		}
+		if (lols == 1) {
+			// Scout!
+			getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
+			    public void run() {
+			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(1, 999999999, 0)); // Speed
+					player.sendMessage(ChatColor.GOLD + "You are now a scout!");
+					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+					player.getInventory().getItemInHand().addEnchantment(Enchantment.KNOCKBACK, 2);
+					armorUp(player);
+			    }
+			}, 10L);
+		}
+		if (lols == 2) {
+			// Sniper!
+			getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
+			    public void run() {
+			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(11, 999999999, 2)); // Resistance
+					player.sendMessage(ChatColor.GOLD + "You are now a sniper!");
+					player.getInventory().addItem(new ItemStack(Material.BOW, 1));
+					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
+					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_INFINITE, 1);
+					armorUp(player);
+			    }
+			}, 10L);
+		}
+		if (lols == 3) {
+			// Pyro!
+			getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
+			    public void run() {
+			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(12, 999999999, 3)); // Fire Resistance
+					pyro.add(player.getName());
+					player.sendMessage(ChatColor.GOLD + "You are now a pyro!");
+					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+					// "Enchantment" granted with 2s fire bursts against all entities via SpawnManger
+					armorUp(player);
+			    }
+			}, 10L);
+		}
+		
+	}
+	
+	public void armorUp(Player player) {
+		player.getInventory().getHelmet().setType(Material.DIAMOND_HELMET);
+		player.getInventory().getChestplate().setType(Material.DIAMOND_CHESTPLATE);
+		player.getInventory().getLeggings().setType(Material.DIAMOND_LEGGINGS);
+		player.getInventory().getBoots().setType(Material.DIAMOND_BOOTS);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
