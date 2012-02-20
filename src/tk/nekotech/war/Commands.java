@@ -128,7 +128,6 @@ public class Commands implements CommandExecutor {
 					if (war.getConfig().getBoolean("ready-to-go")) {
 						war.getConfig().set("ready-to-go", false);
 						war.saveConfig();
-						war.blocks = false;
 						p.sendMessage(ChatColor.GREEN + "Server set to unready mode, block changes now allowed!");
 						p.sendMessage(ChatColor.GREEN + "Mob spawns are now disabled. When ready type /ready again!");
 						int count = 0;
@@ -138,11 +137,10 @@ public class Commands implements CommandExecutor {
 								count++;
 							}
 						}
-						p.sendMessage("Removed " + count + " mobs!");
+						p.sendMessage("Removed " + count + " entities!");
 					} else {
 						war.getConfig().set("ready-to-go", true);
 						war.saveConfig();
-						war.blocks = true;
 						p.sendMessage(ChatColor.GREEN + "Server set to ready mode, block changes now disabled!");
 						p.sendMessage(ChatColor.GREEN + "Enabling mob spawns... To disable ready mode type /ready again!");
 					}
@@ -156,7 +154,6 @@ public class Commands implements CommandExecutor {
 				war.getConfig().set("has-started", false);
 				war.getConfig().set("ready-to-go", false);
 				war.saveConfig();
-				war.blocks = false;
 				sender.sendMessage(ChatColor.GREEN + "Reset configuration but kept spawns!");
 			}
 		}

@@ -1,8 +1,6 @@
 package tk.nekotech.war;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.server.MobEffect;
@@ -34,12 +32,9 @@ public class War extends JavaPlugin implements Listener {
 	public ArrayList<String> pyro = new ArrayList<String>();
 	public ArrayList<String> blu = new ArrayList<String>();
 	public ArrayList<String> red = new ArrayList<String>();
-	@SuppressWarnings("rawtypes")
-	public Map scores = new HashMap();
 	public int on = 0;
 	public int max = 0;
 	public int dead = 0;
-	public boolean blocks = false;
 	
 	public void onEnable() {
 		getLogger().info("Enabled!");
@@ -350,7 +345,7 @@ public class War extends JavaPlugin implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void dontTouchThat(BlockBreakEvent e) {
-		if (blocks) {
+		if (!getConfig().getBoolean("ready-to-go")) {
 			e.setCancelled(true);
 			e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
 			e.getPlayer().sendMessage(ChatColor.RED + "To do this you don't need to break blocks!");
@@ -359,7 +354,7 @@ public class War extends JavaPlugin implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void dontPlaceThat(BlockPlaceEvent e) {
-		if (blocks) {
+		if (!getConfig().getBoolean("ready-to-go")) {
 			if (!e.getBlockPlaced().getType().equals(Material.TNT)) {
 				e.setCancelled(true);
 				e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
