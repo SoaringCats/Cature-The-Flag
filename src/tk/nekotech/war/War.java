@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -61,12 +62,19 @@ public class War extends JavaPlugin implements Listener {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run() {
 				int worlds = 0;
+				int arrows = 0;
 				for (World w : getServer().getWorlds()) {
 					w.setStorm(false);
 					w.setTime(14000);
 					worlds++;
+					for (Entity e : w.getEntities()) {
+						if (e instanceof Arrow) {
+							e.remove();
+							arrows++;
+						}
+					}
 				}
-				getLogger().info("Changed time to night in " + worlds + " worlds!");
+				getLogger().info("Set time to night in " + worlds + " worlds and cleared " + arrows + " arrows up!");
 			}
 		}, 40L, 4800L);
 	}
