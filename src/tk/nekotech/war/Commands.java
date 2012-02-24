@@ -22,6 +22,7 @@ public class Commands implements CommandExecutor {
 		if (label.equals("war")) {
 			sender.sendMessage(a + "Welcome to the war, " + sender.getName() + "!");
 			sender.sendMessage(a + "Repeatedly smack things with your sword!");
+			sender.sendMessage(a + "If you receive TNT place it on obsidian to explode things!");
 			sender.sendMessage(a + "To join the game say /join and you will be teleported out of spectate.");
 		}
 		if (label.equals("join")) {

@@ -13,8 +13,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -92,28 +92,28 @@ public class War extends JavaPlugin implements Listener {
 		}
 	}
 	
-	public boolean isAllowed(CreatureType lmao) {
-		if (lmao.equals(CreatureType.SPIDER)) return true;
-		if (lmao.equals(CreatureType.CAVE_SPIDER)) return true;
-		if (lmao.equals(CreatureType.SKELETON)) return true;
-		if (lmao.equals(CreatureType.CREEPER)) return true;
-		if (lmao.equals(CreatureType.PIG_ZOMBIE)) return true;
-		if (lmao.equals(CreatureType.ZOMBIE)) return true;
+	public boolean isAllowed(EntityType lmao) {
+		if (lmao.equals(EntityType.SPIDER)) return true;
+		if (lmao.equals(EntityType.CAVE_SPIDER)) return true;
+		if (lmao.equals(EntityType.SKELETON)) return true;
+		if (lmao.equals(EntityType.CREEPER)) return true;
+		if (lmao.equals(EntityType.PIG_ZOMBIE)) return true;
+		if (lmao.equals(EntityType.ZOMBIE)) return true;
 		return false;
 	}
 	
-	public CreatureType randoMob() {
+	public EntityType randoMob() {
 		Random rand = new Random();
 		int lmao = rand.nextInt(9);
-		if (lmao == 0) return CreatureType.SPIDER;
-		if (lmao == 1) return CreatureType.CAVE_SPIDER;
-		if (lmao == 2) return CreatureType.SKELETON;
-		if (lmao == 3) return CreatureType.CREEPER;
-		if (lmao == 4) return CreatureType.PIG_ZOMBIE;
-		if (lmao == 5) return CreatureType.ZOMBIE;
-		if (lmao == 6) return CreatureType.ZOMBIE;
-		if (lmao == 7) return CreatureType.ZOMBIE;
-		if (lmao == 8) return CreatureType.CAVE_SPIDER;
+		if (lmao == 0) return EntityType.SPIDER;
+		if (lmao == 1) return EntityType.CAVE_SPIDER;
+		if (lmao == 2) return EntityType.SKELETON;
+		if (lmao == 3) return EntityType.CREEPER;
+		if (lmao == 4) return EntityType.PIG_ZOMBIE;
+		if (lmao == 5) return EntityType.ZOMBIE;
+		if (lmao == 6) return EntityType.ZOMBIE;
+		if (lmao == 7) return EntityType.ZOMBIE;
+		if (lmao == 8) return EntityType.CAVE_SPIDER;
 		return null;
 	}
 	
@@ -178,7 +178,8 @@ public class War extends JavaPlugin implements Listener {
 		if (blu.contains(player.getName())) blu.remove(player.getName());
 		if (red.contains(player.getName())) red.remove(player.getName());
 		if (pyro.contains(player.getName())) pyro.remove(player.getName());
-		player.setDisplayName(player.getName());
+		player.setDisplayName(ChatColor.GRAY + player.getName() + ChatColor.WHITE);
+		player.getInventory().clear();
 	}
 	
 	public void assignPlayer(Player player, int team) {
@@ -237,7 +238,7 @@ public class War extends JavaPlugin implements Listener {
 					((CraftPlayer) player).getHandle().addEffect(new MobEffect(11, 999999999, 1)); // Resistance
 					player.sendMessage(ChatColor.GOLD + "You are now a heavy!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
-					player.getInventory().getItemInHand().addEnchantment(Enchantment.DAMAGE_ALL, 2);
+					player.getInventory().getItem(0).addEnchantment(Enchantment.DAMAGE_ALL, 2);
 					player.setNoDamageTicks(10);
 					armorUp(player);
 			    }
@@ -250,7 +251,7 @@ public class War extends JavaPlugin implements Listener {
 			    	((CraftPlayer) player).getHandle().addEffect(new MobEffect(1, 999999999, 1)); // Speed
 					player.sendMessage(ChatColor.GOLD + "You are now a scout!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
-					player.getInventory().getItemInHand().addEnchantment(Enchantment.KNOCKBACK, 2);
+					player.getInventory().getItem(0).addEnchantment(Enchantment.KNOCKBACK, 2);
 					player.setNoDamageTicks(10);
 					armorUp(player);
 			    }
@@ -264,8 +265,8 @@ public class War extends JavaPlugin implements Listener {
 					player.sendMessage(ChatColor.GOLD + "You are now a sniper!");
 					player.getInventory().addItem(new ItemStack(Material.BOW, 1));
 					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
-					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_INFINITE, 1);
-					player.getInventory().getItemInHand().addEnchantment(Enchantment.ARROW_DAMAGE, 2);
+					player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_INFINITE, 1);
+					player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_DAMAGE, 2);
 					player.setNoDamageTicks(10);
 					armorUp(player);
 			    }
@@ -291,10 +292,17 @@ public class War extends JavaPlugin implements Listener {
 	public void armorUp(final Player player) {
 		getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
 		    public void run() {
-		    	player.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET, 1));
+		    	player.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
 				player.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
 				player.getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
 				player.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+				Random rand = new Random();
+				int lolrandom = rand.nextInt(11);
+				if (lolrandom == 10) {
+					player.getInventory().addItem(new ItemStack(Material.TNT, 64));
+					player.sendMessage(ChatColor.GOLD + "You have special EXPLODING abilities!");
+					getServer().broadcastMessage(ChatColor.GOLD + player.getName() + " issSSssSS armed and dangerous! Stay away!");
+				}
 		    }
 		}, 10L);
 	}
@@ -310,29 +318,21 @@ public class War extends JavaPlugin implements Listener {
 				e.getPlayer().setGameMode(GameMode.CREATIVE);
 			}
 		}
-		
-		e.setJoinMessage(null);
-		for (Player p : this.getServer().getOnlinePlayers()) {
-			if (p.hasPermission("jtwar.admin")) {
-				StringBuilder mrow = new StringBuilder();
-				if (e.getPlayer().hasPlayedBefore()) {
-					mrow.append(", HasPlayed");
-				} else {
-					mrow.append(", New");
-				}
-				if (e.getPlayer().hasPermission("jtwar.admin")) {
-					mrow.append(", Admin");
-				}
-				p.sendMessage(ChatColor.YELLOW + "J: " + e.getPlayer().getName() + mrow);
-			} else {
-				p.sendMessage(ChatColor.YELLOW + e.getPlayer().getName() + " has joined the War!");
-			}
-		}
+		e.setJoinMessage(ChatColor.YELLOW + e.getPlayer().getName() + " joins the war!");
 		e.getPlayer().sendMessage(ChatColor.RED + "Welcome to the war! To join type /join");
 		e.getPlayer().sendMessage(ChatColor.RED + "For more information say /war");
+		double x = getConfig().getDouble("spec-spawn-x");
+		double y = getConfig().getDouble("spec-spawn-y");
+		double z = getConfig().getDouble("spec-spawn-z");
+		float yaw = getConfig().getInt("spec-spawn-yaw");
+		float pitch = getConfig().getInt("spec-spawn-pitch");
+		e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), x, y, z, yaw, pitch));
+		clearTeams(e.getPlayer());
 		on++;
 		online.add(e.getPlayer().getName());
-		getServer().broadcastMessage(on + " now online!");
+		if (!e.getPlayer().hasPlayedBefore()) {
+			e.getPlayer().chat("[AUTO] I am new here! If I break the rules I acknowledge that I WILL be banned!");
+		}
 	}
 		
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -341,11 +341,13 @@ public class War extends JavaPlugin implements Listener {
 		online.remove(e.getPlayer().getName());
 		if (red.contains(e.getPlayer().getName())) red.remove(e.getPlayer().getName());
 		if (blu.contains(e.getPlayer().getName())) blu.remove(e.getPlayer().getName());
+		if (pyro.contains(e.getPlayer().getName())) pyro.remove(e.getPlayer().getName());
+		e.setQuitMessage(ChatColor.YELLOW + e.getPlayer().getName() + " chickened out.");
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void dontTouchThat(BlockBreakEvent e) {
-		if (!getConfig().getBoolean("ready-to-go")) {
+		if (getConfig().getBoolean("ready-to-go")) {
 			e.setCancelled(true);
 			e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
 			e.getPlayer().sendMessage(ChatColor.RED + "To do this you don't need to break blocks!");
@@ -354,8 +356,13 @@ public class War extends JavaPlugin implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void dontPlaceThat(BlockPlaceEvent e) {
-		if (!getConfig().getBoolean("ready-to-go")) {
-			if (!e.getBlockPlaced().getType().equals(Material.TNT)) {
+		if (getConfig().getBoolean("ready-to-go")) {
+			if (e.getBlockPlaced().getType().equals(Material.TNT)) {
+				if (!e.getBlockAgainst().getType().equals(Material.OBSIDIAN)) {
+					e.setCancelled(true);
+					e.getPlayer().sendMessage(ChatColor.RED + "You can only place TNT on OBSIDIAN!");
+				}
+			} else {
 				e.setCancelled(true);
 				e.getPlayer().sendMessage(ChatColor.RED + "The objective of the game is to kill all of the other team");
 				e.getPlayer().sendMessage(ChatColor.RED + "To do this you don't need to place blocks!");

@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.CreeperPowerEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -33,9 +34,17 @@ public class SpawnManager implements Listener {
 		if (!war.getConfig().getBoolean("ready-to-go")) {
 			e.setCancelled(true);
 		} else {
-			if (!war.isAllowed(e.getCreatureType())) {
-				e.getEntity().getWorld().spawnCreature(e.getEntity().getLocation(), war.randoMob());
-				e.setCancelled(true);
+			if (war.getConfig().getBoolean("mob-spawns")) {
+				if (e.getSpawnReason() != SpawnReason.SPAWNER) {
+					if (e.getSpawnReason() != SpawnReason.CUSTOM) {
+						if (!war.isAllowed(e.getSpawnedType())) {
+							e.getEntity().getWorld().spawnCreature(e.getEntity().getLocation(), war.randoMob());
+							e.setCancelled(true);
+						}
+					} else {
+						e.setCancelled(true);
+					}
+				}
 			}
 		}
 	}
@@ -201,14 +210,19 @@ public class SpawnManager implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void pyroBurning(EntityDamageEvent e) {
 		if (e instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent subEvent = (EntityDamageByEntityEvent) e;
-			if (subEvent.getDamager() instanceof Player) {
-				Player hi = (Player) subEvent.getDamager();
+			if (((EntityDamageByEntityEvent) e).getDamager() instanceof Player) {
+				EntityDamageByEntityEvent subevent = ((EntityDamageByEntityEvent) e);
+				Player hi = (Player) subevent.getDamager();
 				if (war.pyro.contains(hi.getName())) {
 					e.getEntity().setFireTicks(40);
-				}				
+				}
 				if (e.getEntity() instanceof Player) {
 					Player defender = (Player) e.getEntity();
+					if ((!war.blu.contains(defender.getName())) && (!war.red.contains(defender.getName()))) {
+						e.setCancelled(true);
+						e.getEntity().setFireTicks(0);
+						hi.sendMessage(ChatColor.BLUE + "You can't hurt a spectator!");
+					}
 					if ((war.blu.contains(hi.getName())) && (war.blu.contains(defender.getName()))) {
 						e.setCancelled(true);
 						e.getEntity().setFireTicks(0);
