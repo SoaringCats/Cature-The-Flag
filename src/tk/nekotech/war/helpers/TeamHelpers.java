@@ -57,6 +57,7 @@ public class TeamHelpers {
 		if (war.blu.contains(player)) war.blu.remove(player);
 		if (war.red.contains(player)) war.red.remove(player);
 		if (war.pyro.contains(player)) war.pyro.remove(player);
+		if (war.monster.contains(player)) war.monster.remove(player);
 		
 		war.color.setColor(ColorChoice.GRAY, player);
 		player.getInventory().clear();

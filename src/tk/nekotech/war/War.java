@@ -14,11 +14,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tk.nekotech.war.events.BlockBreak;
 import tk.nekotech.war.events.BlockPlace;
 import tk.nekotech.war.events.CreatureSpawn;
+import tk.nekotech.war.events.EntityDamage;
 import tk.nekotech.war.events.EntityDamageByEntity;
 import tk.nekotech.war.events.EntityDeath;
 import tk.nekotech.war.events.EntityExplode;
 import tk.nekotech.war.events.PlayerChat;
 import tk.nekotech.war.events.PlayerJoin;
+import tk.nekotech.war.events.PlayerMove;
 import tk.nekotech.war.events.PlayerQuit;
 import tk.nekotech.war.events.PlayerRespawn;
 import tk.nekotech.war.helpers.Armor;
@@ -40,16 +42,19 @@ public class War extends JavaPlugin {
 	public BlockBreak blockbreak = new BlockBreak(this);
 	public BlockPlace blockplace = new BlockPlace(this);
 	public CreatureSpawn creaturespawn = new CreatureSpawn(this);
+	public EntityDamage entitydamage = new EntityDamage(this);
 	public EntityDamageByEntity entitydamagebyentity = new EntityDamageByEntity(this);
 	public EntityDeath entitydeath = new EntityDeath(this);
 	public EntityExplode entityexplode = new EntityExplode();
 	public PlayerChat playerchat = new PlayerChat(this);
 	public PlayerJoin playerjoin = new PlayerJoin(this);
+	public PlayerMove playermove = new PlayerMove(this);
 	public PlayerQuit playerquit = new PlayerQuit(this);
 	public PlayerRespawn playerrespawn = new PlayerRespawn(this);
 	
 	public ArrayList<Player> online;
 	public ArrayList<Player> pyro;
+	public ArrayList<Player> monster;
 	public ArrayList<Player> blu;
 	public ArrayList<Player> red;
 	
@@ -73,11 +78,13 @@ public class War extends JavaPlugin {
 		p.registerEvents(blockbreak, this);
 		p.registerEvents(blockplace, this);
 		p.registerEvents(creaturespawn, this);
+		p.registerEvents(entitydamage, this);
 		p.registerEvents(entitydamagebyentity, this);
 		p.registerEvents(entitydeath, this);
 		p.registerEvents(entityexplode, this);
 		p.registerEvents(playerchat, this);
 		p.registerEvents(playerjoin, this);
+		p.registerEvents(playermove, this);
 		p.registerEvents(playerquit, this);
 		p.registerEvents(playerrespawn, this);
 		
@@ -85,6 +92,7 @@ public class War extends JavaPlugin {
 		
 		online = new ArrayList<Player>();
 		pyro = new ArrayList<Player>();
+		monster = new ArrayList<Player>();
 		blu = new ArrayList<Player>();
 		red = new ArrayList<Player>();
 		

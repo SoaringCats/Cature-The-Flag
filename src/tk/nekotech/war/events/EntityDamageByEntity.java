@@ -1,6 +1,7 @@
 package tk.nekotech.war.events;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,6 +50,9 @@ public class EntityDamageByEntity implements Listener {
 			Player player = (Player) e.getDamager();
 			if (war.pyro.contains(player)) {
 				e.getEntity().setFireTicks(40);
+			}
+			if (war.monster.contains(player)) {
+				player.getWorld().playEffect(player.getLocation(), Effect.GHAST_SHOOT, 100);
 			}
 			if (e.getEntity() instanceof Player) {
 				

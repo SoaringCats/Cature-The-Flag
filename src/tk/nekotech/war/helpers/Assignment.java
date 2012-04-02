@@ -25,6 +25,7 @@ public class Assignment {
 		if (war.blu.contains(player)) war.blu.remove(player);
 		if (war.red.contains(player)) war.red.remove(player);
 		if (war.pyro.contains(player)) war.pyro.remove(player);
+		if (war.monster.contains(player)) war.monster.remove(player);
 		
 		if (player.getGameMode() == GameMode.CREATIVE) player.setGameMode(GameMode.SURVIVAL);
 		
@@ -69,7 +70,7 @@ public class Assignment {
 	public void assignClass(final Player player) {
 		
 		Random rand = new Random();
-		int lols = rand.nextInt(4);
+		int lols = rand.nextInt(5);
 		player.getInventory().clear();
 		
 		if (lols == 0) {
@@ -127,6 +128,31 @@ public class Assignment {
 					war.pyro.add(player);
 					player.sendMessage(ChatColor.GOLD + "You are now a pyro!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+					player.setNoDamageTicks(10);
+					war.armor.armorUp(player);
+			    }
+			}, 10L);
+			
+		}
+		
+		if (lols == 4) {
+			
+			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
+			    public void run() {
+			    	war.potions.addEffect(player, PotionEffectType.FIRE_RESISTANCE, 999999999, 3);
+			    	war.potions.addEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 999999999, 2);
+			    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 1);
+					war.pyro.add(player);
+					war.monster.add(player);
+					player.sendMessage(ChatColor.GOLD + "You are now a monster!");
+					war.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + " is a monster, beware!");
+					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+					player.getInventory().addItem(new ItemStack(Material.BOW, 1));
+					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
+					player.getInventory().getItem(0).addEnchantment(Enchantment.KNOCKBACK, 2);
+					player.getInventory().getItem(0).addEnchantment(Enchantment.DAMAGE_ALL, 2);
+					player.getInventory().getItem(1).addEnchantment(Enchantment.ARROW_INFINITE, 1);
+					player.getInventory().getItem(1).addEnchantment(Enchantment.ARROW_DAMAGE, 2);
 					player.setNoDamageTicks(10);
 					war.armor.armorUp(player);
 			    }
