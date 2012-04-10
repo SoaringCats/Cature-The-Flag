@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>jtWar</title>
+  <meta name="description" content="Work-in-Progress Team Fortress Two mimic in Minecraft">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">jtWar</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">Work-in-Progress Team Fortress Two mimic in Minecraft</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/jamietech/jtWar/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/jamietech/jtWar/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/jamietech/jtWar" class="code">fork jtWar on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <p>jtWar is a simple, easy to use plugin for CraftBukkit Minecraft servers requiring no additional plugins. The plugin contains an optional flat world generator which can be enabled in bukkit.yml by setting the worldgenerator to jtWar. Due to how this plugin works it is essential for users to request changes and report bugs in the plugin to help keep it moving along and keep it fun. Issues can be easily reported on the <a href="https://github.com/jamietech/jtWar">GitHub issues page</a> and can be used not only for issue/bug reports but also for requests.</p>
+
+<h2>How to setup jtWar</h2>
+
+<p>To setup the plugin, simply download jtWar and put it into your /plugins folder and optionally setup bukkit.yml (instructions further down) which will allow you to use the in-built flatworld generator. After you have done this, connect to the server with operator privileges (or permission node <code>jtwar.admin</code>) and you will be automatically teleported to <code>0,0</code> (x,y) on the map and given creative mode so you can setup the war zone. It is recommended to encase the war zone with a wall so that it is not possible for users to just run away from the action. In the war zone you are required to have a blu, red and spectator spawn. The spectator spawn will only be used by users when they first join the server so it can what you want although it is suggested that it be a top view of the action with glass blocking exit or a hidden room that contains information on how to join, etc. Please see <code>Commands</code> for information on how to set the spawning areas and start the game.</p>
+
+<h2>Commands</h2>
+
+<p>Once you have created the spawn points and war zone simply go to each spawn point and use the associated command. To set blu's spawn point say <code>/blu</code>, to set red's spawn point say <code>/red</code> and to set the spectator spawn point say <code>/spectate</code>. Once you have completed this you will be ready to start the game and may say <code>/ready</code>. Once the server has enabled ready mode mobs will begin to spawn, players will be allowed to <code>/join</code> teams and the game is in session!</p>
+
+<h2>Teams, Classes and Assignment Explained</h2>
+
+<p>When a player issues the command <code>/join</code> or dies they are assigned a team and class. The team assignment will be announced to the server and a team player count will be displayed. Pressing your bound key to show the Player List will allow for an easy way to find out what team you are on (quite buggy, works 99% of the time) and will show what teams the other players are on. During the game you are able to privately message your team by prefixing your message with <code>.</code>. For example <code>.quickly rush the back!</code> will tell your team-mates only the message <code>quickly rush the back!</code> which should allow for coordinated attacks. Furthermore, if a griefing/hacked client uses the <code>.</code> prefix for their hack toggles this should prevent them from proper interaction with the game. Team assignment is simple. If the blu team has less players than the red team the player will be assigned to blu team, if the red team has less players than the blu team the players will be assigned to the blu team or if the blu team has the same amount of players as the red team the player will be assigned randomly to either team. Team mates are not allowed to hurt each other and if they try the damage will not be given and the damager will be warned.
+After a player has been assigned to a team they will automatically be assigned a random class. Currently there are five classes in the game which are <code>Heavy</code>, <code>Scout</code>, <code>Sniper</code>, <code>Pyro</code>, and <code>Monster</code>. Heavy is a class that moves very slowly but is very powerful. Scout is a class which moves very fast and knocks players back when they are hit. Sniper is a class that has unlimited arrows and can take a fair bit of damage. Pyro is a class that ignites players for 1 second when they are hit and cannot be lit on fire. Monster is a class that makes loud noises when they are damaged and when they damage players, has the strongest weapons but leaves a trail of noise and fire sparks behind them when they move making them easy to spot. Class giving is random and all classes receive a set of diamond armor, enchantments and potion effects specific to their classes. Potion effects can control speed, damage resistance, etc.</p>
+
+<h2>Mobs</h2>
+
+<p>Certain mobs are allowed and disallowed in jtWar to allow for easier game play. Allowed mobs are <code>CAVE_SPIDER</code>, <code>SKELETON</code>, <code>CREEPER</code>, <code>PIG_ZOMBIE</code> and <code>ZOMBIE</code>. If a mob tries to spawn and is not allowed, the mob type will be automatically changed and a new mob will be spawned in its place. Mobs are included in the game to allow access to food items. Food items that will drop are <code>COOKIE</code>, <code>BREAD</code>, <code>APPLE</code>, <code>PORK</code>, <code>COOKED_BEEF</code>, <code>COOKED_CHICKEN</code>, <code>COOKED_FISH</code> and <code>MELON</code>. 'Specialty' items that drop are currently only <code>TNT</code> which is explained further on. Eating allows for the player to regain health letting them last longer.</p>
+
+<h2>TNT, Block Placement, Block Destruction</h2>
+
+<p>When the game is in ready mode block placement and block destruction are disallowed unless it is a <code>TNT</code> block placement. <code>TNT</code> may only be placed on top of <code>OBSIDIAN</code> and will ignite automatically once that code has been <a href="https://github.com/jamietech/jtWar/issues/5">fixed</a>. <code>TNT</code> allows you to kill players more easily and when a player is killed by a <code>BLOCK_EXPLOSION</code> caused by <code>TNT</code> they will drop lots of experience points and <code>10</code> separate <code>TNT</code> items.</p>
+
+<h2>Additional Information / Recommended Plugins</h2>
+
+<p>It is recommended that the plugin <code>NoCheat</code> (soon to be superceeded by <code>EssentialsAntiCheat</code>) is ran on the server to allow detection of cheaters by administrators.</p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/jamietech" class="avatar"><img src="https://secure.gravatar.com/avatar/f2e8acf2051f0fbe55443fd2fe3c565c?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" height="48"/></a> <a href="https://github.com/jamietech">jamietech</a> maintains <a href="https://github.com/jamietech/jtWar">jtWar</a></p>
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/jamietech/jtWar/tarball/master" class="tar">tar</a><a href="https://github.com/jamietech/jtWar/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
