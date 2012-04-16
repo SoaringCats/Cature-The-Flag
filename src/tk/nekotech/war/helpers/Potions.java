@@ -17,5 +17,11 @@ public class Potions {
 	public void addEffect(Player player, PotionEffectType effect, int time, int level) {
 		player.addPotionEffect(new PotionEffect(effect, time, level));
 	}
+	
+	public void clearPotions(Player player) {
+		for (PotionEffect potion : player.getActivePotionEffects()) {
+			player.removePotionEffect(potion.getType());
+		}
+	}
 
 }

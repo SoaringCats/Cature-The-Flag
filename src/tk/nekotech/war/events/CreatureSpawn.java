@@ -26,7 +26,7 @@ public class CreatureSpawn implements Listener {
 		if (war.getConfig().getBoolean("mob-spawns")) {
 			if (e.getSpawnReason() != SpawnReason.SPAWNER) {
 				if (e.getSpawnReason() != SpawnReason.CUSTOM) {
-					if (!war.mob.isAllowed(e.getSpawnedType())) {
+					if (!war.mob.isAllowed(e.getEntityType())) {
 						e.getEntity().getWorld().spawnCreature(e.getEntity().getLocation(), war.mob.randoMob());
 						e.setCancelled(true);
 					}

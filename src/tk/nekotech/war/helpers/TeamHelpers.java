@@ -61,7 +61,7 @@ public class TeamHelpers {
 		
 		war.color.setColor(ColorChoice.GRAY, player);
 		player.getInventory().clear();
-		player.getActivePotionEffects().clear();
+		war.potions.clearPotions(player);
 			
 	}
 	

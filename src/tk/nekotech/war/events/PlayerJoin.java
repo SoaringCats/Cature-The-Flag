@@ -1,14 +1,8 @@
 package tk.nekotech.war.events;
 
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.Packet20NamedEntitySpawn;
-import net.minecraft.server.Packet29DestroyEntity;
-
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,28 +18,7 @@ public class PlayerJoin implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onPlayerJoin(PlayerJoinEvent e) {
-		
-		//TODO: Proper name coloring
-		/*for (int b = 0; b < war.blu.size(); b++) {
-			Player player = war.blu.get(b);
-			Player toSend = e.getPlayer();
-			EntityPlayer newPlayer = ((CraftPlayer) player).getHandle();
-			newPlayer.name = ChatColor.BLUE + player.getName();
-			((CraftPlayer) toSend).getHandle().netServerHandler.sendPacket(new Packet29DestroyEntity(player.getEntityId()));
-    		((CraftPlayer) toSend).getHandle().netServerHandler.sendPacket(new Packet20NamedEntitySpawn(newPlayer));
-    		newPlayer.name = player.getName();
-		}
-		
-		for (int b = 0; b < war.red.size(); b++) {
-			Player player = war.red.get(b);
-			Player toSend = e.getPlayer();
-			EntityPlayer newPlayer = ((CraftPlayer) player).getHandle();
-			newPlayer.name = ChatColor.RED + player.getName();
-			((CraftPlayer) toSend).getHandle().netServerHandler.sendPacket(new Packet29DestroyEntity(player.getEntityId()));
-    		((CraftPlayer) toSend).getHandle().netServerHandler.sendPacket(new Packet20NamedEntitySpawn(newPlayer));
-    		newPlayer.name = player.getName();
-		}*/
+	public void onPlayerJoin(final PlayerJoinEvent e) {
 		
 		// have this at top so it can get overriden if required
 		double x = war.getConfig().getDouble("spec-spawn-x");
@@ -58,7 +31,12 @@ public class PlayerJoin implements Listener {
 		war.on++;
 		war.online.add(e.getPlayer());
 		if (!e.getPlayer().hasPlayedBefore()) {
-			e.getPlayer().chat("[AUTO] I am new here! If I break the rules I acknowledge that I WILL be banned!");
+			war.getServer().getScheduler().scheduleSyncDelayedTask(war, new Runnable() {
+				@Override
+				public void run() {
+					e.getPlayer().chat("[AUTO] I am new here! If I break the rules I acknowledge that I WILL be banned!");
+				}
+			}, 20L);
 		}
 		
 		if (war.getConfig().getBoolean("has-started")) {

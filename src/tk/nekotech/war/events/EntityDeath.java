@@ -22,7 +22,11 @@ public class EntityDeath implements Listener {
 	public void onEntityDeath(EntityDeathEvent e) {
 		
 		if (e.getEntity().getLastDamageCause().getCause() == DamageCause.BLOCK_EXPLOSION) {
-			 
+			 e.setDroppedExp(0);
+			 e.getDrops().clear();
+			 for (int a = 0; a < 10; a++) {
+				 e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.TNT));
+			 }
 		}
 		
 		if (e.getEntity().getLastDamageCause().getCause() == DamageCause.CONTACT) {

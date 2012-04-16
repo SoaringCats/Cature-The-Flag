@@ -15,7 +15,7 @@ public class Mob {
 		this.war = war;
 	}
 
-public boolean isAllowed(EntityType lmao) {
+	public boolean isAllowed(EntityType lmao) {
 		
 		if (lmao.equals(EntityType.SPIDER)) return true;
 		if (lmao.equals(EntityType.CAVE_SPIDER)) return true;
