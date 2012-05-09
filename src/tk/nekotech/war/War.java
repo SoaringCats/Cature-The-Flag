@@ -54,7 +54,6 @@ public class War extends JavaPlugin {
 	public int dead = 0;
 	
 	public void onEnable() {
-		
 		getCommand("war").setExecutor(new WarCommand());
 		getCommand("join").setExecutor(new JoinCommand(this));
 		getCommand("blu").setExecutor(new SetupCommands(this));
@@ -113,20 +112,15 @@ public class War extends JavaPlugin {
 		
 		for (Player player : getServer().getOnlinePlayers()) {
 			player.kickPlayer(ChatColor.AQUA + "Please rejoin in 5 seconds :)");
-		}
-		
+		}	
 	}
 	
 	public void onDisable() {
-		
 		getLogger().info("Disabled!");
-		
 	}
 	
 	public ChunkGenerator getDefaultWorldGenerator(String worldname, String uid) {
-		
 		return new Gen(this);
-		
 	}
 
 }

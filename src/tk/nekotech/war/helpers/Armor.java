@@ -17,7 +17,6 @@ public class Armor {
 	}
 	
 	public void armorUp(final Player player) {
-		
 		war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 		    public void run() {
 		    	player.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
@@ -35,7 +34,6 @@ public class Armor {
 		    }
 		    
 		}, 10L);
-		
 	}
 
 }

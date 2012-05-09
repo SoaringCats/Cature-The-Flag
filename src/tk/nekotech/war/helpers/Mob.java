@@ -15,42 +15,52 @@ public class Mob {
 		this.war = war;
 	}
 
-	public boolean isAllowed(EntityType lmao) {
-		
-		if (lmao.equals(EntityType.SPIDER)) return true;
-		if (lmao.equals(EntityType.CAVE_SPIDER)) return true;
-		if (lmao.equals(EntityType.SKELETON)) return true;
-		if (lmao.equals(EntityType.CREEPER)) return true;
-		if (lmao.equals(EntityType.PIG_ZOMBIE)) return true;
-		if (lmao.equals(EntityType.ZOMBIE)) return true;
+	public boolean isAllowed(EntityType type) {
+		if (type.equals(EntityType.SPIDER))
+			return true;
+		if (type.equals(EntityType.CAVE_SPIDER))
+			return true;
+		if (type.equals(EntityType.SKELETON))
+			return true;
+		if (type.equals(EntityType.CREEPER))
+			return true;
+		if (type.equals(EntityType.PIG_ZOMBIE))
+			return true;
+		if (type.equals(EntityType.ZOMBIE))
+			return true;
 		return false;
 		
 	}
 	
 	public EntityType randoMob() {
-		
 		Random rand = new Random();
-		int lmao = rand.nextInt(9);
-		if (lmao == 0) return EntityType.SPIDER;
-		if (lmao == 1) return EntityType.CAVE_SPIDER;
-		if (lmao == 2) return EntityType.SKELETON;
-		if (lmao == 3) return EntityType.CREEPER;
-		if (lmao == 4) return EntityType.PIG_ZOMBIE;
-		if (lmao == 5) return EntityType.ZOMBIE;
-		if (lmao == 6) return EntityType.ZOMBIE;
-		if (lmao == 7) return EntityType.ZOMBIE;
-		if (lmao == 8) return EntityType.CAVE_SPIDER;
+		int mobID = rand.nextInt(9);
+		if (mobID == 0)
+			return EntityType.SPIDER;
+		if (mobID == 1)
+			return EntityType.CAVE_SPIDER;
+		if (mobID == 2)
+			return EntityType.SKELETON;
+		if (mobID == 3)
+			return EntityType.CREEPER;
+		if (mobID == 4)
+			return EntityType.PIG_ZOMBIE;
+		if (mobID == 5)
+			return EntityType.ZOMBIE;
+		if (mobID == 6)
+			return EntityType.ZOMBIE;
+		if (mobID == 7)
+			return EntityType.ZOMBIE;
+		if (mobID == 8)
+			return EntityType.CAVE_SPIDER;
 		return null;
-		
 	}
 	
 	public void killMob(Entity entity) {
-		
 		if (entity != null) {
 			entity.getWorld().strikeLightningEffect(entity.getLocation());
 			entity.remove();
 		}
-		
 	}
 	
 }

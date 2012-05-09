@@ -17,16 +17,16 @@ public class BlockPlace implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onBlockPlace(BlockPlaceEvent e) {
+	public void onBlockPlace(BlockPlaceEvent event) {
 		if (war.getConfig().getBoolean("ready-to-go")) {
-			if (e.getBlockPlaced().getType().equals(Material.TNT)) {
-				if (!e.getBlockAgainst().getType().equals(Material.OBSIDIAN)) {
-					e.setCancelled(true);
-					e.getPlayer().sendMessage(ChatColor.RED + "You can only place TNT on OBSIDIAN!");
+			if (event.getBlockPlaced().getType().equals(Material.TNT)) {
+				if (!event.getBlockAgainst().getType().equals(Material.OBSIDIAN)) {
+					event.setCancelled(true);
+					event.getPlayer().sendMessage(ChatColor.RED + "You can only place TNT on OBSIDIAN!");
 				}
 			} else {
-				e.setCancelled(true);
-				e.getPlayer().sendMessage(ChatColor.RED + "Concentrate on killing the other team instead of placing " + e.getBlock().getType().toString().toLowerCase().replace("_", ""));
+				event.setCancelled(true);
+				event.getPlayer().sendMessage(ChatColor.RED + "Concentrate on killing the other team instead of placing " + event.getBlock().getType().toString().toLowerCase().replace("_", ""));
 			}
 		}
 	}

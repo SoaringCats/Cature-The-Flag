@@ -16,13 +16,13 @@ public class PlayerQuit implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void omgTagging(PlayerQuitEvent e) {
+	public void omgTagging(PlayerQuitEvent event) {
 		war.on--;
-		war.online.remove(e.getPlayer().getName());
-		if (war.red.contains(e.getPlayer().getName())) war.red.remove(e.getPlayer().getName());
-		if (war.blu.contains(e.getPlayer().getName())) war.blu.remove(e.getPlayer().getName());
-		if (war.pyro.contains(e.getPlayer().getName())) war.pyro.remove(e.getPlayer().getName());
-		e.setQuitMessage(ChatColor.YELLOW + e.getPlayer().getName() + " chickened out.");
+		war.online.remove(event.getPlayer().getName());
+		if (war.red.contains(event.getPlayer().getName())) war.red.remove(event.getPlayer().getName());
+		if (war.blu.contains(event.getPlayer().getName())) war.blu.remove(event.getPlayer().getName());
+		if (war.pyro.contains(event.getPlayer().getName())) war.pyro.remove(event.getPlayer().getName());
+		event.setQuitMessage(ChatColor.YELLOW + event.getPlayer().getName() + " chickened out.");
 	}
 
 }

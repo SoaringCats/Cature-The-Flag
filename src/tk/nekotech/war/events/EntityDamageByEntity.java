@@ -19,61 +19,54 @@ public class EntityDamageByEntity implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		
-		if (e.getDamager() instanceof Arrow) {
-			Arrow arrow = (Arrow) e.getDamager();
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+		if (event.getDamager() instanceof Arrow) {
+			Arrow arrow = (Arrow) event.getDamager();
 			if (arrow.getShooter() instanceof Player) {
 				Player shooter = (Player) arrow.getShooter();
-				if (e.getEntity() instanceof Player) {
-					Player damaged = (Player) e.getEntity();
+				if (event.getEntity() instanceof Player) {
+					Player damaged = (Player) event.getEntity();
 					if ((!war.blu.contains(damaged)) && (!war.red.contains(damaged))) {
-						e.setCancelled(true);
+						event.setCancelled(true);
 						damaged.setFireTicks(0);
 						shooter.sendMessage(ChatColor.GRAY + "You can't hurt a spectator!");
 					}
-					
 					if ((war.blu.contains(shooter)) && (war.blu.contains(damaged))) {
-						e.setCancelled(true);
+						event.setCancelled(true);
 						damaged.setFireTicks(0);
 						shooter.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.BLUE + "!");
 					} else if ((war.red.contains(shooter)) && (war.red.contains(damaged))) {
-						e.setCancelled(true);
+						event.setCancelled(true);
 						shooter.sendMessage(ChatColor.RED + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.RED + "!");
 						damaged.setFireTicks(0);
 					}
 				}
 			}
 		}
-		
-		if (e.getDamager() instanceof Player) {
-			Player player = (Player) e.getDamager();
+		if (event.getDamager() instanceof Player) {
+			Player player = (Player) event.getDamager();
 			if (war.pyro.contains(player)) {
-				e.getEntity().setFireTicks(40);
+				event.getEntity().setFireTicks(40);
 			}
 			if (war.monster.contains(player)) {
 				player.getWorld().playEffect(player.getLocation(), Effect.GHAST_SHOOT, 100);
 			}
-			if (e.getEntity() instanceof Player) {
-				
-				Player damaged = (Player) e.getEntity();
-				
+			if (event.getEntity() instanceof Player) {
+				Player damaged = (Player) event.getEntity();
 				if ((!war.blu.contains(damaged)) && (!war.red.contains(damaged))) {
-					e.setCancelled(true);
+					event.setCancelled(true);
 					damaged.setFireTicks(0);
 					player.sendMessage(ChatColor.GRAY + "You can't hurt a spectator!");
 				}
-				
 				if ((war.blu.contains(player)) && (war.blu.contains(damaged))) {
-					e.setCancelled(true);
+					event.setCancelled(true);
 					damaged.setFireTicks(0);
 					player.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.BLUE + "!");
 				} else if ((war.red.contains(player)) && (war.red.contains(damaged))) {
-					e.setCancelled(true);
+					event.setCancelled(true);
 					player.sendMessage(ChatColor.RED + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.RED + "!");
 					damaged.setFireTicks(0);
 				}
-				
 			}
 		}
 	}

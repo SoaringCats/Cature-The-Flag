@@ -21,60 +21,50 @@ public class Assignment {
 	}
 	
 	public void assignPlayer(Player player, int team) {
+		if (war.blu.contains(player))
+			war.blu.remove(player);
+		if (war.red.contains(player))
+			war.red.remove(player);
+		if (war.pyro.contains(player))
+			war.pyro.remove(player);
+		if (war.monster.contains(player))
+			war.monster.remove(player);
 		
-		if (war.blu.contains(player)) war.blu.remove(player);
-		if (war.red.contains(player)) war.red.remove(player);
-		if (war.pyro.contains(player)) war.pyro.remove(player);
-		if (war.monster.contains(player)) war.monster.remove(player);
-		
-		if (player.getGameMode() == GameMode.CREATIVE) player.setGameMode(GameMode.SURVIVAL);
+		if (player.getGameMode() == GameMode.CREATIVE)
+			player.setGameMode(GameMode.SURVIVAL);
 		
 		if (team == 0) {
-			
 			war.blu.add(player);
 			war.teamhelpers.alertTeam(player, team);
-			
 			double x = war.getConfig().getDouble("blu-spawn-x");
 			double y = war.getConfig().getDouble("blu-spawn-y");
 			double z = war.getConfig().getDouble("blu-spawn-z");
 			float yaw = war.getConfig().getInt("blu-spawn-yaw");
 			float pitch = war.getConfig().getInt("blu-spawn-pitch");
 			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
-			
 			war.color.setColor(ColorChoice.BLU, player);
-			
 			assignClass(player);
-			
 		} else if (team == 1) {
-			
 			war.red.add(player);
 			war.teamhelpers.alertTeam(player, team);
-			
 			double x = war.getConfig().getDouble("red-spawn-x");
 			double y = war.getConfig().getDouble("red-spawn-y");
 			double z = war.getConfig().getDouble("red-spawn-z");
 			float yaw = war.getConfig().getInt("red-spawn-yaw");
 			float pitch = war.getConfig().getInt("red-spawn-pitch");
 			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
-			
 			war.color.setColor(ColorChoice.RED, player);
-			
 			assignClass(player);
-			
 		} else {
 			player.kickPlayer(ChatColor.AQUA + "Rejoin in 5 seconds :)");
 		}
-		
 	}
 	
 	public void assignClass(final Player player) {
-		
 		Random rand = new Random();
-		int lols = rand.nextInt(5);
+		int classID = rand.nextInt(5);
 		player.getInventory().clear();
-		
-		if (lols == 0) {
-			
+		if (classID == 0) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.SLOW, 999999999, 2);
@@ -86,11 +76,8 @@ public class Assignment {
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
-			
 		}
-		
-		if (lols == 1) {
-
+		if (classID == 1) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 1);
@@ -101,11 +88,8 @@ public class Assignment {
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
-			
 		}
-		
-		if (lols == 2) {
-
+		if (classID == 2) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 999999999, 2);
@@ -118,10 +102,8 @@ public class Assignment {
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
-			
 		}
-		if (lols == 3) {
-
+		if (classID == 3) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.FIRE_RESISTANCE, 999999999, 3);
@@ -132,11 +114,8 @@ public class Assignment {
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
-			
 		}
-		
-		if (lols == 4) {
-			
+		if (classID == 4) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.FIRE_RESISTANCE, 999999999, 3);
@@ -157,9 +136,7 @@ public class Assignment {
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
-			
 		}
-		
 	}
 
 }

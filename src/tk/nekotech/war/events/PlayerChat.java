@@ -15,10 +15,10 @@ public class PlayerChat implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void lolTeamChat(PlayerChatEvent e) {
-		if (e.getMessage().startsWith(".")) {
-			war.teamhelpers.teamMessage(war.teamhelpers.teamName(e.getPlayer()), "(TEAM) <" + e.getPlayer().getDisplayName() + "> " + e.getMessage());
-			e.setCancelled(true);
+	public void onPlayerChat(PlayerChatEvent event) {
+		if (event.getMessage().startsWith(".")) {
+			war.teamhelpers.teamMessage(war.teamhelpers.teamName(event.getPlayer()), "(TEAM) <" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
+			event.setCancelled(true);
 		}
 	}
 

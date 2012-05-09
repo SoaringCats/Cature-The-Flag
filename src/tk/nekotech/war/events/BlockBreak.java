@@ -16,10 +16,10 @@ public class BlockBreak implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onBlockBreak(BlockBreakEvent e) {
+	public void onBlockBreak(BlockBreakEvent event) {
 		if (war.getConfig().getBoolean("ready-to-go")) {
-			e.setCancelled(true);
-			e.getPlayer().sendMessage(ChatColor.RED + "Concentrate on killing the other team instead of breaking " + e.getBlock().getType().toString().toLowerCase().replace("_", ""));
+			event.setCancelled(true);
+			event.getPlayer().sendMessage(ChatColor.RED + "Concentrate on killing the other team instead of breaking " + event.getBlock().getType().toString().toLowerCase().replace("_", ""));
 		}
 	}
 

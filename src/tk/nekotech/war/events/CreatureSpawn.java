@@ -16,22 +16,20 @@ public class CreatureSpawn implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onCreatureSpawn(CreatureSpawnEvent e) {
-		
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		if (!war.getConfig().getBoolean("ready-to-go")) {
-			e.setCancelled(true);
+			event.setCancelled(true);
 			return;
 		}
-		
 		if (war.getConfig().getBoolean("mob-spawns")) {
-			if (e.getSpawnReason() != SpawnReason.SPAWNER) {
-				if (e.getSpawnReason() != SpawnReason.CUSTOM) {
-					if (!war.mob.isAllowed(e.getEntityType())) {
-						e.getEntity().getWorld().spawnCreature(e.getEntity().getLocation(), war.mob.randoMob());
-						e.setCancelled(true);
+			if (event.getSpawnReason() != SpawnReason.SPAWNER) {
+				if (event.getSpawnReason() != SpawnReason.CUSTOM) {
+					if (!war.mob.isAllowed(event.getEntityType())) {
+						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), war.mob.randoMob());
+						event.setCancelled(true);
 					}
 				} else {
-					e.setCancelled(true);
+					event.setCancelled(true);
 				}
 			}
 		}
