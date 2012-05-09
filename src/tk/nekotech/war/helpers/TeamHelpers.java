@@ -1,7 +1,9 @@
 package tk.nekotech.war.helpers;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import tk.nekotech.war.War;
 
@@ -18,6 +20,25 @@ public class TeamHelpers {
 	
 	public int red() {
 		return war.red.size();
+	}
+	
+	public ItemStack getWool(Player player) {
+		int team = teamName(player);
+		if (team == 0)
+			return new ItemStack(Material.WOOL, 1, (byte) 11);
+		if (team == 1)
+			return new ItemStack(Material.WOOL, 1, (byte) 15);
+		return new ItemStack(Material.WOOL, 1, (byte) 7);
+	}
+	
+	public ChatColor getColor(Player player) {
+		if (!onTeam(player))
+			return ChatColor.GRAY;
+		if (teamName(player) == 0)
+			return ChatColor.BLUE;
+		if (teamName(player) == 1)
+			return ChatColor.RED;
+		return ChatColor.BLACK;
 	}
 	
 	public void alertTeam(Player player, int team) {

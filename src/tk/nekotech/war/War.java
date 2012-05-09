@@ -11,6 +11,9 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import tk.nekotech.war.commands.JoinCommand;
+import tk.nekotech.war.commands.SetupCommands;
+import tk.nekotech.war.commands.WarCommand;
 import tk.nekotech.war.events.BlockBreak;
 import tk.nekotech.war.events.BlockPlace;
 import tk.nekotech.war.events.CreatureSpawn;
@@ -18,6 +21,7 @@ import tk.nekotech.war.events.EntityDamage;
 import tk.nekotech.war.events.EntityDamageByEntity;
 import tk.nekotech.war.events.EntityDeath;
 import tk.nekotech.war.events.EntityExplode;
+import tk.nekotech.war.events.InventoryClick;
 import tk.nekotech.war.events.PlayerChat;
 import tk.nekotech.war.events.PlayerJoin;
 import tk.nekotech.war.events.PlayerMove;
@@ -39,19 +43,6 @@ public class War extends JavaPlugin {
 	public Potions potions = new Potions(this);
 	public TeamHelpers teamhelpers = new TeamHelpers(this);
 	
-	public BlockBreak blockbreak = new BlockBreak(this);
-	public BlockPlace blockplace = new BlockPlace(this);
-	public CreatureSpawn creaturespawn = new CreatureSpawn(this);
-	public EntityDamage entitydamage = new EntityDamage(this);
-	public EntityDamageByEntity entitydamagebyentity = new EntityDamageByEntity(this);
-	public EntityDeath entitydeath = new EntityDeath(this);
-	public EntityExplode entityexplode = new EntityExplode();
-	public PlayerChat playerchat = new PlayerChat(this);
-	public PlayerJoin playerjoin = new PlayerJoin(this);
-	public PlayerMove playermove = new PlayerMove(this);
-	public PlayerQuit playerquit = new PlayerQuit(this);
-	public PlayerRespawn playerrespawn = new PlayerRespawn(this);
-	
 	public ArrayList<Player> online;
 	public ArrayList<Player> pyro;
 	public ArrayList<Player> monster;
@@ -64,29 +55,28 @@ public class War extends JavaPlugin {
 	
 	public void onEnable() {
 		
-		getLogger().info("Enabled!");
-		
-		getCommand("war").setExecutor(new Commands(this));
-		getCommand("join").setExecutor(new Commands(this));
-		getCommand("blu").setExecutor(new Commands(this));
-		getCommand("red").setExecutor(new Commands(this));
-		getCommand("ready").setExecutor(new Commands(this));
-		getCommand("spectate").setExecutor(new Commands(this));
-		getCommand("reset").setExecutor(new Commands(this));
+		getCommand("war").setExecutor(new WarCommand());
+		getCommand("join").setExecutor(new JoinCommand(this));
+		getCommand("blu").setExecutor(new SetupCommands(this));
+		getCommand("red").setExecutor(new SetupCommands(this));
+		getCommand("ready").setExecutor(new SetupCommands(this));
+		getCommand("spectate").setExecutor(new SetupCommands(this));
+		getCommand("reset").setExecutor(new SetupCommands(this));
 		
 		PluginManager p = getServer().getPluginManager();
-		p.registerEvents(blockbreak, this);
-		p.registerEvents(blockplace, this);
-		p.registerEvents(creaturespawn, this);
-		p.registerEvents(entitydamage, this);
-		p.registerEvents(entitydamagebyentity, this);
-		p.registerEvents(entitydeath, this);
-		p.registerEvents(entityexplode, this);
-		p.registerEvents(playerchat, this);
-		p.registerEvents(playerjoin, this);
-		p.registerEvents(playermove, this);
-		p.registerEvents(playerquit, this);
-		p.registerEvents(playerrespawn, this);
+		p.registerEvents(new BlockBreak(this), this);
+		p.registerEvents(new BlockPlace(this), this);
+		p.registerEvents(new CreatureSpawn(this), this);
+		p.registerEvents(new EntityDamage(this), this);
+		p.registerEvents(new EntityDamageByEntity(this), this);
+		p.registerEvents(new EntityDeath(this), this);
+		p.registerEvents(new EntityExplode(), this);
+		p.registerEvents(new InventoryClick(), this);
+		p.registerEvents(new PlayerChat(this), this);
+		p.registerEvents(new PlayerJoin(this), this);
+		p.registerEvents(new PlayerMove(this), this);
+		p.registerEvents(new PlayerQuit(this), this);
+		p.registerEvents(new PlayerRespawn(this), this);
 		
 		max = getServer().getMaxPlayers();
 		
@@ -108,7 +98,6 @@ public class War extends JavaPlugin {
 				int worlds = 0;
 				int arrows = 0;
 				for (World w : getServer().getWorlds()) {
-					w.setStorm(false);
 					w.setTime(14000);
 					worlds++;
 					for (Entity e : w.getEntities()) {

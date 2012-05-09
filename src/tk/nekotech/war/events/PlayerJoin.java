@@ -49,8 +49,8 @@ public class PlayerJoin implements Listener {
 		} else {
 			if (e.getPlayer().hasPermission("jtwar.admin")) {
 				e.setJoinMessage(ChatColor.YELLOW + e.getPlayer().getName() + " is joining as an admin on the new map!");
-				e.getPlayer().sendMessage(ChatColor.RED + "[jtWAR] Teleporting you to spawn immediately to setup new map.");
-				e.getPlayer().sendMessage(ChatColor.RED + "[jtWAR] Please set new spawn points with /blu and /red");
+				e.getPlayer().sendMessage(ChatColor.RED + "[jtWar] Teleporting you to spawn immediately to setup new map.");
+				e.getPlayer().sendMessage(ChatColor.RED + "[jtWar] Please set new spawn points with /blu and /red");
 				e.getPlayer().teleport(e.getPlayer().getWorld().getSpawnLocation());
 				e.getPlayer().setGameMode(GameMode.CREATIVE);
 			}
