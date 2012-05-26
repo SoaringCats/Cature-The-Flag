@@ -8,7 +8,7 @@ public class EntityExplode implements Listener {
 	
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event) {
-		event.setCancelled(true);
+		event.blockList().clear();
 	}
 
 }
