@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -36,23 +35,13 @@ public class Assignment {
 		if (team == 0) {
 			war.blu.add(player);
 			war.teamhelpers.alertTeam(player, team);
-			double x = war.getConfig().getDouble("blu-spawn-x");
-			double y = war.getConfig().getDouble("blu-spawn-y");
-			double z = war.getConfig().getDouble("blu-spawn-z");
-			float yaw = war.getConfig().getInt("blu-spawn-yaw");
-			float pitch = war.getConfig().getInt("blu-spawn-pitch");
-			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+			war.teamhelpers.toSpawn(player, team);
 			war.color.setColor(ColorChoice.BLU, player);
 			assignClass(player);
 		} else if (team == 1) {
 			war.red.add(player);
 			war.teamhelpers.alertTeam(player, team);
-			double x = war.getConfig().getDouble("red-spawn-x");
-			double y = war.getConfig().getDouble("red-spawn-y");
-			double z = war.getConfig().getDouble("red-spawn-z");
-			float yaw = war.getConfig().getInt("red-spawn-yaw");
-			float pitch = war.getConfig().getInt("red-spawn-pitch");
-			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+			war.teamhelpers.toSpawn(player, team);
 			war.color.setColor(ColorChoice.RED, player);
 			assignClass(player);
 		} else {

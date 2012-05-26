@@ -1,6 +1,7 @@
 package tk.nekotech.war.helpers;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -110,6 +111,31 @@ public class TeamHelpers {
 			return 1;
 		}
 		return 9;
+	}
+	
+	public void toSpawn(Player player, int teamID) {
+		if (teamID == 0) {
+			double x = war.getConfig().getDouble("blu-spawn-x");
+			double y = war.getConfig().getDouble("blu-spawn-y");
+			double z = war.getConfig().getDouble("blu-spawn-z");
+			float yaw = war.getConfig().getInt("blu-spawn-yaw");
+			float pitch = war.getConfig().getInt("blu-spawn-pitch");
+			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+		} else if (teamID == 1) {
+			double x = war.getConfig().getDouble("red-spawn-x");
+			double y = war.getConfig().getDouble("red-spawn-y");
+			double z = war.getConfig().getDouble("red-spawn-z");
+			float yaw = war.getConfig().getInt("red-spawn-yaw");
+			float pitch = war.getConfig().getInt("red-spawn-pitch");
+			player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+		} else {
+			double sx = war.getConfig().getDouble("spec-spawn-x");
+			double sy = war.getConfig().getDouble("spec-spawn-y");
+			double sz = war.getConfig().getDouble("spec-spawn-z");
+			float syaw = war.getConfig().getInt("spec-spawn-yaw");
+			float spitch = war.getConfig().getInt("spec-spawn-pitch");
+			player.teleport(new Location(player.getWorld(), sx, sy, sz, syaw, spitch));
+		}
 	}
 
 }

@@ -2,7 +2,6 @@ package tk.nekotech.war.events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,12 +20,7 @@ public class PlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		final Player player = event.getPlayer();
-		double x = war.getConfig().getDouble("spec-spawn-x");
-		double y = war.getConfig().getDouble("spec-spawn-y");
-		double z = war.getConfig().getDouble("spec-spawn-z");
-		float yaw = war.getConfig().getInt("spec-spawn-yaw");
-		float pitch = war.getConfig().getInt("spec-spawn-pitch");
-		player.teleport(new Location(player.getWorld(), x, y, z, yaw, pitch));
+		war.teamhelpers.toSpawn(player, 9);
 		war.teamhelpers.clearTeams(player);
 		war.on++;
 		war.online.add(player);
@@ -39,12 +33,7 @@ public class PlayerJoin implements Listener {
 			}, 20L);
 		}
 		if (war.getConfig().getBoolean("has-started")) {
-			double sx = war.getConfig().getDouble("spec-spawn-x");
-			double sy = war.getConfig().getDouble("spec-spawn-y");
-			double sz = war.getConfig().getDouble("spec-spawn-z");
-			float syaw = war.getConfig().getInt("spec-spawn-yaw");
-			float spitch = war.getConfig().getInt("spec-spawn-pitch");
-			player.teleport(new Location(player.getWorld(), sx, sy, sz, syaw, spitch));
+			war.teamhelpers.toSpawn(player, 9);
 		} else {
 			if (player.hasPermission("jtwar.admin")) {
 				war.sendMessage(player, ChatColor.RED + "[jtWar] Teleporting you to spawn immediately to setup new map.");
