@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
@@ -23,11 +21,14 @@ import tk.nekotech.war.events.EntityDamageByEntity;
 import tk.nekotech.war.events.EntityDeath;
 import tk.nekotech.war.events.EntityExplode;
 import tk.nekotech.war.events.InventoryClick;
+import tk.nekotech.war.events.InventoryClose;
 import tk.nekotech.war.events.PlayerChat;
 import tk.nekotech.war.events.PlayerJoin;
 import tk.nekotech.war.events.PlayerMove;
 import tk.nekotech.war.events.PlayerQuit;
 import tk.nekotech.war.events.PlayerRespawn;
+import tk.nekotech.war.events.ProjectileHit;
+import tk.nekotech.war.events.WeatherChange;
 import tk.nekotech.war.helpers.Armor;
 import tk.nekotech.war.helpers.Assignment;
 import tk.nekotech.war.helpers.Color;
@@ -72,11 +73,14 @@ public class War extends JavaPlugin {
 		p.registerEvents(new EntityDeath(this), this);
 		p.registerEvents(new EntityExplode(), this);
 		p.registerEvents(new InventoryClick(), this);
+		p.registerEvents(new InventoryClose(this), this);
 		p.registerEvents(new PlayerChat(this), this);
 		p.registerEvents(new PlayerJoin(this), this);
 		p.registerEvents(new PlayerMove(this), this);
 		p.registerEvents(new PlayerQuit(this), this);
 		p.registerEvents(new PlayerRespawn(this), this);
+		p.registerEvents(new ProjectileHit(this), this);
+		p.registerEvents(new WeatherChange(), this);
 		
 		max = getServer().getMaxPlayers();
 		
@@ -97,14 +101,14 @@ public class War extends JavaPlugin {
 			public void run() {
 				for (World world : getServer().getWorlds()) {
 					world.setTime(14000);
-					for (Entity e : world.getEntities()) {
-						if (e instanceof Arrow) {
-							e.remove();
-						}
-					}
 				}
 			}
-		}, 40L, 4800L);
+		}, 4800L, 4800L);
+		
+		for (World world : getServer().getWorlds()) {
+			world.setTime(14000);
+			world.setStorm(false);
+		}
 		
 		for (Player player : getServer().getOnlinePlayers()) {
 			player.kickPlayer(ChatColor.AQUA + "Please rejoin in 5 seconds :)");
