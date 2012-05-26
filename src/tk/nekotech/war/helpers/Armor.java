@@ -28,8 +28,8 @@ public class Armor {
 				int lolrandom = rand.nextInt(11);
 				if (lolrandom == 10) {
 					player.getInventory().addItem(new ItemStack(Material.TNT, 64));
-					player.sendMessage(ChatColor.GOLD + "You have special EXPLODING abilities!");
-					war.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + " might just explode you... stay away!");
+					war.sendMessage(player, ChatColor.GOLD + "You have special EXPLODING abilities!");
+					war.getServer().broadcastMessage(war.getMessage() + ChatColor.GOLD + player.getName() + " might just explode you... stay away!");
 				}
 		    }
 		    

@@ -19,7 +19,7 @@ public class BlockBreak implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (war.getConfig().getBoolean("ready-to-go")) {
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.RED + "Concentrate on killing the other team instead of breaking " + event.getBlock().getType().toString().toLowerCase().replace("_", ""));
+			war.sendMessage(event.getPlayer(), ChatColor.RED + "You can't break blocks!");
 		}
 	}
 

@@ -32,8 +32,8 @@ public class SetupCommands extends MasterCommand {
 					war.getConfig().set("blu-spawn-yaw", yaw);
 					war.getConfig().set("blu-spawn-pitch", pitch);
 					war.saveConfig();
-					player.sendMessage(ChatColor.GREEN + "Blu team spawn set!");
-					player.sendMessage(ChatColor.GREEN + "When ready type /ready");
+					war.sendMessage(player, ChatColor.GREEN + "Blu team spawn set!");
+					war.sendMessage(player, ChatColor.GREEN + "When ready type /ready");
 				} else {
 					sender.sendMessage(a + "In-game command only.");
 				}
@@ -54,8 +54,8 @@ public class SetupCommands extends MasterCommand {
 					war.getConfig().set("red-spawn-yaw", yaw);
 					war.getConfig().set("red-spawn-pitch", pitch);
 					war.saveConfig();
-					player.sendMessage(ChatColor.GREEN + "Red team spawn set!");
-					player.sendMessage(ChatColor.GREEN + "When ready type /ready");
+					war.sendMessage(player, ChatColor.GREEN + "Red team spawn set!");
+					war.sendMessage(player, ChatColor.GREEN + "When ready type /ready");
 				} else {
 					sender.sendMessage(a + "In-game command only.");
 				}
@@ -76,8 +76,8 @@ public class SetupCommands extends MasterCommand {
 					war.getConfig().set("spec-spawn-yaw", yaw);
 					war.getConfig().set("spec-spawn-pitch", pitch);
 					war.saveConfig();
-					player.sendMessage(ChatColor.GREEN + "Spectator spawn set!");
-					player.sendMessage(ChatColor.GREEN + "When ready type /ready");
+					war.sendMessage(player, ChatColor.GREEN + "Spectator spawn set!");
+					war.sendMessage(player, ChatColor.GREEN + "When ready type /ready");
 				}
 			} else {
 				sender.sendMessage(a + "In-game command only.");
@@ -92,8 +92,8 @@ public class SetupCommands extends MasterCommand {
 					if (war.getConfig().getBoolean("ready-to-go")) {
 						war.getConfig().set("ready-to-go", false);
 						war.saveConfig();
-						player.sendMessage(ChatColor.GREEN + "Server set to unready mode, block changes now allowed!");
-						player.sendMessage(ChatColor.GREEN + "Mob spawns are now disabled. When ready type /ready again!");
+						war.sendMessage(player, ChatColor.GREEN + "Server set to unready mode, block changes now allowed!");
+						war.sendMessage(player, ChatColor.GREEN + "Mob spawns are now disabled. When ready type /ready again!");
 						int count = 0;
 						for (Entity e : player.getWorld().getEntities()) {
 							if (!(e instanceof Player)) {
@@ -101,12 +101,12 @@ public class SetupCommands extends MasterCommand {
 								count++;
 							}
 						}
-						player.sendMessage("Removed " + count + " entities!");
+						war.sendMessage(player, ChatColor.GREEN + "Removed " + count + " entities!");
 					} else {
 						war.getConfig().set("ready-to-go", true);
 						war.saveConfig();
-						player.sendMessage(ChatColor.GREEN + "Server set to ready mode, block changes now disabled!");
-						player.sendMessage(ChatColor.GREEN + "Enabling mob spawns... To disable ready mode type /ready again!");
+						war.sendMessage(player, ChatColor.GREEN + "Server set to ready mode, block changes now disabled!");
+						war.sendMessage(player, ChatColor.GREEN + "Enabling mob spawns... To disable ready mode type /ready again!");
 					}
 				} else {
 					sender.sendMessage(a + "In-game command only.");
@@ -119,7 +119,7 @@ public class SetupCommands extends MasterCommand {
 				war.getConfig().set("has-started", false);
 				war.getConfig().set("ready-to-go", false);
 				war.saveConfig();
-				sender.sendMessage(ChatColor.GREEN + "Reset configuration but kept spawns!");
+				war.sendMessage(sender, ChatColor.GREEN + "Reset configuration but kept spawns!");
 			}
 		}
 		

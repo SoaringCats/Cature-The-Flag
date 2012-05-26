@@ -69,7 +69,7 @@ public class Assignment {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.SLOW, 999999999, 2);
 			    	war.potions.addEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 999999999, 1);
-					player.sendMessage(ChatColor.GOLD + "You are now a heavy!");
+			    	war.sendMessage(player, ChatColor.GOLD + "You are now a heavy!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().getItem(0).addEnchantment(Enchantment.DAMAGE_ALL, 2);
 					player.setNoDamageTicks(10);
@@ -81,7 +81,7 @@ public class Assignment {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 1);
-					player.sendMessage(ChatColor.GOLD + "You are now a scout!");
+			    	war.sendMessage(player, ChatColor.GOLD + "You are now a scout!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().getItem(0).addEnchantment(Enchantment.KNOCKBACK, 2);
 					player.setNoDamageTicks(10);
@@ -93,7 +93,7 @@ public class Assignment {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 999999999, 2);
-					player.sendMessage(ChatColor.GOLD + "You are now a sniper!");
+			    	war.sendMessage(player, ChatColor.GOLD + "You are now a sniper!");
 					player.getInventory().addItem(new ItemStack(Material.BOW, 1));
 					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
 					player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_INFINITE, 1);
@@ -108,7 +108,7 @@ public class Assignment {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.FIRE_RESISTANCE, 999999999, 3);
 					war.pyro.add(player);
-					player.sendMessage(ChatColor.GOLD + "You are now a pyro!");
+					war.sendMessage(player, ChatColor.GOLD + "You are now a pyro!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.setNoDamageTicks(10);
 					war.armor.armorUp(player);
@@ -123,8 +123,8 @@ public class Assignment {
 			    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 1);
 					war.pyro.add(player);
 					war.monster.add(player);
-					player.sendMessage(ChatColor.GOLD + "You are now a monster!");
-					war.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + " is a monster, beware!");
+					war.sendMessage(player, ChatColor.GOLD + "You are now a monster!");
+					war.getServer().broadcastMessage(war.getMessage() + ChatColor.GOLD + player.getName() + " is a monster, beware!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().addItem(new ItemStack(Material.BOW, 1));
 					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));

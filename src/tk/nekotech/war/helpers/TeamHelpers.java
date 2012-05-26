@@ -43,12 +43,12 @@ public class TeamHelpers {
 	
 	public void alertTeam(Player player, int team) {
 		if (team == 0) {
-			war.getServer().broadcastMessage(ChatColor.BLUE + player.getName() + " is now on blu team!");
+			war.getServer().broadcastMessage(war.getMessage() + ChatColor.BLUE + player.getName() + " is now on blu team!");
 		}
 		if (team == 1) {
-			war.getServer().broadcastMessage(ChatColor.RED + player.getName() + " is now on red team!");
+			war.getServer().broadcastMessage(war.getMessage() + ChatColor.RED + player.getName() + " is now on red team!");
 		}
-		war.getServer().broadcastMessage(ChatColor.GREEN + "There are now " + ChatColor.BLUE + blu() + " on blu" + ChatColor.GREEN + " and " + ChatColor.RED + red() + " on red");
+		war.getServer().broadcastMessage(war.getMessage() + ChatColor.GREEN + "There are now " + ChatColor.BLUE + blu() + " on blu" + ChatColor.GREEN + " and " + ChatColor.RED + red() + " on red");
 	}
 	
 	public boolean onTeam(Player player) {
@@ -75,7 +75,7 @@ public class TeamHelpers {
 		if (team == 0) {
 			for (Player p : war.getServer().getOnlinePlayers()) {
 				if (war.blu.contains(p)) {
-					p.sendMessage(message);
+					war.sendMessage(p, message);
 				}
 			}
 			war.getLogger().info("[BLU] " + message);
@@ -84,7 +84,7 @@ public class TeamHelpers {
 		if (team == 1) {
 			for (Player p : war.getServer().getOnlinePlayers()) {
 				if (war.red.contains(p)) {
-					p.sendMessage(message);
+					war.sendMessage(p, message);
 				}
 			}
 			war.getLogger().info("[RED] " + message);
@@ -93,7 +93,7 @@ public class TeamHelpers {
 		if (team == 2) {
 			for (Player p : war.getServer().getOnlinePlayers()) {
 				if ((!war.red.contains(p)) && (!war.blu.contains(p))) {
-					p.sendMessage(message);
+					war.sendMessage(p, message);
 				}
 			}
 			war.getLogger().info("[RED] " + message);

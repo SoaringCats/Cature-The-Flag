@@ -22,7 +22,7 @@ public class PlayerQuit implements Listener {
 		if (war.red.contains(event.getPlayer().getName())) war.red.remove(event.getPlayer().getName());
 		if (war.blu.contains(event.getPlayer().getName())) war.blu.remove(event.getPlayer().getName());
 		if (war.pyro.contains(event.getPlayer().getName())) war.pyro.remove(event.getPlayer().getName());
-		event.setQuitMessage(ChatColor.YELLOW + event.getPlayer().getName() + " chickened out.");
+		event.setQuitMessage(war.getMessage() + ChatColor.RED + "- " + ChatColor.BOLD + event.getPlayer().getName());
 	}
 
 }

@@ -41,20 +41,16 @@ public class Color {
 		}
 		player.setDisplayName(c + player.getName() + ChatColor.WHITE);
 		player.setPlayerListName(c + name);
-		//setHeadName(player);
+		//setHeadName(player, c, name);
 	}
 	
-	public void setHeadName(Player player) {
-		// TODO: Proper name coloring
-		EntityPlayer newPlayer = ((CraftPlayer) player).getHandle();
-        newPlayer.name = player.getPlayerListName();
-        for (Player p : war.getServer().getOnlinePlayers()) {
-        	if (p != player) {
-        		((CraftPlayer) p).getHandle().netServerHandler.sendPacket(new Packet29DestroyEntity(player.getEntityId()));
-        		((CraftPlayer) p).getHandle().netServerHandler.sendPacket(new Packet20NamedEntitySpawn(newPlayer));
-        	}
-        }
-        newPlayer.name = player.getName();
+	/**
+	 * Head name <b>requires</b> jamietech's custom Bukkit version
+	 * @param player
+	 */
+	public void setHeadName(Player player, ChatColor color, String name) {
+		player.getMetadata("headname").clear();
+		//player.getMetadata("headname").add(color + name);
 	}
 
 }

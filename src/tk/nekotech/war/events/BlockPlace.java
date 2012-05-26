@@ -2,6 +2,7 @@ package tk.nekotech.war.events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -22,11 +23,14 @@ public class BlockPlace implements Listener {
 			if (event.getBlockPlaced().getType().equals(Material.TNT)) {
 				if (!event.getBlockAgainst().getType().equals(Material.OBSIDIAN)) {
 					event.setCancelled(true);
-					event.getPlayer().sendMessage(ChatColor.RED + "You can only place TNT on OBSIDIAN!");
+					war.sendMessage(event.getPlayer(), ChatColor.RED + "TNT can only be placed on OBSIDIAN!");
+				} else {
+					event.setCancelled(true);
+					event.getBlock().getLocation().getWorld().spawnCreature(event.getBlock().getLocation(), EntityType.PRIMED_TNT);
 				}
 			} else {
 				event.setCancelled(true);
-				event.getPlayer().sendMessage(ChatColor.RED + "Concentrate on killing the other team instead of placing " + event.getBlock().getType().toString().toLowerCase().replace("_", ""));
+				war.sendMessage(event.getPlayer(), ChatColor.RED + "You can't place blocks!");
 			}
 		}
 	}

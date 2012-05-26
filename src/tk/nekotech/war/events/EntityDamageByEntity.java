@@ -29,12 +29,12 @@ public class EntityDamageByEntity implements Listener {
 					if ((!war.blu.contains(damaged)) && (!war.red.contains(damaged))) {
 						event.setCancelled(true);
 						damaged.setFireTicks(0);
-						shooter.sendMessage(ChatColor.GRAY + "You can't hurt a spectator!");
+						war.sendMessage(shooter, ChatColor.GRAY + "You can't hurt a spectator!");
 					}
 					if ((war.blu.contains(shooter)) && (war.blu.contains(damaged))) {
 						event.setCancelled(true);
 						damaged.setFireTicks(0);
-						shooter.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.BLUE + "!");
+						war.sendMessage(shooter, ChatColor.BLUE + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.BLUE + "!");
 					} else if ((war.red.contains(shooter)) && (war.red.contains(damaged))) {
 						event.setCancelled(true);
 						shooter.sendMessage(ChatColor.RED + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.RED + "!");
@@ -56,15 +56,15 @@ public class EntityDamageByEntity implements Listener {
 				if ((!war.blu.contains(damaged)) && (!war.red.contains(damaged))) {
 					event.setCancelled(true);
 					damaged.setFireTicks(0);
-					player.sendMessage(ChatColor.GRAY + "You can't hurt a spectator!");
+					war.sendMessage(player, ChatColor.GRAY + "You can't hurt a spectator!");
 				}
 				if ((war.blu.contains(player)) && (war.blu.contains(damaged))) {
 					event.setCancelled(true);
 					damaged.setFireTicks(0);
-					player.sendMessage(ChatColor.BLUE + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.BLUE + "!");
+					war.sendMessage(player, ChatColor.BLUE + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.BLUE + "!");
 				} else if ((war.red.contains(player)) && (war.red.contains(damaged))) {
 					event.setCancelled(true);
-					player.sendMessage(ChatColor.RED + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.RED + "!");
+					war.sendMessage(player, ChatColor.RED + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.RED + "!");
 					damaged.setFireTicks(0);
 				}
 			}

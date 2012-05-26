@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -54,7 +55,7 @@ public class War extends JavaPlugin {
 	public int dead = 0;
 	
 	public void onEnable() {
-		getCommand("war").setExecutor(new WarCommand());
+		getCommand("war").setExecutor(new WarCommand(this));
 		getCommand("join").setExecutor(new JoinCommand(this));
 		getCommand("blu").setExecutor(new SetupCommands(this));
 		getCommand("red").setExecutor(new SetupCommands(this));
@@ -94,19 +95,14 @@ public class War extends JavaPlugin {
 		
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run() {
-				int worlds = 0;
-				int arrows = 0;
-				for (World w : getServer().getWorlds()) {
-					w.setTime(14000);
-					worlds++;
-					for (Entity e : w.getEntities()) {
+				for (World world : getServer().getWorlds()) {
+					world.setTime(14000);
+					for (Entity e : world.getEntities()) {
 						if (e instanceof Arrow) {
 							e.remove();
-							arrows++;
 						}
 					}
 				}
-				if (getServer().getOnlinePlayers().length < 0) getLogger().info("Set time to night in " + worlds + " worlds and cleaned " + arrows + " arrows up!");
 			}
 		}, 40L, 4800L);
 		
@@ -121,6 +117,18 @@ public class War extends JavaPlugin {
 	
 	public ChunkGenerator getDefaultWorldGenerator(String worldname, String uid) {
 		return new Gen(this);
+	}
+	
+	public String getMessage() {
+		return String.valueOf('|') + String.valueOf(ChatColor.STRIKETHROUGH) + String.valueOf('|') + String.valueOf(ChatColor.RESET);
+	}
+	
+	public void sendMessage(Player player, String message) {
+		player.sendMessage(ChatColor.GRAY + getMessage() + " " + message);
+	}
+	
+	public void sendMessage(CommandSender sender, String message) {
+		sender.sendMessage(ChatColor.GRAY + getMessage() + " " + message);
 	}
 
 }

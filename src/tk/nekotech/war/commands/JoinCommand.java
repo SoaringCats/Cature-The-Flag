@@ -29,7 +29,7 @@ public class JoinCommand extends MasterCommand {
 					war.assignment.assignPlayer(player, 1);
 				}
 			} else {
-				player.sendMessage(ChatColor.DARK_RED + "You're already on a team, dolt!");
+				war.sendMessage(player, ChatColor.DARK_RED + "You're already on a team, dolt!");
 				String team = null;
 				if (war.teamhelpers.teamName(player) == 0) {
 					team = "blu";
@@ -38,7 +38,7 @@ public class JoinCommand extends MasterCommand {
 				} else {
 					player.kickPlayer(ChatColor.RED + "Uncaught exception!");
 				}
-				player.sendMessage(ChatColor.DARK_RED + "You're on team: " + team);
+				war.sendMessage(player, ChatColor.DARK_RED + "You're on team: " + team);
 			}
 		} else {
 			sender.sendMessage(ChatColor.AQUA + "In-game command only.");
