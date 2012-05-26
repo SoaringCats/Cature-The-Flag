@@ -20,7 +20,6 @@ public class PlayerMove implements Listener {
 		Location oldLoc = event.getPlayer().getLocation();
 		Location newLoc = oldLoc;
 		newLoc.setY(newLoc.getY() + 1);
-		event.getPlayer().getWorld().playEffect(newLoc, Effect.SMOKE, 1, 100);
 		if (war.monster.contains(event.getPlayer())) {
 			event.getPlayer().getWorld().playEffect(newLoc, Effect.MOBSPAWNER_FLAMES, 1, 100);
 			event.getPlayer().getWorld().playEffect(newLoc, Effect.STEP_SOUND, 1, 100);

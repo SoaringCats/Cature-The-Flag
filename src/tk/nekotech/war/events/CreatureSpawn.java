@@ -1,5 +1,6 @@
 package tk.nekotech.war.events;
 
+import org.bukkit.Effect;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -32,6 +33,9 @@ public class CreatureSpawn implements Listener {
 					event.setCancelled(true);
 				}
 			}
+		}
+		if (!event.isCancelled()) {
+			event.getEntity().getLocation().getWorld().playEffect(event.getEntity().getLocation(), Effect.SMOKE, 50);
 		}
 	}
 	
