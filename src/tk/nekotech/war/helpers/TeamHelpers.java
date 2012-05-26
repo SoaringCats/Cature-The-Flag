@@ -75,7 +75,7 @@ public class TeamHelpers {
 		if (team == 0) {
 			for (Player p : war.getServer().getOnlinePlayers()) {
 				if (war.blu.contains(p)) {
-					war.sendMessage(p, message);
+					war.sendMessage(p, ChatColor.BLUE + message);
 				}
 			}
 			war.getLogger().info("[BLU] " + message);
@@ -84,19 +84,19 @@ public class TeamHelpers {
 		if (team == 1) {
 			for (Player p : war.getServer().getOnlinePlayers()) {
 				if (war.red.contains(p)) {
-					war.sendMessage(p, message);
+					war.sendMessage(p, ChatColor.RED + message);
 				}
 			}
 			war.getLogger().info("[RED] " + message);
 			return;
 		}
-		if (team == 2) {
+		if (team == 9) {
 			for (Player p : war.getServer().getOnlinePlayers()) {
 				if ((!war.red.contains(p)) && (!war.blu.contains(p))) {
-					war.sendMessage(p, message);
+					war.sendMessage(p, ChatColor.GRAY + message);
 				}
 			}
-			war.getLogger().info("[RED] " + message);
+			war.getLogger().info("[SPECTATE] " + message);
 			return;
 		}
 		war.getLogger().severe("Unable to find team for team message!");

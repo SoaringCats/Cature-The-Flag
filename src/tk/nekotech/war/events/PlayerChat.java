@@ -16,7 +16,7 @@ public class PlayerChat implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent event) {
-		event.setFormat(war.getMessage() + "%s > %s");
+		event.setFormat(war.getMessage() + " %s > %s");
 		if (event.getMessage().startsWith(".")) {
 			war.teamhelpers.teamMessage(war.teamhelpers.teamName(event.getPlayer()), "(TEAM) <" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
 			event.setCancelled(true);

@@ -24,6 +24,7 @@ import tk.nekotech.war.events.InventoryClick;
 import tk.nekotech.war.events.InventoryClose;
 import tk.nekotech.war.events.PlayerChat;
 import tk.nekotech.war.events.PlayerJoin;
+import tk.nekotech.war.events.PlayerKick;
 import tk.nekotech.war.events.PlayerMove;
 import tk.nekotech.war.events.PlayerQuit;
 import tk.nekotech.war.events.PlayerRespawn;
@@ -76,6 +77,7 @@ public class War extends JavaPlugin {
 		p.registerEvents(new InventoryClose(this), this);
 		p.registerEvents(new PlayerChat(this), this);
 		p.registerEvents(new PlayerJoin(this), this);
+		p.registerEvents(new PlayerKick(this), this);
 		p.registerEvents(new PlayerMove(this), this);
 		p.registerEvents(new PlayerQuit(this), this);
 		p.registerEvents(new PlayerRespawn(this), this);
