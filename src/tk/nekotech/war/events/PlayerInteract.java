@@ -108,7 +108,7 @@ public class PlayerInteract implements Listener {
 	                	if (r == 6) {
 	                		items[i] = new ItemStack(Material.BRICK, 25);
 	                	}
-	                }
+	                } 
 	                inventory.setContents(items);
 	                event.getPlayer().openInventory(inventory);
 				}

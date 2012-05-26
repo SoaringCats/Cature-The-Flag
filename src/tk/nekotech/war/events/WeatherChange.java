@@ -8,7 +8,9 @@ public class WeatherChange implements Listener {
 	
 	@EventHandler
 	public void onWeatherChange(WeatherChangeEvent event) {
-		event.getWorld().setStorm(false);
+		if (event.getWorld().hasStorm()) {
+			event.getWorld().setStorm(false);
+		}
 	}
 
 }
