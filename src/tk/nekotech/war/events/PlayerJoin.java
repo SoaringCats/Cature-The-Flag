@@ -53,7 +53,7 @@ public class PlayerJoin implements Listener {
 				player.setGameMode(GameMode.CREATIVE);
 			}
 		}
-		event.setJoinMessage(war.getMessage() + ChatColor.GREEN + "+ " + ChatColor.BOLD + player.getName());
+		event.setJoinMessage(war.getMessage() + ChatColor.GREEN + " + " + ChatColor.BOLD + player.getName());
 		war.sendMessage(player, ChatColor.RED + "Welcome to the war! To join type /join");
 		war.sendMessage(player, ChatColor.RED + "For more information say /war");
 	}
