@@ -37,7 +37,7 @@ public class Color {
 			c = ChatColor.RED;
 		}
 		if (color == ColorChoice.GRAY) {
-			player.getInventory().setHelmet(new ItemStack(Material.WOOD, 1, (byte) 8));
+			player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 8));
 		}
 		player.setDisplayName(c + player.getName() + ChatColor.WHITE);
 		player.setPlayerListName(c + name);
