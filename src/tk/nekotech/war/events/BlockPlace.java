@@ -2,7 +2,7 @@ package tk.nekotech.war.events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -26,7 +26,7 @@ public class BlockPlace implements Listener {
 					war.sendMessage(event.getPlayer(), ChatColor.RED + "TNT can only be placed on OBSIDIAN!");
 				} else {
 					event.setCancelled(true);
-					event.getBlock().getLocation().getWorld().spawnCreature(event.getBlock().getLocation(), EntityType.PRIMED_TNT);
+					event.getBlock().getLocation().getWorld().spawn(event.getBlock().getLocation(), TNTPrimed.class);
 				}
 			} else {
 				event.setCancelled(true);
