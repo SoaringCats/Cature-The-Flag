@@ -34,6 +34,7 @@ import tk.nekotech.war.events.PlayerMove;
 import tk.nekotech.war.events.PlayerQuit;
 import tk.nekotech.war.events.PlayerRespawn;
 import tk.nekotech.war.events.ProjectileHit;
+import tk.nekotech.war.events.SignChange;
 import tk.nekotech.war.events.WeatherChange;
 import tk.nekotech.war.helpers.Armor;
 import tk.nekotech.war.helpers.Assignment;
@@ -93,6 +94,7 @@ public class War extends JavaPlugin {
 		p.registerEvents(new PlayerQuit(this), this);
 		p.registerEvents(new PlayerRespawn(this), this);
 		p.registerEvents(new ProjectileHit(this), this);
+		p.registerEvents(new SignChange(), this);
 		p.registerEvents(new WeatherChange(), this);
 		
 		max = getServer().getMaxPlayers();
@@ -147,6 +149,13 @@ public class War extends JavaPlugin {
 	
 	public void sendMessage(CommandSender sender, String message) {
 		sender.sendMessage(ChatColor.GRAY + getMessage() + " " + message);
+	}
+	
+	public void messageAdmins(String message) {
+		for (Player player : getServer().getOnlinePlayers()) {
+			player.sendMessage(getMessage() + message);
+		}
+		getLogger().info(message);
 	}
 
 }

@@ -40,11 +40,6 @@ public class PlayerInteract implements Listener {
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[BLU]")) {
 					blockCreative = true;
-					sign.setLine(0, String.valueOf(ChatColor.BLUE) + String.valueOf(ChatColor.BOLD) + "[BLU]");
-					sign.setLine(1, "");
-					sign.setLine(2, String.valueOf(ChatColor.WHITE) + "Punch me");
-					sign.setLine(3, String.valueOf(ChatColor.WHITE) + "if on blu!");
-					sign.update();
 					if (war.teamhelpers.teamName(player) == 0) {
 						war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + event.getPlayer().getName() + " got a buff from the Magical Temple!");
 						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
@@ -57,11 +52,6 @@ public class PlayerInteract implements Listener {
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[RED]")) {
 					blockCreative = true;
-					sign.setLine(0, String.valueOf(ChatColor.RED) + String.valueOf(ChatColor.BOLD) + "[RED]");
-					sign.setLine(1, "");
-					sign.setLine(2, String.valueOf(ChatColor.WHITE) + "Punch me");
-					sign.setLine(3, String.valueOf(ChatColor.WHITE) + "if on red!");
-					sign.update();
 					if (war.teamhelpers.teamName(player) == 1) {
 						war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + event.getPlayer().getName() + " got a buff from the Magical Temple!");
 						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
@@ -74,11 +64,6 @@ public class PlayerInteract implements Listener {
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[JKS]")) {
 					blockCreative = true;
-					sign.setLine(0, String.valueOf(ChatColor.GRAY) + String.valueOf(ChatColor.BOLD) + "[JKS]");
-					sign.setLine(1, "");
-					sign.setLine(2, String.valueOf(ChatColor.WHITE) + "Punch me");
-					sign.setLine(3, String.valueOf(ChatColor.WHITE) + "if smart!");
-					sign.update();
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HARM, 600, 2));
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 600, 2));
 					war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
@@ -87,11 +72,6 @@ public class PlayerInteract implements Listener {
 				}
 				if (ChatColor.stripColor(sign.getLine(1)).equals("It's good")) {
 					blockCreative = true;
-					sign.setLine(0, "");
-					sign.setLine(1, ChatColor.WHITE + "It's good to");
-					sign.setLine(2, ChatColor.WHITE + "be " + ChatColor.AQUA + "curious!");
-					sign.setLine(3, "");
-					sign.update();
 	                final Inventory inventory = war.getServer().createInventory(event.getPlayer(), 27);
 	                ItemStack[] items = new ItemStack[27];
 	                if (random.nextBoolean()) {
@@ -135,11 +115,6 @@ public class PlayerInteract implements Listener {
 				}
 				if (ChatColor.stripColor(sign.getLine(1)).equals("You might find")) {
 					blockCreative = true;
-					sign.setLine(0, "");
-					sign.setLine(1, ChatColor.WHITE + "You might find");
-					sign.setLine(2, ChatColor.WHITE + "a " + ChatColor.AQUA + "prize");
-					sign.setLine(3, "");
-					sign.update();
 					if (random.nextBoolean()) {
 						event.getPlayer().openWorkbench(null, true);
 					} else {
