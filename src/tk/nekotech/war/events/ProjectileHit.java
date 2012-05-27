@@ -18,7 +18,12 @@ public class ProjectileHit implements Listener {
 	@EventHandler
 	public void onProjectileHit(final ProjectileHitEvent event) {
 		if (event.getEntity() instanceof Arrow) {
-			event.getEntity().playEffect(EntityEffect.WOLF_HEARTS);
+			war.getServer().getScheduler().scheduleSyncDelayedTask(war, new Runnable() {
+				@Override
+				public void run() {
+					event.getEntity().playEffect(EntityEffect.HURT);
+				}
+			}, 20L);
 			war.getServer().getScheduler().scheduleSyncDelayedTask(war, new Runnable() {
 				@Override
 				public void run() {

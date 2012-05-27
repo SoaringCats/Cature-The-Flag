@@ -1,5 +1,6 @@
 package tk.nekotech.war.events;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,7 +21,12 @@ public class InventoryClose implements Listener {
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		Player player = (Player) event.getPlayer();
-		if ( player.getGameMode() == GameMode.CREATIVE ){
+		if (war.inventory.contains(player)) {
+			war.inventory.remove(player);
+			war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
+			war.sendMessage(player, ChatColor.AQUA + "Whoosh!");
+		}
+		if (player.getGameMode() == GameMode.CREATIVE ){
 			return;
 		}
 		if ((player.getInventory().getHelmet() == null) || (player.getInventory().getHelmet().getType() != Material.WOOL)) {

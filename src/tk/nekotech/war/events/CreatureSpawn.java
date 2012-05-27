@@ -23,15 +23,15 @@ public class CreatureSpawn implements Listener {
 			return;
 		}
 		if (war.getConfig().getBoolean("mob-spawns")) {
-			if (event.getSpawnReason() != SpawnReason.SPAWNER) {
-				if (event.getSpawnReason() != SpawnReason.CUSTOM) {
-					if (!war.mob.isAllowed(event.getEntityType())) {
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), war.mob.randoMob());
-						event.setCancelled(true);
-					}
-				} else {
+			event.setCancelled(true);
+			if ((event.getSpawnReason() == SpawnReason.SPAWNER) || (event.getSpawnReason() == SpawnReason.CUSTOM)) {
+				if (!war.mob.isAllowed(event.getEntityType())) {
+					event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), war.mob.randoMob());
 					event.setCancelled(true);
 				}
+			}
+			if (event.getSpawnReason() == SpawnReason.SPAWNER_EGG) {
+				event.setCancelled(false);
 			}
 		}
 		if (!event.isCancelled()) {

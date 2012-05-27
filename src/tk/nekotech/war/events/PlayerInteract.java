@@ -27,23 +27,24 @@ public class PlayerInteract implements Listener {
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
+        Random random = new Random();
+		boolean blockCreative = false;
 		if (event.getClickedBlock() != null) {
 			if (event.getClickedBlock().getState() instanceof Sign) {
 				Sign sign = (Sign) event.getClickedBlock().getState();
 				Player player = event.getPlayer();
-				if (player.getGameMode() == GameMode.CREATIVE) {
-					if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-						event.setCancelled(true);
-					}
-				} else {
+				if (player.getGameMode() == GameMode.SURVIVAL) {
 					if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 						return;
 					}
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[BLU]")) {
+					blockCreative = true;
 					sign.setLine(0, String.valueOf(ChatColor.BLUE) + String.valueOf(ChatColor.BOLD) + "[BLU]");
+					sign.setLine(1, "");
 					sign.setLine(2, String.valueOf(ChatColor.WHITE) + "Punch me");
 					sign.setLine(3, String.valueOf(ChatColor.WHITE) + "if on blu!");
+					sign.update();
 					if (war.teamhelpers.teamName(player) == 0) {
 						war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + event.getPlayer().getName() + " got a buff from the Magical Temple!");
 						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
@@ -55,9 +56,12 @@ public class PlayerInteract implements Listener {
 					}
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[RED]")) {
+					blockCreative = true;
 					sign.setLine(0, String.valueOf(ChatColor.RED) + String.valueOf(ChatColor.BOLD) + "[RED]");
+					sign.setLine(1, "");
 					sign.setLine(2, String.valueOf(ChatColor.WHITE) + "Punch me");
 					sign.setLine(3, String.valueOf(ChatColor.WHITE) + "if on red!");
+					sign.update();
 					if (war.teamhelpers.teamName(player) == 1) {
 						war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + event.getPlayer().getName() + " got a buff from the Magical Temple!");
 						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
@@ -69,55 +73,83 @@ public class PlayerInteract implements Listener {
 					}
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[JKS]")) {
+					blockCreative = true;
 					sign.setLine(0, String.valueOf(ChatColor.GRAY) + String.valueOf(ChatColor.BOLD) + "[JKS]");
+					sign.setLine(1, "");
 					sign.setLine(2, String.valueOf(ChatColor.WHITE) + "Punch me");
-					sign.setLine(3, String.valueOf(ChatColor.WHITE) + "if " + String.valueOf(ChatColor.STRIKETHROUGH) + "stupid" + ChatColor.RESET + " smart!");
+					sign.setLine(3, String.valueOf(ChatColor.WHITE) + "if smart!");
+					sign.update();
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HARM, 600, 2));
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 600, 2));
 					war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
 					war.sendMessage(player, ChatColor.AQUA + "Whoosh!");
+					blockCreative = true;
 				}
 				if (ChatColor.stripColor(sign.getLine(1)).equals("It's good")) {
-					sign.setLine(1, ChatColor.WHITE + "It's good");
-					sign.setLine(2, ChatColor.WHITE + "to be " + ChatColor.AQUA + "curious" + ChatColor.RESET + "!");
+					blockCreative = true;
+					sign.setLine(0, "");
+					sign.setLine(1, ChatColor.WHITE + "It's good to");
+					sign.setLine(2, ChatColor.WHITE + "be " + ChatColor.AQUA + "curious!");
+					sign.setLine(3, "");
+					sign.update();
 	                final Inventory inventory = war.getServer().createInventory(event.getPlayer(), 27);
 	                ItemStack[] items = new ItemStack[27];
-	                Random random = new Random();
-	                for (int i = 0; i < 27; i++) {
-	                	int r = random.nextInt(27);
-	                	if (r == 0) {
-	                		items[i] = new ItemStack(Material.DIAMOND_SWORD, 1);
-	                		items[i].setDurability((short) 5);
-	                	}
-	                	if (r == 1) {
-	                		items[i] = new ItemStack(Material.GHAST_TEAR, 2);
-	                	}
-	                	if (r == 2) {
-	                		items[i] = new ItemStack(Material.SLIME_BALL, 15);
-	                	}
-	                	if (r == 3) {
-	                		items[i] = new ItemStack(Material.WOOD_SWORD, 1);
-	                		items[i].setDurability((short) 10);
-	                	}
-	                	if (r == 4) {
-	                		items[i] = new ItemStack(Material.DIRT, 31);
-	                	}
-	                	if (r == 5) {
-	                		items[i] = new ItemStack(Material.TNT, 1);
-	                	}
-	                	if (r == 6) {
-	                		items[i] = new ItemStack(Material.BRICK, 25);
-	                	}
-	                } 
-	                inventory.setContents(items);
-	                event.getPlayer().openInventory(inventory);
+	                if (random.nextBoolean()) {
+	                	for (int i = 0; i < 27; i++) {
+		                	int r = random.nextInt(27);
+		                	int amt = random.nextInt(63) + 1;
+		                	if (r == 0) {
+		                		items[i] = new ItemStack(Material.DIAMOND_SWORD, 1);
+		                		items[i].setDurability((short) 1661);
+		                	}
+		                	if (r == 1) {
+		                		items[i] = new ItemStack(Material.GHAST_TEAR, amt);
+		                	}
+		                	if (r == 2) {
+		                		items[i] = new ItemStack(Material.SLIME_BALL, amt);
+		                	}
+		                	if (r == 3) {
+		                		items[i] = new ItemStack(Material.WOOD_SWORD, 1);
+		                		items[i].setDurability((short) 25);
+		                	}
+		                	if (r == 4) {
+		                		items[i] = new ItemStack(Material.DIRT, amt);
+		                	}
+		                	if (r == 5) {
+		                		items[i] = new ItemStack(Material.TNT, amt);
+		                	}
+		                	if (r == 6) {
+		                		items[i] = new ItemStack(Material.BRICK, amt);
+		                	}
+		                	if (r == 7) {
+		                		items[i] = new ItemStack(Material.GLASS_BOTTLE, amt);
+		                	}
+		                }
+		                inventory.setContents(items);
+		                event.getPlayer().openInventory(inventory);
+		                war.inventory.add(event.getPlayer());
+	                } else {
+	                	war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
+						war.sendMessage(player, ChatColor.AQUA + "No prize here.");
+	                }
 				}
-				if (ChatColor.stripColor(sign.getLine(1)).equals("You might just")) {
-					sign.setLine(1, ChatColor.WHITE + "You might just");
-					sign.setLine(2, ChatColor.WHITE + "find a " + ChatColor.AQUA + "prize" + ChatColor.RESET + "...");
+				if (ChatColor.stripColor(sign.getLine(1)).equals("You might find")) {
+					blockCreative = true;
+					sign.setLine(0, "");
+					sign.setLine(1, ChatColor.WHITE + "You might find");
+					sign.setLine(2, ChatColor.WHITE + "a " + ChatColor.AQUA + "prize");
+					sign.setLine(3, "");
+					sign.update();
+					if (random.nextBoolean()) {
+						event.getPlayer().openWorkbench(null, true);
+					} else {
+						event.getPlayer().openEnchanting(null, true);
+					}
+	                war.inventory.add(event.getPlayer());
 				}
 			}
 		}
+		event.setCancelled(blockCreative);
 	}
 
 }

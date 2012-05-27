@@ -14,6 +14,8 @@ import tk.nekotech.war.commands.JoinCommand;
 import tk.nekotech.war.commands.SetupCommands;
 import tk.nekotech.war.commands.WarCommand;
 import tk.nekotech.war.events.BlockBreak;
+import tk.nekotech.war.events.BlockBurn;
+import tk.nekotech.war.events.BlockIgnite;
 import tk.nekotech.war.events.BlockPlace;
 import tk.nekotech.war.events.CreatureSpawn;
 import tk.nekotech.war.events.EntityDamage;
@@ -54,6 +56,7 @@ public class War extends JavaPlugin {
 	public ArrayList<Player> monster;
 	public ArrayList<Player> blu;
 	public ArrayList<Player> red;
+	public ArrayList<Player> inventory;
 	
 	public int on = 0;
 	public int max = 0;
@@ -70,6 +73,8 @@ public class War extends JavaPlugin {
 		
 		PluginManager p = getServer().getPluginManager();
 		p.registerEvents(new BlockBreak(this), this);
+		p.registerEvents(new BlockBurn(), this);
+		p.registerEvents(new BlockIgnite(), this);
 		p.registerEvents(new BlockPlace(this), this);
 		p.registerEvents(new CreatureSpawn(this), this);
 		p.registerEvents(new EntityDamage(this), this);
@@ -97,6 +102,7 @@ public class War extends JavaPlugin {
 		monster = new ArrayList<Player>();
 		blu = new ArrayList<Player>();
 		red = new ArrayList<Player>();
+		inventory = new ArrayList<Player>();
 		
 		if (!getConfig().getBoolean("has-started")) {
 			getLogger().warning("This is the first logged startup event (did you clear your config?)");
