@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,9 +40,7 @@ public class PlayerInteract implements Listener {
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[BLU]")) {
 					if (war.teamhelpers.teamName(player) == 0) {
-						war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + event.getPlayer().getName() + " got a buff from the Magical Temple!");
-						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
-						event.getPlayer().setExp(event.getPlayer().getExp() + 300F);
+						buffPlayer(event.getPlayer());
 						war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
 						war.sendMessage(player, ChatColor.AQUA + "Whoosh!");
 					} else {
@@ -50,9 +49,7 @@ public class PlayerInteract implements Listener {
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[RED]")) {
 					if (war.teamhelpers.teamName(player) == 1) {
-						war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + event.getPlayer().getName() + " got a buff from the Magical Temple!");
-						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
-						event.getPlayer().setExp(event.getPlayer().getExp() + 300F);
+						buffPlayer(event.getPlayer());
 						war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
 						war.sendMessage(player, ChatColor.AQUA + "Whoosh!");
 					} else {
@@ -61,7 +58,6 @@ public class PlayerInteract implements Listener {
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[JKS]")) {
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HARM, 600, 1));
-					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 600, 1));
 					war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
 					war.sendMessage(player, ChatColor.AQUA + "Whoosh!");
 				}
@@ -98,6 +94,16 @@ public class PlayerInteract implements Listener {
 		                	if (r == 7) {
 		                		items[i] = new ItemStack(Material.GLASS_BOTTLE, amt);
 		                	}
+		                	if (r == 8) {
+		                		items[i] = new ItemStack(Material.STICK, amt);
+		                	}
+		                	if (r == 9) {
+		                		items[i] = new ItemStack(Material.DIAMOND, amt);
+		                	}
+		                	if ((r == 10) || (r == 11)) {
+		                		// TODO Spawn Experience
+		                		//event.getPlayer().getLocation().getWorld().spawnCreature(event.getPlayer().getLocation(), EntityType.EXPERIENCE_ORB);
+		                	}
 		                }
 		                inventory.setContents(items);
 		                event.getPlayer().openInventory(inventory);
@@ -117,6 +123,14 @@ public class PlayerInteract implements Listener {
 				}
 			}
 		}
+	}
+	
+	private void buffPlayer(Player player) {
+		war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + player.getName() + " got a buff from the Magical Temple!");
+		player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
+		player.setExp(player.getExp() + 300F);
+		// Once more to update!
+		player.setExp(player.getExp());
 	}
 
 }
