@@ -19,14 +19,13 @@ public class Armor {
 	public void armorUp(final Player player) {
 		war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 		    public void run() {
-		    	player.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+		    	war.color.setHelmet(player, war.teamhelpers.teamName(player));
 				player.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
 				player.getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
 				player.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
-				
-				Random rand = new Random();
-				int lolrandom = rand.nextInt(11);
-				if (lolrandom == 10) {
+				Random random = new Random();
+				int rand = random.nextInt(11);
+				if (rand == 10) {
 					player.getInventory().addItem(new ItemStack(Material.TNT, 64));
 					war.sendMessage(player, ChatColor.GOLD + "You have special EXPLODING abilities!");
 					war.getServer().broadcastMessage(war.getMessage() + ChatColor.GOLD + player.getName() + " might just explode you... stay away!");

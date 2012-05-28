@@ -8,11 +8,41 @@ import org.bukkit.inventory.ItemStack;
 import tk.nekotech.war.War;
 
 public class Color {
-	@SuppressWarnings("unused")
 	private War war;
 	
 	public Color(War war) {
 		this.war = war;
+	}
+	
+	public void setHelmet(Player player) {
+		int teamID = war.teamhelpers.teamName(player);
+		switch (teamID) {
+			case 0:
+				player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 11));
+				break;
+			case 1:
+				player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 14));
+				break;
+			case 9:
+				player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 8));
+				break;
+		}
+	}
+	
+	public void setHelmet(Player player, int id) {
+		switch (id) {
+			case 0:
+				player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 11));
+				break;
+			case 1:
+				player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 14));
+				break;
+			case 9:
+				player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 8));
+				break;
+			case 2:
+				player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 2));
+		}
 	}
 	
 	public void setColor(ColorChoice color, Player player) {
@@ -24,22 +54,25 @@ public class Color {
 			name = player.getName().substring(0, 14);
 		}
 		boolean setName = true;
-		ChatColor c = ChatColor.GRAY;
-		if (color == ColorChoice.BLU) {
-			player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 11));
-			c = ChatColor.BLUE;
-		}
-		if (color == ColorChoice.RED) {
-			player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 14));
-			c = ChatColor.RED;
-		}
-		if (color == ColorChoice.PURPLE) {
-			player.getInventory().setHelmet(new ItemStack(Material.WOOD, 1, (byte) 10));
-			c = ChatColor.LIGHT_PURPLE;
-			setName = false;
-		}
-		if (color == ColorChoice.GRAY) {
-			player.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (byte) 8));
+		ChatColor c = null;
+		switch (color) {
+			case BLU:
+				c = ChatColor.BLUE;
+				setHelmet(player, 0);
+				break;
+			case RED:
+				c = ChatColor.RED;
+				setHelmet(player, 1);
+				break;
+			case PURPLE:
+				c = ChatColor.LIGHT_PURPLE;
+				setName = false;
+				setHelmet(player, 2);
+				break;
+			case GRAY:
+				c = ChatColor.GRAY;
+				setHelmet(player, 9);
+				break;
 		}
 		if (setName) {
 			player.setDisplayName(c + player.getName() + ChatColor.WHITE);

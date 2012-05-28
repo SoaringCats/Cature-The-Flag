@@ -43,7 +43,7 @@ public class AdminCommands extends MasterCommand {
 					}
 				} else {
 					if ((args.length == 1) && ((args[0].equalsIgnoreCase("a") || (args[0].equalsIgnoreCase("announce"))))) {
-						war.getServer().broadcastMessage(ChatColor.RED + war.getMessage() + " " + player.getName() + " is an administrator, listen to them!");
+						war.getServer().broadcastMessage(ChatColor.RED + war.getMessage() + ChatColor.LIGHT_PURPLE + player.getName() + " is an administrator, listen to them!");
 					}
 					war.admins.add(player);
 					war.messageAdmins(ChatColor.RED + player.getName() + " enables ADMIN MODE.");

@@ -104,6 +104,9 @@ public class TeamHelpers {
 	}
 	
 	public int teamName(Player player) {
+		if (war.admins.contains(player)) {
+			return 2;
+		}
 		if (war.blu.contains(player)) {
 			return 0;
 		}

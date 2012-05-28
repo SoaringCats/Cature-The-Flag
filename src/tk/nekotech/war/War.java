@@ -150,15 +150,15 @@ public class War extends JavaPlugin {
 	}
 	
 	public String getMessage() {
-		return String.valueOf('|') + String.valueOf(ChatColor.STRIKETHROUGH) + String.valueOf('|') + String.valueOf(ChatColor.RESET);
+		return String.valueOf('|') + String.valueOf(ChatColor.STRIKETHROUGH) + String.valueOf('|') + String.valueOf(ChatColor.RESET) + " ";
 	}
 	
 	public void sendMessage(Player player, String message) {
-		player.sendMessage(ChatColor.GRAY + getMessage() + " " + message);
+		player.sendMessage(ChatColor.GRAY + getMessage() + message);
 	}
 	
 	public void sendMessage(CommandSender sender, String message) {
-		sender.sendMessage(ChatColor.GRAY + getMessage() + " " + message);
+		sender.sendMessage(ChatColor.GRAY + getMessage() + message);
 	}
 	
 	public void messageAdmins(String message) {
