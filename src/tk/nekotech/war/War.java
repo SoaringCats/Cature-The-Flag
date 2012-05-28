@@ -58,6 +58,7 @@ public class War extends JavaPlugin {
 	public ArrayList<Player> blu;
 	public ArrayList<Player> red;
 	public ArrayList<Player> inventory;
+	public ArrayList<Player> admins;
 	
 	public int on = 0;
 	public int max = 0;
@@ -105,6 +106,7 @@ public class War extends JavaPlugin {
 		blu = new ArrayList<Player>();
 		red = new ArrayList<Player>();
 		inventory = new ArrayList<Player>();
+		admins = new ArrayList<Player>();
 		
 		if (!getConfig().getBoolean("has-started")) {
 			getLogger().warning("This is the first logged startup event (did you clear your config?)");
@@ -154,6 +156,13 @@ public class War extends JavaPlugin {
 	public void messageAdmins(String message) {
 		for (Player player : getServer().getOnlinePlayers()) {
 			player.sendMessage(getMessage() + message);
+		}
+		getLogger().info(message);
+	}
+	
+	public void adminMode(String message) {
+		for (int i = 0; i < admins.size(); i++) {
+			sendMessage(admins.get(i), message);
 		}
 		getLogger().info(message);
 	}

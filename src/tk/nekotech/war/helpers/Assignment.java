@@ -51,7 +51,7 @@ public class Assignment {
 	
 	public void assignClass(final Player player) {
 		Random rand = new Random();
-		int classID = rand.nextInt(5);
+		int classID = rand.nextInt(4);
 		player.getInventory().clear();
 		if (classID == 0) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
@@ -104,7 +104,7 @@ public class Assignment {
 			    }
 			}, 10L);
 		}
-		if (classID == 4) {
+		/*if (classID == 4) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
 			    	war.potions.addEffect(player, PotionEffectType.FIRE_RESISTANCE, 999999999, 3);
@@ -125,7 +125,7 @@ public class Assignment {
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
-		}
+		}*/
 	}
 
 }

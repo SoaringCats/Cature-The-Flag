@@ -24,8 +24,13 @@ public class BlockBreak implements Listener {
 		}
 		if (event.isCancelled()) {
 			if (event.getBlock().getState() instanceof Sign) {
-				Sign sign = (Sign) event.getBlock();
-				sign.update();
+				final Sign sign = (Sign) event.getBlock();
+				war.getServer().getScheduler().scheduleSyncDelayedTask(war, new Runnable() {
+					@Override
+					public void run() {
+						sign.update();
+					}
+				}, 20L);
 			}
 		}
 	}

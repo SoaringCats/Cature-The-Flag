@@ -28,7 +28,6 @@ public class PlayerInteract implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
         Random random = new Random();
-		boolean blockCreative = false;
 		if (event.getClickedBlock() != null) {
 			if (event.getClickedBlock().getState() instanceof Sign) {
 				Sign sign = (Sign) event.getClickedBlock().getState();
@@ -39,7 +38,6 @@ public class PlayerInteract implements Listener {
 					}
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[BLU]")) {
-					blockCreative = true;
 					if (war.teamhelpers.teamName(player) == 0) {
 						war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + event.getPlayer().getName() + " got a buff from the Magical Temple!");
 						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
@@ -51,7 +49,6 @@ public class PlayerInteract implements Listener {
 					}
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[RED]")) {
-					blockCreative = true;
 					if (war.teamhelpers.teamName(player) == 1) {
 						war.getServer().broadcastMessage(war.getMessage() + ChatColor.AQUA + event.getPlayer().getName() + " got a buff from the Magical Temple!");
 						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 1));
@@ -63,15 +60,12 @@ public class PlayerInteract implements Listener {
 					}
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[JKS]")) {
-					blockCreative = true;
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HARM, 600, 2));
 					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 600, 2));
 					war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
 					war.sendMessage(player, ChatColor.AQUA + "Whoosh!");
-					blockCreative = true;
 				}
-				if (ChatColor.stripColor(sign.getLine(1)).equals("It's good")) {
-					blockCreative = true;
+				if (ChatColor.stripColor(sign.getLine(1)).equals("It's good to")) {
 	                final Inventory inventory = war.getServer().createInventory(event.getPlayer(), 27);
 	                ItemStack[] items = new ItemStack[27];
 	                if (random.nextBoolean()) {
@@ -114,7 +108,6 @@ public class PlayerInteract implements Listener {
 	                }
 				}
 				if (ChatColor.stripColor(sign.getLine(1)).equals("You might find")) {
-					blockCreative = true;
 					if (random.nextBoolean()) {
 						event.getPlayer().openWorkbench(null, true);
 					} else {
@@ -124,7 +117,6 @@ public class PlayerInteract implements Listener {
 				}
 			}
 		}
-		event.setCancelled(blockCreative);
 	}
 
 }
