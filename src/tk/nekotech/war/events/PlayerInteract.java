@@ -60,8 +60,8 @@ public class PlayerInteract implements Listener {
 					}
 				}
 				if (ChatColor.stripColor(sign.getLine(0)).equals("[JKS]")) {
-					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HARM, 600, 2));
-					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 600, 2));
+					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HARM, 600, 1));
+					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 600, 1));
 					war.teamhelpers.toSpawn(player, war.teamhelpers.teamName(player));
 					war.sendMessage(player, ChatColor.AQUA + "Whoosh!");
 				}
