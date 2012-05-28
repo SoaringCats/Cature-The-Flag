@@ -35,14 +35,23 @@ public class Gen extends ChunkGenerator {
 		int x, y, z;
 		for (x = 0; x < 16; ++x) {
 			for (z = 0; z < 16; ++z) {
+				blocks[coords(x, 0, z)] = (byte) Material.AIR.getId();
+				for (y = 1; y < 16; ++y) {
+					blocks[coords(x, y, z)] = (byte) Material.AIR.getId();
+				}
+				blocks[coords(x, 16, z)] = (byte) Material.AIR.getId();
+			}
+		}
+		return blocks;
+		/*for (x = 0; x < 16; ++x) {
+			for (z = 0; z < 16; ++z) {
 				blocks[coords(x, 0, z)] = (byte) Material.BEDROCK.getId();
 				for (y = 1; y < 16; ++y) {
 					blocks[coords(x, y, z)] = (byte) Material.DIRT.getId();
 				}
 				blocks[coords(x, 16, z)] = (byte) Material.GRASS.getId();
 			}
-		}
-		return blocks;
+		}*/
 	}
 
 }
