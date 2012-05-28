@@ -20,6 +20,13 @@ public class EntityDamageByEntity implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+		if (event.getEntity() instanceof Player) {
+			Player damaged = (Player) event.getEntity();
+			if (war.admins.contains(damaged)) {
+				event.setCancelled(true);
+				return;
+			}
+		}
 		if (event.getDamager() instanceof Arrow) {
 			Arrow arrow = (Arrow) event.getDamager();
 			if (arrow.getShooter() instanceof Player) {

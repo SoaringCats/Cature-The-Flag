@@ -2,6 +2,8 @@ package tk.nekotech.war.events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -38,6 +40,10 @@ public class PlayerJoin implements Listener {
 			if (player.hasPermission("jtwar.admin")) {
 				war.sendMessage(player, ChatColor.RED + "[jtWar] Teleporting you to spawn immediately to setup new map.");
 				war.sendMessage(player, ChatColor.RED + "[jtWar] Please set new spawn points with /blu and /red");
+				int y = player.getWorld().getSpawnLocation().getBlockY() - 1;
+				Location loc = player.getLocation().clone();
+				loc.setY(y);
+				player.getWorld().getBlockAt(loc).setType(Material.STONE);
 				player.teleport(player.getWorld().getSpawnLocation());
 				player.setGameMode(GameMode.CREATIVE);
 			}

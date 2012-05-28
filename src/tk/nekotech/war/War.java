@@ -1,8 +1,10 @@
 package tk.nekotech.war;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,6 +12,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import tk.nekotech.war.commands.AdminCommands;
 import tk.nekotech.war.commands.JoinCommand;
 import tk.nekotech.war.commands.SetupCommands;
 import tk.nekotech.war.commands.WarCommand;
@@ -22,10 +25,10 @@ import tk.nekotech.war.events.EntityDamage;
 import tk.nekotech.war.events.EntityDamageByEntity;
 import tk.nekotech.war.events.EntityDeath;
 import tk.nekotech.war.events.EntityExplode;
-import tk.nekotech.war.events.ExplosionPrime;
 import tk.nekotech.war.events.InventoryClick;
 import tk.nekotech.war.events.InventoryClose;
 import tk.nekotech.war.events.PlayerChat;
+import tk.nekotech.war.events.PlayerDeath;
 import tk.nekotech.war.events.PlayerDropItem;
 import tk.nekotech.war.events.PlayerInteract;
 import tk.nekotech.war.events.PlayerJoin;
@@ -65,13 +68,18 @@ public class War extends JavaPlugin {
 	public int dead = 0;
 	
 	public void onEnable() {
-		getCommand("war").setExecutor(new WarCommand(this));
+		getCommand("kick").setExecutor(new AdminCommands(this));
+		getCommand("ban").setExecutor(new AdminCommands(this));
+		getCommand("unban").setExecutor(new AdminCommands(this));
+		getCommand("admin").setExecutor(new AdminCommands(this));
+		getCommand("smite").setExecutor(new AdminCommands(this));
 		getCommand("join").setExecutor(new JoinCommand(this));
 		getCommand("blu").setExecutor(new SetupCommands(this));
 		getCommand("red").setExecutor(new SetupCommands(this));
 		getCommand("ready").setExecutor(new SetupCommands(this));
 		getCommand("spectate").setExecutor(new SetupCommands(this));
 		getCommand("reset").setExecutor(new SetupCommands(this));
+		getCommand("war").setExecutor(new WarCommand(this));
 		
 		PluginManager p = getServer().getPluginManager();
 		p.registerEvents(new BlockBreak(this), this);
@@ -83,10 +91,10 @@ public class War extends JavaPlugin {
 		p.registerEvents(new EntityDamageByEntity(this), this);
 		p.registerEvents(new EntityDeath(this), this);
 		p.registerEvents(new EntityExplode(), this);
-		p.registerEvents(new ExplosionPrime(), this);
 		p.registerEvents(new InventoryClick(), this);
 		p.registerEvents(new InventoryClose(this), this);
 		p.registerEvents(new PlayerChat(this), this);
+		p.registerEvents(new PlayerDeath(this), this);
 		p.registerEvents(new PlayerDropItem(), this);
 		p.registerEvents(new PlayerInteract(this), this);
 		p.registerEvents(new PlayerJoin(this), this);
@@ -164,7 +172,22 @@ public class War extends JavaPlugin {
 		for (int i = 0; i < admins.size(); i++) {
 			sendMessage(admins.get(i), message);
 		}
-		getLogger().info(message);
+	}
+	
+	public void smitePlayer(final Player player) {
+		final Location origLoc = player.getLocation();
+		final Random random = new Random();
+        for (int i = 0; i < 15; i++) {
+            this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+                public void run() {
+                    Location loc = origLoc.clone();
+                    loc.setX(loc.getX() + random.nextDouble() * 20 - 10);
+                    loc.setZ(loc.getZ() + random.nextDouble() * 20 - 10);
+                    player.getWorld().strikeLightning(loc);
+                    player.getWorld().createExplosion(loc, 0);
+                }
+            }, Math.max(0, i * 3 + random.nextInt(10) - 5));
+        }
 	}
 
 }

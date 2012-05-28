@@ -19,8 +19,13 @@ public class EntityDamage implements Listener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
-			if (war.monster.contains(player))
+			if (war.admins.contains(player)) {
+				event.setCancelled(true);
+				return;
+			}
+			if (war.monster.contains(player)) {
 				player.getWorld().playEffect(player.getLocation(), Effect.GHAST_SHRIEK, 100);
+			}
 		}
 	}
 

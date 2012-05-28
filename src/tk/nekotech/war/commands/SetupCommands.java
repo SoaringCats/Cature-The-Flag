@@ -18,7 +18,7 @@ public class SetupCommands extends MasterCommand {
 
 	@Override
 	public boolean doCommand(CommandSender sender, String command, String[] args, boolean realPlayer, Player player) {
-		if (command.equals("blu")) {
+		if (command.equalsIgnoreCase("blu")) {
 			if (sender.hasPermission("jtwar.admin")) {
 				if (realPlayer) {
 					int x = (int) player.getLocation().getX();
@@ -40,7 +40,7 @@ public class SetupCommands extends MasterCommand {
 			}
 		}
 		
-		if (command.equals("red")) {
+		if (command.equalsIgnoreCase("red")) {
 			if (sender.hasPermission("jtwar.admin")) {
 				if (realPlayer) {
 					int x = (int) player.getLocation().getX();
@@ -62,7 +62,7 @@ public class SetupCommands extends MasterCommand {
 			}
 		}
 		
-		if (command.equals("spectate")) {
+		if (command.equalsIgnoreCase("spectate")) {
 			if (realPlayer) {
 				if (sender.hasPermission("jtwar.admin")) {
 					int x = (int) player.getLocation().getX();
@@ -84,7 +84,7 @@ public class SetupCommands extends MasterCommand {
 			}
 		}
 		
-		if (command.equals("ready")) {
+		if (command.equalsIgnoreCase("ready")) {
 			if (sender.hasPermission("jtwar.admin")) {
 				if (realPlayer) {
 					war.getConfig().set("has-started", true);
@@ -114,7 +114,7 @@ public class SetupCommands extends MasterCommand {
 			}
 		}
 		
-		if (command.equals("reset")) {
+		if (command.equalsIgnoreCase("reset")) {
 			if (sender.hasPermission("jtwar.admin")) {
 				war.getConfig().set("has-started", false);
 				war.getConfig().set("ready-to-go", false);
