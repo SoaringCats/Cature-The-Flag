@@ -17,9 +17,8 @@ public class PlayerKick implements Listener {
 	
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {
+		war.afk.remove(event.getPlayer());
 		event.setLeaveMessage(null);
-		war.on--;
-		war.online.remove(event.getPlayer().getName());
 		if (war.red.contains(event.getPlayer().getName())) war.red.remove(event.getPlayer().getName());
 		if (war.blu.contains(event.getPlayer().getName())) war.blu.remove(event.getPlayer().getName());
 		if (war.pyro.contains(event.getPlayer().getName())) war.pyro.remove(event.getPlayer().getName());
@@ -30,9 +29,9 @@ public class PlayerKick implements Listener {
 		}
 		for (Player player : war.getServer().getOnlinePlayers()) {
 			if (player.hasPermission("jtwar.admin")) {
-				war.sendMessage(player, ChatColor.RED + " - " + ChatColor.BOLD + event.getPlayer().getName() + ChatColor.RESET + ChatColor.RED + ": " + event.getReason());
+				war.sendMessage(player, ChatColor.RED + "- " + ChatColor.BOLD + event.getPlayer().getName() + ChatColor.RESET + ChatColor.RED + ": " + event.getReason());
 			} else {
-				war.sendMessage(player, ChatColor.RED + " - " + ChatColor.BOLD + event.getPlayer().getName());
+				war.sendMessage(player, ChatColor.RED + "- " + ChatColor.BOLD + event.getPlayer().getName());
 			}
 		}
 	}

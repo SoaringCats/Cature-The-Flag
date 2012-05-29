@@ -21,11 +21,10 @@ public class PlayerJoin implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerJoin(final PlayerJoinEvent event) {
+		war.afk.put(event.getPlayer(), System.currentTimeMillis());
 		final Player player = event.getPlayer();
 		war.teamhelpers.toSpawn(player, 9);
 		war.teamhelpers.clearTeams(player);
-		war.on++;
-		war.online.add(player);
 		if (!player.hasPlayedBefore()) {
 			war.getServer().getScheduler().scheduleSyncDelayedTask(war, new Runnable() {
 				@Override
@@ -38,8 +37,8 @@ public class PlayerJoin implements Listener {
 			war.teamhelpers.toSpawn(player, 9);
 		} else {
 			if (player.hasPermission("jtwar.admin")) {
-				war.sendMessage(player, ChatColor.RED + "[jtWar] Teleporting you to spawn immediately to setup new map.");
-				war.sendMessage(player, ChatColor.RED + "[jtWar] Please set new spawn points with /blu and /red");
+				war.sendMessage(player, ChatColor.RED + "Teleporting you to spawn immediately to setup new map.");
+				war.sendMessage(player, ChatColor.RED + "Please set new spawn points with /blu and /red");
 				int y = player.getWorld().getSpawnLocation().getBlockY() - 1;
 				Location loc = player.getLocation().clone();
 				loc.setY(y);
@@ -48,7 +47,7 @@ public class PlayerJoin implements Listener {
 				player.setGameMode(GameMode.CREATIVE);
 			}
 		}
-		event.setJoinMessage(war.getMessage() + ChatColor.GREEN + " + " + ChatColor.BOLD + player.getName());
+		event.setJoinMessage(war.getMessage() + ChatColor.GREEN + "+ " + ChatColor.BOLD + player.getName());
 		war.sendMessage(player, ChatColor.RED + "Welcome to the war! To join type /join");
 		war.sendMessage(player, ChatColor.RED + "For more information say /war");
 	}

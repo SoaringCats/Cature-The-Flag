@@ -28,9 +28,14 @@ public class BlockBreak implements Listener {
 				war.getServer().getScheduler().scheduleSyncDelayedTask(war, new Runnable() {
 					@Override
 					public void run() {
+						// Attempt to fix signs not displaying any text to any players when broken and replaced by plugins.
+						sign.setLine(0, sign.getLine(0));
+						sign.setLine(1, sign.getLine(1));
+						sign.setLine(2, sign.getLine(2));
+						sign.setLine(3, sign.getLine(3));
 						sign.update();
 					}
-				}, 20L);
+				}, 10L);
 			}
 		}
 	}

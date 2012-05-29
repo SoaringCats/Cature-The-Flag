@@ -24,6 +24,10 @@ public class EntityDamageByEntity implements Listener {
 			Player damaged = (Player) event.getEntity();
 			if (war.admins.contains(damaged)) {
 				event.setCancelled(true);
+				if (event.getDamager() instanceof Player) {
+					Player damager = (Player) event.getDamager();
+					war.sendMessage(damager, ChatColor.BLUE + "This administrator is in administrator mode and cannot be harmed!");
+				}
 				return;
 			}
 		}

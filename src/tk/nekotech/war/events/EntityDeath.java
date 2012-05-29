@@ -100,7 +100,6 @@ public class EntityDeath implements Listener {
 		if (event.getEntity().getLastDamageCause().getCause() == DamageCause.SUICIDE) {
 			event.setDroppedExp(0);
 			event.getDrops().clear();
-			event.getDrops().add(new ItemStack(Material.TNT, 1));
 		}
 		if (event.getEntity().getLastDamageCause().getCause() == DamageCause.VOID) {
 			event.setDroppedExp(0);

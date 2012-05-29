@@ -1,6 +1,7 @@
 package tk.nekotech.war;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
@@ -45,6 +46,8 @@ import tk.nekotech.war.helpers.Color;
 import tk.nekotech.war.helpers.Mob;
 import tk.nekotech.war.helpers.Potions;
 import tk.nekotech.war.helpers.TeamHelpers;
+import tk.nekotech.war.runnables.AFKCheck;
+import tk.nekotech.war.runnables.Weather;
 
 public class War extends JavaPlugin {
 	
@@ -55,17 +58,13 @@ public class War extends JavaPlugin {
 	public Potions potions = new Potions(this);
 	public TeamHelpers teamhelpers = new TeamHelpers(this);
 	
-	public ArrayList<Player> online;
 	public ArrayList<Player> pyro;
 	public ArrayList<Player> monster;
 	public ArrayList<Player> blu;
 	public ArrayList<Player> red;
 	public ArrayList<Player> inventory;
 	public ArrayList<Player> admins;
-	
-	public int on = 0;
-	public int max = 0;
-	public int dead = 0;
+	public HashMap<Player, Long> afk;
 	
 	public void onEnable() {
 		getCommand("kick").setExecutor(new AdminCommands(this));
@@ -106,30 +105,25 @@ public class War extends JavaPlugin {
 		p.registerEvents(new SignChange(), this);
 		p.registerEvents(new WeatherChange(), this);
 		
-		max = getServer().getMaxPlayers();
-		
-		online = new ArrayList<Player>();
 		pyro = new ArrayList<Player>();
 		monster = new ArrayList<Player>();
 		blu = new ArrayList<Player>();
 		red = new ArrayList<Player>();
 		inventory = new ArrayList<Player>();
 		admins = new ArrayList<Player>();
+		afk = new HashMap<Player, Long>();
 		
 		if (!getConfig().getBoolean("has-started")) {
 			getLogger().warning("This is the first logged startup event (did you clear your config?)");
 			getLogger().warning("Please make sure you set the coordinates for the new spawn areas.");
 		}
-		getLogger().info("Please do not modify the config as it changes often during gameplay.");
+		getLogger().info("****************************************");
+		getLogger().info("DO NOT MODIFY THE CONFIG DURING GAMEPLAY");
+		getLogger().info("DOING SO WILL ROYALLY FUCK THINGS UP! D:");
+		getLogger().info("****************************************");
 		
-		
-		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-			public void run() {
-				for (World world : getServer().getWorlds()) {
-					world.setTime(14000);
-				}
-			}
-		}, 4800L, 4800L);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new AFKCheck(this), 1200L, 1200L);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Weather(this), 4800L, 4800L);
 		
 		for (World world : getServer().getWorlds()) {
 			world.setTime(14000);
@@ -137,7 +131,7 @@ public class War extends JavaPlugin {
 		}
 		
 		for (Player player : getServer().getOnlinePlayers()) {
-			player.kickPlayer(ChatColor.AQUA + "Please rejoin in 5 seconds :)");
+			player.kickPlayer("Please rejoin in 5 seconds :)");
 		}	
 	}
 	
@@ -177,7 +171,7 @@ public class War extends JavaPlugin {
 	public void smitePlayer(final Player player) {
 		final Location origLoc = player.getLocation();
 		final Random random = new Random();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 5; i++) {
             this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
                 public void run() {
                     Location loc = origLoc.clone();

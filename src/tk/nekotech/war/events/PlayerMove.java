@@ -1,5 +1,7 @@
 package tk.nekotech.war.events;
 
+import java.util.Date;
+
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -17,6 +19,7 @@ public class PlayerMove implements Listener {
 	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
+		war.afk.put(event.getPlayer(), (new Date()).getTime());
 		Location oldLoc = event.getPlayer().getLocation();
 		Location newLoc = oldLoc;
 		newLoc.setY(newLoc.getY() + 1);

@@ -18,7 +18,7 @@ public class PlayerDeath implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		war.getLogger().info(event.getEntity().getName() + " died: " + event.getDeathMessage());
 		war.smitePlayer(event.getEntity());
-		event.setDeathMessage(war.getMessage() + ChatColor.AQUA + " " + event.getDeathMessage());
+		event.setDeathMessage(war.getMessage() + ChatColor.AQUA + event.getDeathMessage());
 	}
 
 }

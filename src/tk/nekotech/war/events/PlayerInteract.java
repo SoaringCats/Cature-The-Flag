@@ -1,12 +1,12 @@
 package tk.nekotech.war.events;
 
+import java.util.Date;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +28,7 @@ public class PlayerInteract implements Listener {
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		war.afk.put(event.getPlayer(), (new Date()).getTime());
         Random random = new Random();
 		if (event.getClickedBlock() != null) {
 			if (event.getClickedBlock().getState() instanceof Sign) {
