@@ -1,4 +1,4 @@
-package tk.nekotech.war.events;
+package tk.nekotech.war.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
