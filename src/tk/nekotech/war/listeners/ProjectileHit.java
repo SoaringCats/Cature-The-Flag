@@ -28,9 +28,12 @@ public class ProjectileHit implements Listener {
 			Egg egg = (Egg) event.getEntity();
 			if (egg.getShooter() instanceof Player && war.medic.contains((Player) egg.getShooter())) {
 				egg.getLocation().getWorld().createExplosion(egg.getLocation(), 0);
-				for (Entity entity : egg.getNearbyEntities(100D, 100D, 100D)) {
+				for (Entity entity : egg.getNearbyEntities(10D, 10D, 10D)) {
 					if (entity instanceof Player) {
-						((Player) entity).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 300, 1));
+						Player player = (Player) entity;
+						if (!war.teamhelpers.sameTeam((Player) egg.getShooter(), player)) {
+							player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 300, 1));
+						}
 					}
 				}
 			}
