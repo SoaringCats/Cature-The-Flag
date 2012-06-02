@@ -1,7 +1,6 @@
 package tk.nekotech.war.listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,66 +19,60 @@ public class EntityDamageByEntity implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		if (event.getEntity() instanceof Player) {
-			Player damaged = (Player) event.getEntity();
-			if (war.admins.contains(damaged)) {
-				event.setCancelled(true);
-				if (event.getDamager() instanceof Player) {
-					Player damager = (Player) event.getDamager();
-					war.sendMessage(damager, ChatColor.BLUE + "This administrator is in administrator mode and cannot be harmed!");
-				}
-				return;
+		if (event.getEntity() instanceof Player && war.admins.contains((Player) event.getEntity())) {
+			event.setCancelled(true);
+			if (event.getDamager() instanceof Player) {
+				war.sendMessage((Player) event.getDamager(), ChatColor.AQUA + "You cannot harm this administrator!");
 			}
+			return;
+		}
+		if (event.getDamager() instanceof Player && war.medic.contains((Player) event.getDamager()) && event.getEntity() instanceof Player) {
+			Player damager = (Player) event.getDamager();
+			Player damaged = (Player) event.getEntity();
+			if (war.teamhelpers.sameTeam(damager, damaged)) {
+				war.sendMessage(damaged, ChatColor.AQUA + "You were healed by " + damager.getName());
+				war.sendMessage(damager, ChatColor.AQUA + "Healed " + damaged.getName() + "!");
+				damaged.setHealth(20);
+			} else {
+				war.sendMessage(damager, ChatColor.AQUA + "You can't heal someone on the opposite team!");
+			}
+			event.setCancelled(true);
+			return;
+		}
+		if (event.getEntity() instanceof Player && war.medic.contains((Player) event.getEntity())) {
+			event.setDamage(event.getDamage() / 2);
 		}
 		if (event.getDamager() instanceof Arrow) {
-			Arrow arrow = (Arrow) event.getDamager();
-			if (arrow.getShooter() instanceof Player) {
-				Player shooter = (Player) arrow.getShooter();
-				if (event.getEntity() instanceof Player) {
-					Player damaged = (Player) event.getEntity();
-					if ((!war.blu.contains(damaged)) && (!war.red.contains(damaged))) {
-						event.setCancelled(true);
-						damaged.setFireTicks(0);
-						war.sendMessage(shooter, ChatColor.GRAY + "You can't hurt a spectator!");
-					}
-					if ((war.blu.contains(shooter)) && (war.blu.contains(damaged))) {
-						event.setCancelled(true);
-						damaged.setFireTicks(0);
-						war.sendMessage(shooter, ChatColor.BLUE + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.BLUE + "!");
-					} else if ((war.red.contains(shooter)) && (war.red.contains(damaged))) {
-						event.setCancelled(true);
-						shooter.sendMessage(ChatColor.RED + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.RED + "!");
-						damaged.setFireTicks(0);
-					}
+			Player shooter = (Player) ((Arrow) event.getDamager()).getShooter();
+			if (shooter instanceof Player && event.getEntity() instanceof Player) {
+				if (!handleDamage(shooter, (Player) event.getEntity())) {
+					event.setCancelled(true);
 				}
 			}
 		}
-		if (event.getDamager() instanceof Player) {
-			Player player = (Player) event.getDamager();
-			if (war.pyro.contains(player)) {
-				event.getEntity().setFireTicks(40);
-			}
-			if (war.monster.contains(player)) {
-				player.getWorld().playEffect(player.getLocation(), Effect.GHAST_SHOOT, 100);
-			}
-			if (event.getEntity() instanceof Player) {
-				Player damaged = (Player) event.getEntity();
-				if ((!war.blu.contains(damaged)) && (!war.red.contains(damaged))) {
-					event.setCancelled(true);
-					damaged.setFireTicks(0);
-					war.sendMessage(player, ChatColor.GRAY + "You can't hurt a spectator!");
+		if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+			Player damager = (Player) event.getDamager();
+			Player damaged = (Player) event.getEntity();
+			if (handleDamage(damager, damaged)) {
+				if (war.pyro.contains(damager)) {
+					damaged.setFireTicks(40);
 				}
-				if ((war.blu.contains(player)) && (war.blu.contains(damaged))) {
-					event.setCancelled(true);
-					damaged.setFireTicks(0);
-					war.sendMessage(player, ChatColor.BLUE + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.BLUE + "!");
-				} else if ((war.red.contains(player)) && (war.red.contains(damaged))) {
-					event.setCancelled(true);
-					war.sendMessage(player, ChatColor.RED + "You can't hurt your teammate " + damaged.getDisplayName() + ChatColor.RED + "!");
-					damaged.setFireTicks(0);
-				}
+			} else {
+				event.setCancelled(true);
 			}
 		}
+	}
+	
+	private boolean handleDamage(Player damager, Player damaged) {
+		if (!war.teamhelpers.onTeam(damaged)) {
+			war.sendMessage(damager, ChatColor.AQUA + "You cannot hurt a spectator!");
+			return false;
+		}
+		if (war.teamhelpers.sameTeam(damager, damaged)) {
+			war.sendMessage(damager, ChatColor.AQUA + "You cannot hurt players on your team!");
+			return false;
+		}
+		return true;
 	}
 
 }

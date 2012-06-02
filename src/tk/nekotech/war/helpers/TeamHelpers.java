@@ -53,9 +53,7 @@ public class TeamHelpers {
 	}
 	
 	public boolean onTeam(Player player) {
-		if ((war.blu.contains(player)) || (war.red.contains(player)))
-			return true;
-		return false;		
+		return war.blu.contains(player) || war.red.contains(player);
 	}
 	
 	public void clearTeams(Player player) {
@@ -139,6 +137,10 @@ public class TeamHelpers {
 			float spitch = war.getConfig().getInt("spec-spawn-pitch");
 			player.teleport(new Location(player.getWorld(), sx, sy, sz, syaw, spitch));
 		}
+	}
+	
+	public boolean sameTeam(Player one, Player two) {
+		return ((war.blu.contains(one) && war.blu.contains(two)) || (war.red.contains(one) && war.red.contains(two)));
 	}
 
 }

@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
@@ -47,7 +48,8 @@ import tk.nekotech.war.listeners.ProjectileHit;
 import tk.nekotech.war.listeners.SignChange;
 import tk.nekotech.war.listeners.WeatherChange;
 import tk.nekotech.war.runnables.AFKCheck;
-import tk.nekotech.war.runnables.Weather;
+import tk.nekotech.war.runnables.ArrowRemoval;
+import tk.nekotech.war.runnables.Time;
 
 public class War extends JavaPlugin {
 	
@@ -64,7 +66,9 @@ public class War extends JavaPlugin {
 	public ArrayList<Player> red;
 	public ArrayList<Player> inventory;
 	public ArrayList<Player> admins;
+	public ArrayList<Player> medic;
 	public HashMap<Player, Long> afk;
+	public ArrayList<Arrow> arrows;
 	
 	public void onEnable() {
 		getCommand("kick").setExecutor(new AdminCommands(this));
@@ -103,7 +107,7 @@ public class War extends JavaPlugin {
 		p.registerEvents(new PlayerRespawn(this), this);
 		p.registerEvents(new ProjectileHit(this), this);
 		p.registerEvents(new SignChange(), this);
-		p.registerEvents(new WeatherChange(), this);
+		p.registerEvents(new WeatherChange(this), this);
 		
 		pyro = new ArrayList<Player>();
 		monster = new ArrayList<Player>();
@@ -111,7 +115,9 @@ public class War extends JavaPlugin {
 		red = new ArrayList<Player>();
 		inventory = new ArrayList<Player>();
 		admins = new ArrayList<Player>();
+		medic = new ArrayList<Player>();
 		afk = new HashMap<Player, Long>();
+		arrows = new ArrayList<Arrow>();
 		
 		if (!getConfig().getBoolean("has-started")) {
 			getLogger().warning("This is the first logged startup event (did you clear your config?)");
@@ -123,7 +129,8 @@ public class War extends JavaPlugin {
 		getLogger().info("****************************************");
 		
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new AFKCheck(this), 1200L, 1200L);
-		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Weather(this), 4800L, 4800L);
+		getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ArrowRemoval(this), 40L, 40L);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Time(this), 4800L, 4800L);
 		
 		for (World world : getServer().getWorlds()) {
 			world.setTime(14000);

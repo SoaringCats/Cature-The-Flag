@@ -2,20 +2,17 @@ package tk.nekotech.war.runnables;
 
 import org.bukkit.World;
 
-import tk.nekotech.war.War;
-
 public class Weather implements Runnable {
-	private War war;
+	private World world;
 	
-	public Weather(War war) {
-		this.war = war;
+	public Weather(World world) {
+		this.world = world;
 	}
 
 	@Override
 	public void run() {
-		for (World world : war.getServer().getWorlds()) {
-			world.setTime(14000);
-		}
+		world.setStorm(false);
+		world.setThundering(false);
 	}
 
 }

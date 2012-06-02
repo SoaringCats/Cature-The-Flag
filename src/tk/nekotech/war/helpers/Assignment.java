@@ -28,6 +28,8 @@ public class Assignment {
 			war.pyro.remove(player);
 		if (war.monster.contains(player))
 			war.monster.remove(player);
+		if (war.medic.contains(player))
+			war.medic.remove(player);
 		
 		if (player.getGameMode() == GameMode.CREATIVE)
 			player.setGameMode(GameMode.SURVIVAL);
@@ -51,8 +53,9 @@ public class Assignment {
 	
 	public void assignClass(final Player player) {
 		Random rand = new Random();
-		int classID = rand.nextInt(4);
+		int classID = rand.nextInt(5);
 		player.getInventory().clear();
+		player.setNoDamageTicks(10);
 		if (classID == 0) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
 			    public void run() {
@@ -61,7 +64,6 @@ public class Assignment {
 			    	war.sendMessage(player, ChatColor.GOLD + "You are now a heavy!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().getItem(0).addEnchantment(Enchantment.DAMAGE_ALL, 2);
-					player.setNoDamageTicks(10);
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
@@ -73,7 +75,6 @@ public class Assignment {
 			    	war.sendMessage(player, ChatColor.GOLD + "You are now a scout!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
 					player.getInventory().getItem(0).addEnchantment(Enchantment.KNOCKBACK, 2);
-					player.setNoDamageTicks(10);
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
@@ -87,7 +88,6 @@ public class Assignment {
 					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
 					player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_INFINITE, 1);
 					player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_DAMAGE, 2);
-					player.setNoDamageTicks(10);
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
@@ -99,7 +99,19 @@ public class Assignment {
 					war.pyro.add(player);
 					war.sendMessage(player, ChatColor.GOLD + "You are now a pyro!");
 					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
-					player.setNoDamageTicks(10);
+					war.armor.armorUp(player);
+			    }
+			}, 10L);
+		}
+		if (classID == 4) {
+			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
+			    public void run() {
+			    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 2);
+					war.medic.add(player);
+					war.sendMessage(player, ChatColor.GOLD + "You are now a medic!");
+					war.teamhelpers.teamMessage(war.teamhelpers.teamName(player), "[AUTO] I am now a medic!");
+					player.getInventory().addItem(new ItemStack(Material.WOOD_SWORD, 1));
+					player.getInventory().addItem(new ItemStack(Material.EGG, 64));
 					war.armor.armorUp(player);
 			    }
 			}, 10L);
