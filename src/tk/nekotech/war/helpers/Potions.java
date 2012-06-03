@@ -23,5 +23,21 @@ public class Potions {
 			player.removePotionEffect(potion.getType());
 		}
 	}
+	
+	public boolean badPotion(PotionEffect effect) {
+		PotionEffectType type = effect.getType();
+		if ((type == PotionEffectType.BLINDNESS)
+				|| (type == PotionEffectType.CONFUSION)
+				|| (type == PotionEffectType.DAMAGE_RESISTANCE)
+				|| (type == PotionEffectType.HARM)
+				|| (type == PotionEffectType.HUNGER)
+				|| (type == PotionEffectType.POISON)
+				|| (type == PotionEffectType.SLOW)
+				|| (type == PotionEffectType.SLOW_DIGGING)
+				|| (type == PotionEffectType.WEAKNESS)) {
+			return true;
+		}
+		return false;
+	}
 
 }

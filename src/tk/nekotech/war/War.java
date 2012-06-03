@@ -44,6 +44,7 @@ import tk.nekotech.war.listeners.PlayerKick;
 import tk.nekotech.war.listeners.PlayerMove;
 import tk.nekotech.war.listeners.PlayerQuit;
 import tk.nekotech.war.listeners.PlayerRespawn;
+import tk.nekotech.war.listeners.PotionSplash;
 import tk.nekotech.war.listeners.ProjectileHit;
 import tk.nekotech.war.listeners.SignChange;
 import tk.nekotech.war.listeners.WeatherChange;
@@ -105,6 +106,7 @@ public class War extends JavaPlugin {
 		p.registerEvents(new PlayerMove(this), this);
 		p.registerEvents(new PlayerQuit(this), this);
 		p.registerEvents(new PlayerRespawn(this), this);
+		p.registerEvents(new PotionSplash(this), this);
 		p.registerEvents(new ProjectileHit(this), this);
 		p.registerEvents(new SignChange(), this);
 		p.registerEvents(new WeatherChange(this), this);

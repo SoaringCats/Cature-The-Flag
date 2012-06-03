@@ -14,9 +14,11 @@ import tk.nekotech.war.War;
 
 public class Assignment {
 	private War war;
+	Random rand;
 	
 	public Assignment(War war) {
 		this.war = war;
+		this.rand = new Random();
 	}
 	
 	public void assignPlayer(Player player, int team) {
@@ -51,70 +53,90 @@ public class Assignment {
 		}
 	}
 	
+	private void assignPotion(final Player player) {
+		if (rand.nextBoolean()) {
+			int random = rand.nextInt(10);
+			switch (random) {
+				case 0:
+					player.getInventory().getItem(8).setType(Material.POTION);
+					player.getInventory().getItem(8).setAmount(1);
+					player.getInventory().getItem(8).setDurability((short) 24580);
+					break;
+				case 1:
+					player.getInventory().getItem(8).setType(Material.POTION);
+					player.getInventory().getItem(8).setAmount(1);
+					player.getInventory().getItem(8).setDurability((short) 24585);
+					break;
+			}
+		}
+	}
+	
 	public void assignClass(final Player player) {
-		Random rand = new Random();
 		int classID = rand.nextInt(5);
 		player.getInventory().clear();
 		player.setNoDamageTicks(10);
-		if (classID == 0) {
-			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
-			    public void run() {
-			    	war.potions.addEffect(player, PotionEffectType.SLOW, 999999999, 2);
-			    	war.potions.addEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 999999999, 1);
-			    	war.sendMessage(player, ChatColor.GOLD + "You are now a heavy!");
-					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
-					player.getInventory().getItem(0).addEnchantment(Enchantment.DAMAGE_ALL, 2);
-					war.armor.armorUp(player);
-			    }
-			}, 10L);
-		}
-		if (classID == 1) {
-			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
-			    public void run() {
-			    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 1);
-			    	war.sendMessage(player, ChatColor.GOLD + "You are now a scout!");
-					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
-					player.getInventory().getItem(0).addEnchantment(Enchantment.KNOCKBACK, 2);
-					war.armor.armorUp(player);
-			    }
-			}, 10L);
-		}
-		if (classID == 2) {
-			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
-			    public void run() {
-			    	war.potions.addEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 999999999, 2);
-			    	war.sendMessage(player, ChatColor.GOLD + "You are now a sniper!");
-					player.getInventory().addItem(new ItemStack(Material.BOW, 1));
-					player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
-					player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_INFINITE, 1);
-					player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_DAMAGE, 2);
-					war.armor.armorUp(player);
-			    }
-			}, 10L);
-		}
-		if (classID == 3) {
-			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
-			    public void run() {
-			    	war.potions.addEffect(player, PotionEffectType.FIRE_RESISTANCE, 999999999, 3);
-					war.pyro.add(player);
-					war.sendMessage(player, ChatColor.GOLD + "You are now a pyro!");
-					player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
-					war.armor.armorUp(player);
-			    }
-			}, 10L);
-		}
-		if (classID == 4) {
-			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
-			    public void run() {
-			    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 2);
-					war.medic.add(player);
-					war.sendMessage(player, ChatColor.GOLD + "You are now a medic!");
-					war.teamhelpers.teamMessage(war.teamhelpers.teamName(player), "[AUTO] I am now a medic!");
-					player.getInventory().addItem(new ItemStack(Material.WOOD_SWORD, 1));
-					player.getInventory().addItem(new ItemStack(Material.EGG, 64));
-					war.armor.armorUp(player);
-			    }
-			}, 10L);
+		assignPotion(player);
+		switch (classID) {
+			case 0:
+				war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
+				    public void run() {
+				    	war.potions.addEffect(player, PotionEffectType.SLOW, 999999999, 2);
+				    	war.potions.addEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 999999999, 1);
+				    	war.sendMessage(player, ChatColor.GOLD + "You are now a heavy!");
+						player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+						player.getInventory().getItem(0).addEnchantment(Enchantment.DAMAGE_ALL, 2);
+						war.armor.armorUp(player);
+				    }
+				}, 10L);
+				break;
+			case 1:
+				war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
+				    public void run() {
+				    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 1);
+				    	war.sendMessage(player, ChatColor.GOLD + "You are now a scout!");
+						player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+						player.getInventory().getItem(0).addEnchantment(Enchantment.KNOCKBACK, 2);
+						war.armor.armorUp(player);
+				    }
+				}, 10L);
+				break;
+			case 2:
+				war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
+				    public void run() {
+				    	war.potions.addEffect(player, PotionEffectType.DAMAGE_RESISTANCE, 999999999, 2);
+				    	war.sendMessage(player, ChatColor.GOLD + "You are now a sniper!");
+						player.getInventory().addItem(new ItemStack(Material.BOW, 1));
+						player.getInventory().addItem(new ItemStack(Material.ARROW, 1));
+						player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_INFINITE, 1);
+						player.getInventory().getItem(0).addEnchantment(Enchantment.ARROW_DAMAGE, 2);
+						war.armor.armorUp(player);
+				    }
+				}, 10L);
+				break;
+			case 3:
+				war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
+				    public void run() {
+				    	war.potions.addEffect(player, PotionEffectType.FIRE_RESISTANCE, 999999999, 3);
+						war.pyro.add(player);
+						war.sendMessage(player, ChatColor.GOLD + "You are now a pyro!");
+						player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+						war.armor.armorUp(player);
+				    }
+				}, 10L);
+				break;
+			case 4:
+				war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
+				    public void run() {
+				    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 2);
+						war.medic.add(player);
+						war.sendMessage(player, ChatColor.GOLD + "You are now a medic!");
+						war.teamhelpers.teamMessage(war.teamhelpers.teamName(player), "[AUTO] I am now a medic!");
+						player.getInventory().addItem(new ItemStack(Material.WOOD_SWORD, 1));
+						player.getInventory().addItem(new ItemStack(Material.EGG, 64));
+						war.armor.armorUp(player);
+				    }
+				}, 10L);
+				break;
 		}
 		/*if (classID == 4) {
 			war.getServer().getScheduler().scheduleAsyncDelayedTask(war, new Runnable() {
