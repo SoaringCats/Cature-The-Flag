@@ -1,5 +1,5 @@
 name: jtWar
-version: 1.3
+version: 1.3.1
 author: jamietech
 description: "All-in-one plugin to enable a server administrator to create a server for players to battle in. Also contains fun admin commands!"
 website: http://dev.nekotech.tk
@@ -34,15 +34,3 @@ commands:
     description: "Kicks player"
     usage: /<command> <player> <reason>
     aliases: ['k']
-  ban:
-    description: "Bans player"
-    usage: /<command> <player> <reason>
-    aliases: ['b']
-  unban:
-    description: "Unbans player"
-    usage: /<command> <player>
-    aliases: ['pardon']
-  smite:
-    description: "Judge player"
-    usage: /<command> <player>
-    aliases: ['s']

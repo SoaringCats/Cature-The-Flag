@@ -14,7 +14,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import tk.nekotech.war.commands.AdminCommands;
+import tk.nekotech.war.commands.AdminCommand;
 import tk.nekotech.war.commands.JoinCommand;
 import tk.nekotech.war.commands.SetupCommands;
 import tk.nekotech.war.commands.WarCommand;
@@ -75,11 +75,7 @@ public class War extends JavaPlugin {
 	public ArrayList<Arrow> arrows;
 	
 	public void onEnable() {
-		getCommand("kick").setExecutor(new AdminCommands(this));
-		getCommand("ban").setExecutor(new AdminCommands(this));
-		getCommand("unban").setExecutor(new AdminCommands(this));
-		getCommand("admin").setExecutor(new AdminCommands(this));
-		getCommand("smite").setExecutor(new AdminCommands(this));
+		getCommand("admin").setExecutor(new AdminCommand(this));
 		getCommand("join").setExecutor(new JoinCommand(this));
 		getCommand("blu").setExecutor(new SetupCommands(this));
 		getCommand("red").setExecutor(new SetupCommands(this));
