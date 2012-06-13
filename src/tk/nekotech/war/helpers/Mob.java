@@ -16,44 +16,50 @@ public class Mob {
 	}
 
 	public boolean isAllowed(EntityType type) {
-		if (type.equals(EntityType.SPIDER))
-			return true;
-		if (type.equals(EntityType.CAVE_SPIDER))
-			return true;
-		if (type.equals(EntityType.SKELETON))
-			return true;
-		if (type.equals(EntityType.CREEPER))
-			return true;
-		if (type.equals(EntityType.PIG_ZOMBIE))
-			return true;
-		if (type.equals(EntityType.ZOMBIE))
-			return true;
-		return false;
-		
+		switch (type) {
+			case SPIDER:
+				return true;
+			case CAVE_SPIDER:
+				return true;
+			case SKELETON:
+				return true;
+			case CREEPER:
+				return true;
+			case PIG_ZOMBIE:
+				return true;
+			case ZOMBIE:
+				return true;
+			default:
+				return false;
+			
+		}		
 	}
 	
 	public EntityType randoMob() {
 		Random rand = new Random();
 		int mobID = rand.nextInt(9);
-		if (mobID == 0)
-			return EntityType.SPIDER;
-		if (mobID == 1)
-			return EntityType.CAVE_SPIDER;
-		if (mobID == 2)
-			return EntityType.SKELETON;
-		if (mobID == 3)
-			return EntityType.CREEPER;
-		if (mobID == 4)
-			return EntityType.PIG_ZOMBIE;
-		if (mobID == 5)
-			return EntityType.ZOMBIE;
-		if (mobID == 6)
-			return EntityType.ZOMBIE;
-		if (mobID == 7)
-			return EntityType.ZOMBIE;
-		if (mobID == 8)
-			return EntityType.CAVE_SPIDER;
-		return null;
+		switch (mobID) {
+			case 0:
+				return EntityType.SPIDER;
+			case 1:
+				return EntityType.CAVE_SPIDER;
+			case 2:
+				return EntityType.SKELETON;
+			case 3:
+				return EntityType.CREEPER;
+			case 4:
+				return EntityType.PIG_ZOMBIE;
+			case 5:
+				return EntityType.ZOMBIE;
+			case 6:
+				return EntityType.ZOMBIE;
+			case 7:
+				return EntityType.ZOMBIE;
+			case 8:
+				return EntityType.ZOMBIE;
+			default:
+					return null;
+		}
 	}
 	
 	public void killMob(Entity entity) {

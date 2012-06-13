@@ -22,16 +22,7 @@ public class Assignment {
 	}
 	
 	public void assignPlayer(Player player, int team) {
-		if (war.blu.contains(player))
-			war.blu.remove(player);
-		if (war.red.contains(player))
-			war.red.remove(player);
-		if (war.pyro.contains(player))
-			war.pyro.remove(player);
-		if (war.monster.contains(player))
-			war.monster.remove(player);
-		if (war.medic.contains(player))
-			war.medic.remove(player);
+		war.quickplayer.clearAttachments(player);
 		
 		if (player.getGameMode() == GameMode.CREATIVE)
 			player.setGameMode(GameMode.SURVIVAL);
@@ -54,7 +45,7 @@ public class Assignment {
 	}
 	
 	private void assignPotion(final Player player) {
-		if (rand.nextBoolean()) {
+		/*if (rand.nextBoolean()) {
 			int random = rand.nextInt(10);
 			switch (random) {
 				case 0:
@@ -68,7 +59,7 @@ public class Assignment {
 					player.getInventory().getItem(8).setDurability((short) 24585);
 					break;
 			}
-		}
+		}*/
 	}
 	
 	public void assignClass(final Player player) {
@@ -130,7 +121,7 @@ public class Assignment {
 				    	war.potions.addEffect(player, PotionEffectType.SPEED, 999999999, 2);
 						war.medic.add(player);
 						war.sendMessage(player, ChatColor.GOLD + "You are now a medic!");
-						war.teamhelpers.teamMessage(war.teamhelpers.teamName(player), "[AUTO] I am now a medic!");
+						war.teamhelpers.teamMessage(war.teamhelpers.teamName(player), ChatColor.WHITE + "<" + player.getDisplayName() + "> [AUTO] I am now a medic!");
 						player.getInventory().addItem(new ItemStack(Material.WOOD_SWORD, 1));
 						player.getInventory().addItem(new ItemStack(Material.EGG, 64));
 						war.armor.armorUp(player);

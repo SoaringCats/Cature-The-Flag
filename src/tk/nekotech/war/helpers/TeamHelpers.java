@@ -57,20 +57,16 @@ public class TeamHelpers {
 	}
 	
 	public void clearTeams(Player player) {
-		if (war.blu.contains(player))
-			war.blu.remove(player);
-		if (war.red.contains(player))
-			war.red.remove(player);
-		if (war.pyro.contains(player))
-			war.pyro.remove(player);
-		if (war.monster.contains(player))
-			war.monster.remove(player);
+		war.quickplayer.clearAttachments(player);
 		war.color.setColor(ColorChoice.GRAY, player);
 		player.getInventory().clear();
 		war.potions.clearPotions(player);
 	}
 	
 	public void teamMessage(int team, String message) {
+		if (team == 2) {
+			war.adminMode(ChatColor.LIGHT_PURPLE + "Discarded team message `" + message + "` sent by an admin");
+		}
 		if (team == 0) {
 			for (Player p : war.getServer().getOnlinePlayers()) {
 				if (war.blu.contains(p)) {

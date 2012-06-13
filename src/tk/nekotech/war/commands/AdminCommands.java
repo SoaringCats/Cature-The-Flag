@@ -1,6 +1,7 @@
 package tk.nekotech.war.commands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,6 +29,7 @@ public class AdminCommands extends MasterCommand {
 			} else {
 				if (war.admins.contains(player)) {
 					war.admins.remove(player);
+					player.setGameMode(GameMode.SURVIVAL);
 					war.messageAdmins(ChatColor.RED + player.getName() + " disables ADMIN MODE.");
 					int teamID = war.teamhelpers.teamName(player);
 					switch (teamID) {
@@ -46,6 +48,7 @@ public class AdminCommands extends MasterCommand {
 						war.getServer().broadcastMessage(ChatColor.RED + war.getMessage() + ChatColor.LIGHT_PURPLE + player.getName() + " is an administrator, listen to them!");
 					}
 					war.admins.add(player);
+					player.setGameMode(GameMode.CREATIVE);
 					war.messageAdmins(ChatColor.RED + player.getName() + " enables ADMIN MODE.");
 					war.color.setColor(ColorChoice.PURPLE, player);
 					player.setDisplayName(ChatColor.LIGHT_PURPLE + player.getName());

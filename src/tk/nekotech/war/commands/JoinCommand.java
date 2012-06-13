@@ -35,6 +35,8 @@ public class JoinCommand extends MasterCommand {
 					team = "blu";
 				} else if (war.teamhelpers.teamName(player) == 1) {
 					team = "red";
+				} else if (war.teamhelpers.teamName(player) == 2) {
+					team = "admin";
 				} else {
 					player.kickPlayer(ChatColor.RED + "Uncaught exception!");
 				}

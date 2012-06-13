@@ -2,6 +2,7 @@ package tk.nekotech.war.listeners;
 
 import java.util.Date;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,7 +22,7 @@ public class PlayerChat implements Listener {
 		war.afk.put(event.getPlayer(), (new Date()).getTime());
 		event.setFormat(war.getMessage() + "%s > %s");
 		if (event.getMessage().startsWith(".")) {
-			war.teamhelpers.teamMessage(war.teamhelpers.teamName(event.getPlayer()), "(TEAM) <" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
+			war.teamhelpers.teamMessage(war.teamhelpers.teamName(event.getPlayer()), "(TEAM) " + ChatColor.WHITE + "<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
 			event.setCancelled(true);
 		}
 	}

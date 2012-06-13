@@ -1,6 +1,7 @@
 package tk.nekotech.war.listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,12 +30,14 @@ public class EntityDamageByEntity implements Listener {
 		if (event.getDamager() instanceof Player && war.medic.contains((Player) event.getDamager()) && event.getEntity() instanceof Player) {
 			Player damager = (Player) event.getDamager();
 			Player damaged = (Player) event.getEntity();
-			if (war.teamhelpers.sameTeam(damager, damaged)) {
-				war.sendMessage(damaged, ChatColor.AQUA + "You were healed by " + damager.getName());
-				war.sendMessage(damager, ChatColor.AQUA + "Healed " + damaged.getName() + "!");
-				damaged.setHealth(20);
-			} else {
-				war.sendMessage(damager, ChatColor.AQUA + "You can't heal someone on the opposite team!");
+			if (damager.getItemInHand().getType() == Material.WOOD_SWORD) {
+				if (war.teamhelpers.sameTeam(damager, damaged)) {
+					war.sendMessage(damaged, ChatColor.AQUA + "You were healed by " + damager.getName());
+					war.sendMessage(damager, ChatColor.AQUA + "Healed " + damaged.getName() + "!");
+					damaged.setHealth(20);
+				} else {
+					war.sendMessage(damager, ChatColor.AQUA + "You can't heal someone on the opposite team!");
+				}
 			}
 			event.setCancelled(true);
 			return;
@@ -42,7 +45,7 @@ public class EntityDamageByEntity implements Listener {
 		if (event.getEntity() instanceof Player && war.medic.contains((Player) event.getEntity())) {
 			event.setDamage(event.getDamage() / 2);
 		}
-		if (event.getDamager() instanceof Arrow) {
+		if (event.getDamager() instanceof Arrow && (Arrow) event.getDamager() instanceof Player) {
 			Player shooter = (Player) ((Arrow) event.getDamager()).getShooter();
 			if (shooter instanceof Player && event.getEntity() instanceof Player) {
 				if (!handleDamage(shooter, (Player) event.getEntity())) {

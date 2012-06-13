@@ -17,11 +17,9 @@ public class PlayerKick implements Listener {
 	
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {
-		war.afk.remove(event.getPlayer());
 		event.setLeaveMessage(null);
-		if (war.red.contains(event.getPlayer().getName())) war.red.remove(event.getPlayer().getName());
-		if (war.blu.contains(event.getPlayer().getName())) war.blu.remove(event.getPlayer().getName());
-		if (war.pyro.contains(event.getPlayer().getName())) war.pyro.remove(event.getPlayer().getName());
+		war.quickplayer.clearAttachments(event.getPlayer());
+		war.quickplayer.playerLeave(event.getPlayer());
 		if (event.getReason().equals("Kicked by administrator.")) {
 			event.setReason(ChatColor.AQUA + "Kicked!");
 		} else {
@@ -34,6 +32,7 @@ public class PlayerKick implements Listener {
 				war.sendMessage(player, ChatColor.RED + "- " + ChatColor.BOLD + event.getPlayer().getName());
 			}
 		}
+		war.getLogger().info(event.getPlayer().getName() + " kicked from server for " + event.getReason());
 	}
 
 }

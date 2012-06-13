@@ -16,10 +16,8 @@ public class PlayerQuit implements Listener {
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		war.afk.remove(event.getPlayer());
-		if (war.red.contains(event.getPlayer().getName())) war.red.remove(event.getPlayer().getName());
-		if (war.blu.contains(event.getPlayer().getName())) war.blu.remove(event.getPlayer().getName());
-		if (war.pyro.contains(event.getPlayer().getName())) war.pyro.remove(event.getPlayer().getName());
+		war.quickplayer.clearAttachments(event.getPlayer());
+		war.quickplayer.playerLeave(event.getPlayer());
 		event.setQuitMessage(war.getMessage() + ChatColor.RED + "- " + ChatColor.BOLD + event.getPlayer().getName());
 	}
 

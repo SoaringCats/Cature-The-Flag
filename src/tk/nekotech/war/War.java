@@ -23,6 +23,7 @@ import tk.nekotech.war.helpers.Assignment;
 import tk.nekotech.war.helpers.Color;
 import tk.nekotech.war.helpers.Mob;
 import tk.nekotech.war.helpers.Potions;
+import tk.nekotech.war.helpers.QuickPlayer;
 import tk.nekotech.war.helpers.TeamHelpers;
 import tk.nekotech.war.listeners.BlockBreak;
 import tk.nekotech.war.listeners.BlockBurn;
@@ -33,6 +34,7 @@ import tk.nekotech.war.listeners.EntityDamage;
 import tk.nekotech.war.listeners.EntityDamageByEntity;
 import tk.nekotech.war.listeners.EntityDeath;
 import tk.nekotech.war.listeners.EntityExplode;
+import tk.nekotech.war.listeners.EntityInteract;
 import tk.nekotech.war.listeners.InventoryClick;
 import tk.nekotech.war.listeners.InventoryClose;
 import tk.nekotech.war.listeners.PlayerChat;
@@ -59,6 +61,7 @@ public class War extends JavaPlugin {
 	public Color color = new Color(this);
 	public Mob mob = new Mob(this);
 	public Potions potions = new Potions(this);
+	public QuickPlayer quickplayer = new QuickPlayer(this);
 	public TeamHelpers teamhelpers = new TeamHelpers(this);
 	
 	public ArrayList<Player> pyro;
@@ -95,6 +98,7 @@ public class War extends JavaPlugin {
 		p.registerEvents(new EntityDamageByEntity(this), this);
 		p.registerEvents(new EntityDeath(this), this);
 		p.registerEvents(new EntityExplode(), this);
+		p.registerEvents(new EntityInteract(), this);
 		p.registerEvents(new InventoryClick(), this);
 		p.registerEvents(new InventoryClose(this), this);
 		p.registerEvents(new PlayerChat(this), this);
@@ -131,7 +135,7 @@ public class War extends JavaPlugin {
 		getLogger().info("****************************************");
 		
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new AFKCheck(this), 1200L, 1200L);
-		getServer().getScheduler().scheduleAsyncRepeatingTask(this, new ArrowRemoval(this), 40L, 40L);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new ArrowRemoval(this), 40L, 40L);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Time(this), 4800L, 4800L);
 		
 		for (World world : getServer().getWorlds()) {
