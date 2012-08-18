@@ -11,9 +11,10 @@ import tk.nekotech.war.listeners.Cancellables;
 import tk.nekotech.war.listeners.DamageControl;
 import tk.nekotech.war.listeners.PlayerFlow;
 import tk.nekotech.war.player.WarPlayer;
+import tk.nekotech.war.runnables.PotionUpdate;
 
 public class War extends JavaPlugin {
-	public Random random;
+	public static Random random;
 	private ArrayList<WarPlayer> players;
 	
 	public void onLoad() {
@@ -33,6 +34,9 @@ public class War extends JavaPlugin {
 		new Cancellables(this);
 		new DamageControl(this);
 		new PlayerFlow(this);
+		
+		// Schedule runners
+		new PotionUpdate(this);
 	}
 	
 	public ChunkGenerator getDefaultWorldGenerator(String worldname, String uid) {
@@ -48,12 +52,31 @@ public class War extends JavaPlugin {
 		return null;
 	}
 	
+	public ArrayList<WarPlayer> getPlayers() {
+		return players;
+	}
+	
 	public void addPlayer(WarPlayer player) {
 		players.add(player);
 	}
 	
 	public void removePlayer(WarPlayer player) {
+		player.cancel();
 		players.remove(player);
+	}
+	
+	public int getAmount(Team team) {
+		int amount = 0;
+		for (WarPlayer player : players) {
+			if (player.getTeam() == team) {
+				amount++;
+			}
+		}
+		return amount;
+	}
+	
+	public int getAmount() {
+		return getServer().getOnlinePlayers().length;
 	}
 	
 	public Team getNewTeam() {

@@ -11,7 +11,7 @@ jtWar requires the plugin <a href="https://github.com/mbax/TagAPI">TagAPI</a> by
 
 
 #### Works with ####
-The plugin is currently coded _and hopefully tested_ to work with CraftBukkit version 1.3.1-R1.0 and TagAPI version 1.4.
+The plugin is currently coded _and hopefully tested_ to work with CraftBukkit version 1.3.1-R1.1 and TagAPI version 1.4.
 
 ---
 

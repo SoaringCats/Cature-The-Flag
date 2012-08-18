@@ -1,0 +1,19 @@
+# Compiled files #
+##################
+*.class
+
+# Packaged files #
+##################
+*.jar
+*.war
+*.ear
+
+# Ignore bin #
+##############
+bin/
+
+# Eclipse files #
+#################
+.classpath
+.project
+*.iml
