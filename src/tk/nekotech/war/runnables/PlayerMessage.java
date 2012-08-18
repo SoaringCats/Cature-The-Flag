@@ -29,7 +29,7 @@ public class PlayerMessage implements Runnable {
 		player.sendMessage("Red: " + war.getAmount(Team.RED) + " players " + "| Flag: [");
 		player.sendMessage("Blue: " + war.getAmount(Team.BLUE) + " players " + "| Flag: [");
 		player.sendMessage(((warplayer.getTeam() == Team.BLUE) ? ChatColor.BLUE : ChatColor.RED) + "You're on team " + warplayer.getTeam().toString() + " and are a " + warplayer.getClass().toString());
-		player.sendMessage("Kills: " + warplayer.getKills() + " | Deaths: " + warplayer.getDeaths());
+		player.sendMessage("Kills: " + warplayer.getKills() + " | Deaths: " + warplayer.getDeaths() + " | Ratio: " + (warplayer.getKills()/warplayer.getDeaths()) + "%");
 		player.sendMessage(ChatColor.GREEN + "This is an announcement.");
 	}
 	
