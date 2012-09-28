@@ -9,6 +9,11 @@ public enum Team {
 
 	RED, BLUE;
 	
+	@Override
+	public String toString() {
+		return name().toLowerCase();
+	}
+	
 	public static Location getSpawn(String config, War war) {
 		return (new LocationStore(config, war)).getLocation();
 	}

@@ -25,11 +25,11 @@ public class PlayerMessage implements Runnable {
 		for (int i = 0; i < 5; i++) {
 			player.sendMessage("");
 		}
-		player.sendMessage(ChatColor.AQUA + getMOTD());
+		player.sendMessage(ChatColor.LIGHT_PURPLE + getMOTD());
 		player.sendMessage("Red: " + war.getAmount(Team.RED) + " players " + "| Flag: [");
 		player.sendMessage("Blue: " + war.getAmount(Team.BLUE) + " players " + "| Flag: [");
-		player.sendMessage(((warplayer.getTeam() == Team.BLUE) ? ChatColor.BLUE : ChatColor.RED) + "You're on team " + warplayer.getTeam().toString() + " and are a " + warplayer.getClass().toString());
-		player.sendMessage("Kills: " + warplayer.getKills() + " | Deaths: " + warplayer.getDeaths() + " | Ratio: " + (warplayer.getKills()/warplayer.getDeaths()) + "%");
+		player.sendMessage(((warplayer.getTeam() == Team.BLUE) ? ChatColor.BLUE : ChatColor.RED) + "You're on team " + warplayer.getTeam().toString() + " and are a " + warplayer.getPlayerClass().toString());
+		player.sendMessage("Kills: " + warplayer.getKills() + " | Deaths: " + warplayer.getDeaths() + " | Ratio: " + ((warplayer.getKills()+warplayer.getDeaths() == 0) ? "N/A" : warplayer.getKills()/warplayer.getDeaths()) + "%");
 		player.sendMessage(ChatColor.GREEN + "This is an announcement.");
 	}
 	

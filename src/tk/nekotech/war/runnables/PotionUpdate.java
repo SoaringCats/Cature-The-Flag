@@ -1,5 +1,7 @@
 package tk.nekotech.war.runnables;
 
+import org.bukkit.potion.PotionEffect;
+
 import tk.nekotech.war.War;
 import tk.nekotech.war.player.WarPlayer;
 
@@ -14,7 +16,9 @@ public class PotionUpdate implements Runnable {
 	@Override
 	public void run() {
 		for (WarPlayer player : war.getPlayers()) {
-			player.getPlayer().addPotionEffects(player.getPotions());
+			for (PotionEffect effect : player.getPotions()) {
+				player.getPlayer().addPotionEffect(effect, true);
+			}
 		}
 	}
 
