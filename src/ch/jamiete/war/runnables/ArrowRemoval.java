@@ -1,5 +1,7 @@
 package ch.jamiete.war.runnables;
 
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import ch.jamiete.war.War;
 
 public class ArrowRemoval implements Runnable {
@@ -11,8 +13,10 @@ public class ArrowRemoval implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < this.war.arrows.size(); i++) {
-            this.war.arrows.get(i).remove();
+        for (final Entity entity : this.war.mainWorld.getEntities()) {
+            if (entity instanceof Arrow) {
+                entity.remove();
+            }
         }
     }
 

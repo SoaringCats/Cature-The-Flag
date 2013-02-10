@@ -5,12 +5,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ch.jamiete.war.MasterCommand;
 import ch.jamiete.war.War;
-import ch.jamiete.war.helpers.WarPlayer;
 import ch.jamiete.war.helpers.WarValues;
 
-public class JoinCommand extends MasterCommand {
+public class GlobalChatCommand extends MasterCommand {
 
-    public JoinCommand(final War war) {
+    public GlobalChatCommand(final War war) {
         super(war);
     }
 
@@ -21,12 +20,11 @@ public class JoinCommand extends MasterCommand {
             return;
         }
 
-        final WarPlayer wplayer = this.war.getHelper().getPlayerExact(player.getName());
-
-        if (wplayer.isOnTeam()) {
-            wplayer.sendMessage(ChatColor.GRAY + "You're already on " + wplayer.getTeam().getColored());
-        } else {
-            this.war.getHelper().assignPlayer(wplayer, this.war.getHelper().getAvailableTeam());
+        if (args.length == 0) {
+            sender.sendMessage(WarValues.MESSAGE_PREFIX + ChatColor.GRAY + "You need to specify a message. /" + command + " <message>");
+            return;
         }
+
+        this.war.getServer().broadcastMessage(String.format(WarValues.MESSAGE_PREFIX + "%s > %s", player.getDisplayName(), this.war.getHelper().arrayToString(args)));
     }
 }

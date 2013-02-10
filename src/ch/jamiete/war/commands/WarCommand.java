@@ -3,24 +3,29 @@ package ch.jamiete.war.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ch.jamiete.war.MasterCommand;
 import ch.jamiete.war.War;
+import ch.jamiete.war.helpers.WarPlayer;
+import ch.jamiete.war.helpers.WarValues;
 
 public class WarCommand extends MasterCommand {
-    private final War war;
-    private final ChatColor a = ChatColor.AQUA;
 
     public WarCommand(final War war) {
-        this.war = war;
+        super(war);
     }
 
     @Override
-    public boolean doCommand(final CommandSender sender, final String command, final String[] args, final boolean realPlayer, final Player player) {
-        this.war.sendMessage(player, this.a + "Welcome to the war, " + sender.getName() + "!");
-        this.war.sendMessage(player, this.a + "Repeatedly smack things with your sword!");
-        this.war.sendMessage(player, this.a + "If you receive TNT, place it on obsidian to explode things!");
-        this.war.sendMessage(player, this.a + "To join the game say /join and you will be teleported out of spectate.");
+    public void execute(final CommandSender sender, final String command, final String[] args, final boolean realPlayer, final Player player) {
+        if (!realPlayer) {
+            sender.sendMessage(WarValues.MESSAGE_CONSOLE);
+        }
 
-        return true;
+        final WarPlayer wplayer = this.war.getHelper().getPlayerExact(player.getName());
+
+        wplayer.sendMessage(ChatColor.GRAY + "Welcome to the war, " + sender.getName() + "!");
+        wplayer.sendMessage(ChatColor.GRAY + "Repeatedly smack things with your sword!");
+        wplayer.sendMessage(ChatColor.GRAY + "If you receive TNT, place it on obsidian to explode things!");
+        wplayer.sendMessage(ChatColor.GRAY + "To join the game say /join and you will be teleported out of spectate.");
     }
 
 }

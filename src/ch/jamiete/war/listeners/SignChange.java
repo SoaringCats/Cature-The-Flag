@@ -2,10 +2,15 @@ package ch.jamiete.war.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
+import ch.jamiete.war.MasterListener;
+import ch.jamiete.war.War;
 
-public class SignChange implements Listener {
+public class SignChange extends MasterListener {
+
+    public SignChange(final War war) {
+        super(war);
+    }
 
     @EventHandler
     public void onSignChange(final SignChangeEvent event) {

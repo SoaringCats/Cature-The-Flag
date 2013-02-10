@@ -2,53 +2,47 @@ package ch.jamiete.war.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import ch.jamiete.war.MasterListener;
 import ch.jamiete.war.War;
+import ch.jamiete.war.helpers.Team;
+import ch.jamiete.war.helpers.WarPlayer;
+import ch.jamiete.war.helpers.WarValues;
 
-public class PlayerJoin implements Listener {
-    private final War war;
+public class PlayerJoin extends MasterListener {
 
     public PlayerJoin(final War war) {
-        this.war = war;
+        super(war);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        this.war.afk.put(event.getPlayer(), System.currentTimeMillis());
-        final Player player = event.getPlayer();
-        this.war.teamhelpers.toSpawn(player, 9);
-        this.war.teamhelpers.clearTeams(player);
-        if (!player.hasPlayedBefore()) {
-            this.war.getServer().getScheduler().scheduleSyncDelayedTask(this.war, new Runnable() {
-                @Override
-                public void run() {
-                    player.chat("[AUTO] I am new here! If I break the rules I acknowledge that I WILL be banned!");
-                }
-            }, 20L);
-        }
+        final Player bplayer = event.getPlayer();
+        final WarPlayer player = new WarPlayer(bplayer);
+
+        this.war.afk.put(bplayer, System.currentTimeMillis());
+
         if (this.war.getConfig().getBoolean("has-started")) {
-            this.war.teamhelpers.toSpawn(player, 9);
+            bplayer.teleport(this.war.getHelper().getTeamSpawn(Team.SPECTATOR));
         } else {
             if (player.hasPermission("jtwar.admin")) {
-                this.war.sendMessage(player, ChatColor.RED + "Teleporting you to spawn immediately to setup new map.");
-                this.war.sendMessage(player, ChatColor.RED + "Please set new spawn points with /blu and /red");
-                final int y = player.getWorld().getSpawnLocation().getBlockY() - 1;
-                final Location loc = player.getLocation().clone();
-                loc.setY(y);
-                player.getWorld().getBlockAt(loc).setType(Material.STONE);
-                player.teleport(player.getWorld().getSpawnLocation());
-                player.setGameMode(GameMode.CREATIVE);
+                player.sendMessage(ChatColor.RED + "Teleporting you to spawn so you can setup a new map.");
+                player.sendMessage(ChatColor.RED + "Please set the spawn points with /blu and /red");
+
+                bplayer.teleport(this.war.mainWorld.getSpawnLocation().add(0, 10, 0));
+                this.war.mainWorld.getSpawnLocation().getBlock().setType(Material.BRICK);
+
+                bplayer.setGameMode(GameMode.CREATIVE);
             }
         }
-        event.setJoinMessage(this.war.getMessage() + ChatColor.GREEN + "+ " + ChatColor.BOLD + player.getName());
-        this.war.sendMessage(player, ChatColor.RED + "Welcome to the war! To join type /join");
-        this.war.sendMessage(player, ChatColor.RED + "For more information say /war");
+
+        event.setJoinMessage(WarValues.MESSAGE_PREFIX + ChatColor.GREEN + "+ " + ChatColor.BOLD + player.getName());
+        player.sendMessage(ChatColor.RED + "Welcome to the war! To join type /join");
+        player.sendMessage(ChatColor.RED + "For more information say /war");
     }
 
 }

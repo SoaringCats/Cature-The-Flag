@@ -1,0 +1,70 @@
+name: War
+version: 2.0
+author: jamietech
+description: Battle plugin for the shrewd server administrator.
+website: http://d.jamiete.ch
+main: ch.jamiete.war.War
+load: startup
+
+commands:
+  war:
+    description: Gives general help
+    usage: /<command>
+    aliases: ['help']
+    permission: war.commands.help
+  join:
+    description: Assigns player to a team
+    usage: /<command>
+    aliases: []
+    permission: war.commands.join
+  blu:
+    description: Sets the blu spawn point
+    usage: /<command>
+    aliases: []
+    permission: war.commands.setspawn
+  red:
+    description: Sets the red spawn point
+    usage: /<command>
+    aliases: []
+    permission: war.commands.setspawn
+  spectator:
+    description: Sets spectator spawn point
+    usage: /<command>
+    aliases: []
+    permission: war.commands.setspawn
+  ready:
+    description: Toggles server readiness
+    usage: /<command>
+    aliases: []
+    permission: war.commands.ready
+  reset:
+    description: Resets configuration
+    usage: /<command>
+    aliases: []
+    permission: war.commands.reset
+
+permissions:
+  war.*:
+    description: All permissions.
+    default: op
+    children:
+      war.commands.help: true
+      war.commands.join: true
+      war.commands.setspawn: true
+      war.commands.ready: true
+      war.commands.reset: true
+  war.commands.help:
+    description: Allows /war
+    default: true
+  war.commands.join:
+    description: Allows /join
+    default: true
+  war.commands.setspawn:
+    description: Allows /blu, /red, /spectator
+    default: op
+  war.commands.ready:
+    description: Allows /ready
+    default: op
+  war.commands.reset:
+    description: Allows /reset
+    default: op
