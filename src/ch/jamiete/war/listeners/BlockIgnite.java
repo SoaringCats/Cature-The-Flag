@@ -5,10 +5,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockIgniteEvent;
 
 public class BlockIgnite implements Listener {
-	
-	@EventHandler
-	public void onBlockIgnite(BlockIgniteEvent event) {
-		event.setCancelled(true);
-	}
+
+    @EventHandler
+    public void onBlockIgnite(final BlockIgniteEvent event) {
+        event.setCancelled(true);
+    }
 
 }

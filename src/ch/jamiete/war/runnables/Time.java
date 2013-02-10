@@ -3,19 +3,18 @@ package ch.jamiete.war.runnables;
 import org.bukkit.World;
 import ch.jamiete.war.War;
 
-
 public class Time implements Runnable {
-	private War war;
-	
-	public Time(War war) {
-		this.war = war;
-	}
+    private final War war;
 
-	@Override
-	public void run() {
-		for (World world : war.getServer().getWorlds()) {
-			world.setTime(14000);
-		}
-	}
+    public Time(final War war) {
+        this.war = war;
+    }
+
+    @Override
+    public void run() {
+        for (final World world : this.war.getServer().getWorlds()) {
+            world.setTime(14000);
+        }
+    }
 
 }

@@ -5,10 +5,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
 
 public class BlockBurn implements Listener {
-	
-	@EventHandler
-	public void onBlockBurn(BlockBurnEvent event) {
-		event.setCancelled(true);
-	}
+
+    @EventHandler
+    public void onBlockBurn(final BlockBurnEvent event) {
+        event.setCancelled(true);
+    }
 
 }

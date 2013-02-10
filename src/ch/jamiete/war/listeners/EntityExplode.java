@@ -5,10 +5,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class EntityExplode implements Listener {
-	
-	@EventHandler
-	public void onEntityExplode(EntityExplodeEvent event) {
-		event.blockList().clear();
-	}
+
+    @EventHandler
+    public void onEntityExplode(final EntityExplodeEvent event) {
+        event.blockList().clear();
+    }
 
 }

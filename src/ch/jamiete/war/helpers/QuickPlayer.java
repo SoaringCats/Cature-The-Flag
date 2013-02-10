@@ -5,36 +5,35 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import ch.jamiete.war.War;
 
-
 public class QuickPlayer {
-	private War war;
-	
-	public QuickPlayer(War war) {
-		this.war = war;
-	}
-	
-	public void clearAttachments(Player player) {
-		war.admins.remove(player);
-		war.afk.remove(player);
-		war.blu.remove(player);
-		war.inventory.remove(player);
-		war.medic.remove(player);
-		war.monster.remove(player);
-		war.pyro.remove(player);
-		war.red.remove(player);
-	}
-	
-	public void playerLeave(Player player) {
-		if (war.getServer().getOnlinePlayers().length == 1) {
-			war.getLogger().info("Performing garbage collection on all worlds.");
-			for (World world : war.getServer().getWorlds()) {
-				war.getLogger().info("Clearing " + world.getEntities().size() + " entities from " + world.getName() + " for garbage collection!");
-				for (Entity entity : world.getEntities()) {
-					entity.remove();
-				}
-			}
-			war.getLogger().info("Garbage collection complete.");
-		}
-	}
+    private final War war;
+
+    public QuickPlayer(final War war) {
+        this.war = war;
+    }
+
+    public void clearAttachments(final Player player) {
+        this.war.admins.remove(player);
+        this.war.afk.remove(player);
+        this.war.blu.remove(player);
+        this.war.inventory.remove(player);
+        this.war.medic.remove(player);
+        this.war.monster.remove(player);
+        this.war.pyro.remove(player);
+        this.war.red.remove(player);
+    }
+
+    public void playerLeave(final Player player) {
+        if (this.war.getServer().getOnlinePlayers().length == 1) {
+            this.war.getLogger().info("Performing garbage collection on all worlds.");
+            for (final World world : this.war.getServer().getWorlds()) {
+                this.war.getLogger().info("Clearing " + world.getEntities().size() + " entities from " + world.getName() + " for garbage collection!");
+                for (final Entity entity : world.getEntities()) {
+                    entity.remove();
+                }
+            }
+            this.war.getLogger().info("Garbage collection complete.");
+        }
+    }
 
 }

@@ -7,11 +7,11 @@ import org.bukkit.event.entity.EntityInteractEvent;
 
 public class EntityInteract implements Listener {
 
-	@EventHandler
-	public void onEntityInteract(EntityInteractEvent event) {
-		if (event.getEntityType() == EntityType.ENDERMAN) {
-			event.setCancelled(true);
-		}
-	}
-	
+    @EventHandler
+    public void onEntityInteract(final EntityInteractEvent event) {
+        if (event.getEntityType() == EntityType.ENDERMAN) {
+            event.setCancelled(true);
+        }
+    }
+
 }
